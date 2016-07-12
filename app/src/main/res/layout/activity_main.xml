@@ -3,4 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RadioGroup
+        android:layout_alignParentBottom="true"
+        android:id="@+id/main_bottom_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <RadioButton
+            style="@style/main_bottom_radio_button"
+            android:text="@string/main_bottom_home_page"
+            android:drawableTop="@drawable/slt_main_bottom_home_page"
+            />
+        <RadioButton
+            style="@style/main_bottom_radio_button"
+            android:text="@string/main_bottom_assortment"
+            android:drawableTop="@drawable/slt_main_bottom_assortment"
+            />
+        <RadioButton
+            style="@style/main_bottom_radio_button"
+            android:text="@string/main_bottom_shopping_cart"
+            android:drawableTop="@drawable/slt_main_bottom_shopping_cart"
+            />
+        <RadioButton
+            style="@style/main_bottom_radio_button"
+            android:text="@string/main_bottom_order_form"
+            android:drawableTop="@drawable/slt_main_bottom_order_form"
+            />
+        <RadioButton
+            style="@style/main_bottom_radio_button"
+            android:text="@string/main_bottom_my"
+            android:drawableTop="@drawable/slt_main_bottom_my"
+            />
+    </RadioGroup>
+
+
+    <com.handmark.pulltorefresh.library.PullToRefreshExpandableListView
+        android:id="@+id/main_content_ev"
+        android:layout_above="@+id/main_bottom_rg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </RelativeLayout>

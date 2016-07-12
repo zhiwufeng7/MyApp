@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyApp</string>
+    <string name="main_bottom_home_page">首页</string>
+    <string name="main_bottom_assortment">分类</string>
+    <string name="main_bottom_shopping_cart">购物车</string>
+    <string name="main_bottom_order_form">订单</string>
+    <string name="main_bottom_my">我的</string>
 </resources>
