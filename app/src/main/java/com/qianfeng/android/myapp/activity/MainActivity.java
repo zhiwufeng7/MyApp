@@ -3,7 +3,7 @@ package com.qianfeng.android.myapp.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.beijing.android.mymovie.R;
+import com.qianfeng.android.myapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
