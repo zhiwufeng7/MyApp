@@ -1,28 +1,49 @@
 package com.qianfeng.android.myapp.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.GridView;
+import android.widget.ImageView;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.adapter.HomeHeaderServiceAdapter;
 import com.qianfeng.android.myapp.adapter.HomePullToRefreshExpandListViewAdapter;
-import com.qianfeng.android.myapp.bean.HomePageEV;
+import com.qianfeng.android.myapp.adapter.HomeRecommendAdapter;
+import com.qianfeng.android.myapp.bean.BannerInfo;
+import com.qianfeng.android.myapp.bean.HomePageEVInfo;
+import com.qianfeng.android.myapp.widget.MyGridView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 
 
 public class HomePageFragment extends Fragment {
-    private HomePullToRefreshExpandListViewAdapter adapter;
+    private HomePullToRefreshExpandListViewAdapter expandAdapter;
 
     private PullToRefreshExpandableListView refreshExpandableListView;
-    private ExpandableListView listView;
+    private ExpandableListView expandListView;
+    private ConvenientBanner banner;
+    private GridView headerGridView;
+    private MyGridView myGridView;
+    private Context mContext;
+    private BannerInfo bannerInfo;
+    private List<BannerInfo.DataBean> bannerList=new ArrayList<>();
+    private Gson gson;
 
 
     public HomePageFragment() {
@@ -40,24 +61,88 @@ public class HomePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
+        mContext=getActivity();
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
-        refreshExpandableListView = (PullToRefreshExpandableListView) view.findViewById(R.id.home_page_fragment_ev);
-        listView = refreshExpandableListView.getRefreshableView();
-        adapter = new HomePullToRefreshExpandListViewAdapter(getContext());
-        listView.setAdapter(adapter);
+        View headerView = inflater.inflate(R.layout.home_header_view, null);
+        View footView = inflater.inflate(R.layout.home_foot_view, null);
+
+        initView(view);
+
+//        initHeardView(headerView);
+        //添加头部视图
+        expandListView.addHeaderView(headerView);
+        //添加底部视图
+        expandListView.addFooterView(footView);
 
         initData();
 
-        initListener();
+        initAdapter();
 
+        initListener();
 
         return view;
     }
 
+    private void initAdapter() {
+
+        expandAdapter = new HomePullToRefreshExpandListViewAdapter(mContext);
+        expandListView.setAdapter(expandAdapter);
+
+        HomeHeaderServiceAdapter serviceAdapter = new HomeHeaderServiceAdapter(mContext);
+        myGridView.setAdapter(serviceAdapter);
+
+        HomeRecommendAdapter recommendAdapter = new HomeRecommendAdapter(mContext);
+        headerGridView.setAdapter(recommendAdapter);
+
+    }
+
+    private void initHeardView(View heardView) {
+        banner = (ConvenientBanner) heardView.findViewById(R.id.home_page_header_view_cb);
+        myGridView = (MyGridView) heardView.findViewById(R.id.home_page_header_my_grid);
+        headerGridView = (GridView) heardView.findViewById(R.id.home_page_header_recommend_grid);
+
+        //设置顶部banner
+        banner.setPages(new CBViewHolderCreator<HeaderBannerViewHolder>() {
+            @Override
+            public HeaderBannerViewHolder createHolder() {
+                return new HeaderBannerViewHolder();
+            }
+        }, bannerList)
+                .setPageIndicator(new int[]{R.drawable.btn_check_disabled_nightmode, R.drawable.btn_check_normal})
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_LEFT);
+
+    }
+
+
+    class HeaderBannerViewHolder implements Holder<BannerInfo.DataBean> {
+        ImageView imageView;
+
+        @Override
+        public View createView(Context context) {
+            imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            return imageView;
+        }
+
+        @Override
+        public void UpdateUI(Context context, int position, BannerInfo.DataBean data) {
+
+            Glide.with(mContext).load(data.getImgUrl()).into(imageView);
+        }
+    }
+
+
+    private void initView(View view) {
+        refreshExpandableListView = (PullToRefreshExpandableListView) view.findViewById(R.id.home_page_fragment_ev);
+        expandListView = refreshExpandableListView.getRefreshableView();
+
+    }
+
     private void initListener() {
 
-        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+        expandListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 return true;
@@ -65,13 +150,36 @@ public class HomePageFragment extends Fragment {
         });
 
 
-
-
     }
 
     private void initData() {
+        if (gson == null) {
+            gson = new Gson();
+        }
+        //顶部banner数据
+        String url1 = "http://api.daoway.cn/daoway/rest/config/banners?platform=android&city=%E5%8D%97%E6%98%8C&community_id=203012";
 
-        String url="http://api.daoway.cn/daoway/rest/service_items/recommend_top?start=0&size=10&lot=118.778074&lat=32.057236&manualCity=%E5%8D%97%E4%BA%AC&imei=133524632646575&includeNotInScope=true";
+        OkHttpUtils.get()
+                .url(url1)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        bannerInfo = gson.fromJson(response, BannerInfo.class);
+                        bannerList=bannerInfo.getData();
+                        banner.getViewPager().getAdapter().notifyDataSetChanged();
+                        banner.setPageIndicator(new int[]{R.drawable.btn_check_disabled_nightmode, R.drawable.btn_check_normal});
+                    }
+                });
+
+
+        //中部的expandableListView数据
+        String url = "http://api.daoway.cn/daoway/rest/service_items/recommend_top?start=0&size=10&lot=118.778074&lat=32.057236&manualCity=%E5%8D%97%E4%BA%AC&imei=133524632646575&includeNotInScope=true";
         OkHttpUtils.get()
                 .url(url)
                 .build()
@@ -83,13 +191,13 @@ public class HomePageFragment extends Fragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Gson gson=new Gson();
-                        HomePageEV data=gson.fromJson(response,HomePageEV.class);
-                        adapter.setData(data);
-                        adapter.notifyDataSetChanged();
+
+                        HomePageEVInfo data = gson.fromJson(response, HomePageEVInfo.class);
+                        expandAdapter.setData(data);
+                        expandAdapter.notifyDataSetChanged();
                         //默认所有的Group全部展开
                         for (int i = 0; i < data.getData().size(); i++) {
-                            listView.expandGroup(i);
+                            expandListView.expandGroup(i);
                         }
                     }
                 });

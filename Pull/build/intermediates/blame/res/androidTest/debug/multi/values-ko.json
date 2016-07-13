@@ -1,10 +1,6 @@
 [
     {
-<<<<<<< Updated upstream
-        "outputFile": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-ko\\values-ko.xml",
-=======
         "outputFile": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-ko\\values-ko.xml",
->>>>>>> Stashed changes
         "map": [
             {
                 "to": {
@@ -15,11 +11,7 @@
                     "endOffset": 116
                 },
                 "from": {
-<<<<<<< Updated upstream
-                    "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-ko\\values-ko.xml",
-=======
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-ko\\values-ko.xml",
->>>>>>> Stashed changes
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -38,11 +30,7 @@
                     "endOffset": 183
                 },
                 "from": {
-<<<<<<< Updated upstream
-                    "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-ko\\values-ko.xml",
-=======
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-ko\\values-ko.xml",
->>>>>>> Stashed changes
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -61,11 +49,7 @@
                     "endOffset": 252
                 },
                 "from": {
-<<<<<<< Updated upstream
-                    "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-ko\\values-ko.xml",
-=======
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-ko\\values-ko.xml",
->>>>>>> Stashed changes
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,

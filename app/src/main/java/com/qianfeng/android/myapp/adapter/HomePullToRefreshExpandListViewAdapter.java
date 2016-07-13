@@ -9,13 +9,13 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.qianfeng.android.myapp.R;
-import com.qianfeng.android.myapp.bean.HomePageEV;
+import com.qianfeng.android.myapp.bean.HomePageEVInfo;
 
 /**
  * Created by my on 2016/7/13.
  */
 public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAdapter {
-    private HomePageEV data;
+    private HomePageEVInfo data;
     private Context mContext;
     private LayoutInflater inflater;
 
@@ -24,7 +24,7 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
         inflater = LayoutInflater.from(mContext);
     }
 
-    public void setData(HomePageEV data) {
+    public void setData(HomePageEVInfo data) {
         this.data = data;
 
     }

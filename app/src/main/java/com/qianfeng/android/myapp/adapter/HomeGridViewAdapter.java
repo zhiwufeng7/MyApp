@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.qianfeng.android.myapp.R;
-import com.qianfeng.android.myapp.bean.HomePageEV;
+import com.qianfeng.android.myapp.bean.HomePageEVInfo;
 
 /**
  * Created by my on 2016/7/13.
  */
 public class HomeGridViewAdapter extends BaseAdapter {
 
-    private HomePageEV.DataBean data;
+    private HomePageEVInfo.DataBean data;
     private LayoutInflater inflater;
     private Context context;
 
@@ -25,7 +25,7 @@ public class HomeGridViewAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
         this.context=context;
     }
-    public void setData(HomePageEV.DataBean data){
+    public void setData(HomePageEVInfo.DataBean data){
         this.data=data;
     }
 
@@ -60,7 +60,7 @@ public class HomeGridViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        HomePageEV.DataBean.ItemsBean item=data.getItems().get(position);
+        HomePageEVInfo.DataBean.ItemsBean item=data.getItems().get(position);
         Glide.with(context).load(item.getPic_url()).into(viewHolder.imageView);
         viewHolder.name.setText(item.getName());
         viewHolder.serviceTitle.setText(item.getServiceTitle());

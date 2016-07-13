@@ -1,10 +1,6 @@
 [
     {
-<<<<<<< Updated upstream
-        "outputFile": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-fi\\values-fi.xml",
-=======
         "outputFile": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-fi\\values-fi.xml",
->>>>>>> Stashed changes
         "map": [
             {
                 "to": {
@@ -15,11 +11,7 @@
                     "endOffset": 141
                 },
                 "from": {
-<<<<<<< Updated upstream
-                    "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
-=======
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
->>>>>>> Stashed changes
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -38,11 +30,7 @@
                     "endOffset": 255
                 },
                 "from": {
-<<<<<<< Updated upstream
-                    "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
-=======
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
->>>>>>> Stashed changes
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -61,11 +49,7 @@
                     "endOffset": 363
                 },
                 "from": {
-<<<<<<< Updated upstream
-                    "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
-=======
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
->>>>>>> Stashed changes
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -84,11 +68,7 @@
                     "endOffset": 442
                 },
                 "from": {
-<<<<<<< Updated upstream
-                    "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
-=======
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
->>>>>>> Stashed changes
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
@@ -107,11 +87,7 @@
                     "endOffset": 516
                 },
                 "from": {
-<<<<<<< Updated upstream
-                    "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
-=======
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
->>>>>>> Stashed changes
                     "position": {
                         "startLine": 6,
                         "startColumn": 4,
@@ -130,11 +106,7 @@
                     "endOffset": 597
                 },
                 "from": {
-<<<<<<< Updated upstream
-                    "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
-=======
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-fi\\values-fi.xml",
->>>>>>> Stashed changes
                     "position": {
                         "startLine": 7,
                         "startColumn": 4,
