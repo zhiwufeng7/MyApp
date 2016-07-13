@@ -2,18 +2,13 @@ package com.qianfeng.android.myapp.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.RadioGroup;
 
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import okhttp3.Call;
 
 public class MainActivity extends AppCompatActivity {
-    private PullToRefreshExpandableListView refreshListView;
+
     private RadioGroup radioGroup;
 
     @Override
@@ -43,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
 
-        refreshListView = (PullToRefreshExpandableListView) findViewById(R.id.main_content_ev);
-        radioGroup = (RadioGroup) findViewById(R.id.main_bottom_rg);
+//        refreshListView = (PullToRefreshExpandableListView) findViewById(R.id.main_content_ev);
+//        radioGroup = (RadioGroup) findViewById(R.id.main_bottom_rg);
 
     }
 }
