@@ -7,21 +7,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.adapter.PullToRefreshExpandListViewAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomePageFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomePageFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class HomePageFragment extends Fragment {
+    private PullToRefreshExpandListViewAdapter adapter;
 
     private PullToRefreshExpandableListView refreshExpandableListView;
+    private ExpandableListView listView;
 
 
     public HomePageFragment() {
@@ -49,14 +46,12 @@ public class HomePageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
         refreshExpandableListView = (PullToRefreshExpandableListView) view.findViewById(R.id.home_page_fragment_ev);
-
-
+        listView = refreshExpandableListView.getRefreshableView();
+        adapter = new PullToRefreshExpandListViewAdapter(getContext());
+        listView.setAdapter(adapter);
 
         return view;
     }
-
-
-
 
 
 }
