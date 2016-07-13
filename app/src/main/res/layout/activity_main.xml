@@ -37,4 +37,11 @@
             android:drawableTop="@drawable/slt_main_bottom_my"
             />
     </RadioGroup>
+
+
+    <FrameLayout
+        android:id="@+id/main_content_fl"
+        android:layout_above="@id/main_bottom_rg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </RelativeLayout>
