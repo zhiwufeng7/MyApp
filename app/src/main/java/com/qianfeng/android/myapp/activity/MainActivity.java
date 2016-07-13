@@ -21,6 +21,12 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initFragment();
 
+        initListener();
+
+
+    }
+
+    private void initListener() {
 
 
     }
