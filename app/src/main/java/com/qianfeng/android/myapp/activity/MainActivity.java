@@ -6,8 +6,9 @@ import android.widget.RadioGroup;
 
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.view.MainView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView{
 
     private RadioGroup radioGroup;
 
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        refreshListView = (PullToRefreshExpandableListView) findViewById(R.id.main_content_ev);
 //        radioGroup = (RadioGroup) findViewById(R.id.main_bottom_rg);
+
+    }
+
+    @Override
+    public void initFragment() {
 
     }
 }

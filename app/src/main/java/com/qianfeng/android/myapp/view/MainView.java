@@ -6,5 +6,5 @@ package com.qianfeng.android.myapp.view;
  */
 public interface MainView {
 
-    public void setText(String str);
+    public void initFragment();
 }
