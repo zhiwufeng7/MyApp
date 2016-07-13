@@ -3,11 +3,7 @@ package com.qianfeng.android.myapp.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -16,31 +12,45 @@ import com.qianfeng.android.myapp.Callback.LocationCallback;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.listener.MyLocationListener;
 
-public class MainActivity extends AppCompatActivity{
 
-    private RadioGroup radioGroup;
+public class MainActivity extends AppCompatActivity {
+
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private LocationClient mLocationClient;
+    public BDLocationListener myListener = new MyLocationListener(new LocationCallback() {
+        @Override
+        /*
+        * 当地图数据加载完毕时回调该方法
+        * */
+        public void setLocation() {
+            BDLocation lastKnownLocation = mLocationClient.getLastKnownLocation();
+            String city = lastKnownLocation.getCity();//得到城市名
+            String cityName = city.substring(0, city.length() - 1);//去掉市
+            editor.putString("cityName",cityName);
+            editor.putString("lot",String.valueOf(lastKnownLocation.getLongitude()));
+            editor.putString("lat",String.valueOf(lastKnownLocation.getLatitude()));
+            editor.commit();
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initView();
-        initFragment();
+        initLocation();
     }
 
-
+    private void initView() {
 
     }
-
-    private void initFragment() {
-
 
     private void initLocation() {
         sharedPreferences = getSharedPreferences("location", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-            mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
-            mLocationClient.registerLocationListener( myListener );    //注册监听函数
+        mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
+        mLocationClient.registerLocationListener(myListener);    //注册监听函数
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
         );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
@@ -55,26 +65,6 @@ public class MainActivity extends AppCompatActivity{
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
         mLocationClient.setLocOption(option);
-        mLocationClient.start();
+        mLocationClient.start();//开始定位
     }
-
-    private void initView() {
-
-        radioGroup = (RadioGroup) findViewById(R.id.main_bottom_rg);
-        setUpRadioGroup();
-    }
-
-    private void setUpRadioGroup() {
-
-        int size = radioGroup.getChildCount();
-        RadioButton[] radioButtons = new RadioButton[size];
-
-        for (int i = 0; i < size; i++) {
-            radioButtons[i] = (RadioButton) radioGroup.getChildAt(i);
-        }
-
-        radioButtons[0].setChecked(true);
-    }
-
-
 }
