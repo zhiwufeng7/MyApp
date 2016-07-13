@@ -49,7 +49,7 @@ public class HomeGridViewAdapter extends BaseAdapter {
         View view=convertView;
         ViewHolder viewHolder = null;
         if (view == null) {
-            view = inflater.inflate(R.layout.child_gridview_item, parent,false);
+            view = inflater.inflate(R.layout.home_child_gridview_item, parent,false);
             viewHolder = new ViewHolder();
             viewHolder.imageView= (ImageView) view.findViewById(R.id.child_item_iv);
             viewHolder.name= (TextView) view.findViewById(R.id.child_item_tv_name);

@@ -17,11 +17,15 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.adapter.HomeFootGridViewAdapter;
 import com.qianfeng.android.myapp.adapter.HomeHeaderServiceAdapter;
 import com.qianfeng.android.myapp.adapter.HomePullToRefreshExpandListViewAdapter;
 import com.qianfeng.android.myapp.adapter.HomeRecommendAdapter;
 import com.qianfeng.android.myapp.bean.BannerInfo;
+import com.qianfeng.android.myapp.bean.FootListInfo;
 import com.qianfeng.android.myapp.bean.HomePageEVInfo;
+import com.qianfeng.android.myapp.bean.HomeRecommendInfo;
+import com.qianfeng.android.myapp.bean.HomeServiceInfo;
 import com.qianfeng.android.myapp.widget.MyGridView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -42,8 +46,12 @@ public class HomePageFragment extends Fragment {
     private MyGridView myGridView;
     private Context mContext;
     private BannerInfo bannerInfo;
-    private List<BannerInfo.DataBean> bannerList=new ArrayList<>();
+    private List<BannerInfo.DataBean> bannerList = new ArrayList<>();
     private Gson gson;
+    private HomeHeaderServiceAdapter serviceAdapter;
+    private HomeRecommendAdapter recommendAdapter;
+    private MyGridView footGrid;
+    private HomeFootGridViewAdapter footGridViewAdapter;
 
 
     public HomePageFragment() {
@@ -63,14 +71,16 @@ public class HomePageFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        mContext=getActivity();
+        mContext = getActivity();
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
         View headerView = inflater.inflate(R.layout.home_header_view, null);
         View footView = inflater.inflate(R.layout.home_foot_view, null);
 
         initView(view);
 
-//        initHeardView(headerView);
+        initHeardView(headerView);
+
+        initFootView(footView);
         //添加头部视图
         expandListView.addHeaderView(headerView);
         //添加底部视图
@@ -85,16 +95,26 @@ public class HomePageFragment extends Fragment {
         return view;
     }
 
+    private void initFootView(View footView) {
+
+        footGrid = (MyGridView) footView.findViewById(R.id.home_page_foot_my_grid);
+
+
+    }
+
     private void initAdapter() {
 
         expandAdapter = new HomePullToRefreshExpandListViewAdapter(mContext);
         expandListView.setAdapter(expandAdapter);
 
-        HomeHeaderServiceAdapter serviceAdapter = new HomeHeaderServiceAdapter(mContext);
+        serviceAdapter = new HomeHeaderServiceAdapter(mContext);
         myGridView.setAdapter(serviceAdapter);
 
-        HomeRecommendAdapter recommendAdapter = new HomeRecommendAdapter(mContext);
+        recommendAdapter = new HomeRecommendAdapter(mContext);
         headerGridView.setAdapter(recommendAdapter);
+
+        footGridViewAdapter = new HomeFootGridViewAdapter(mContext);
+        footGrid.setAdapter(footGridViewAdapter);
 
     }
 
@@ -156,6 +176,69 @@ public class HomePageFragment extends Fragment {
         if (gson == null) {
             gson = new Gson();
         }
+        String url4 = "http://api.daoway.cn/daoway/rest/services?start=0&size=10&lot=114.3162&lat=30.581084&manualCity=%E6%AD%A6%E6%B1%89&imei=133524065132390&includeNotInScope=true";
+        OkHttpUtils.get()
+                .url(url4)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+
+                        FootListInfo footListInfo = gson.fromJson(response, FootListInfo.class);
+                        footGridViewAdapter.setData(footListInfo);
+                        footGridViewAdapter.notifyDataSetChanged();
+
+                    }
+                });
+
+        String url3 = "http://api.daoway.cn/daoway/rest/indexEvent/all?city=%E6%AD%A6%E6%B1%89&market=false&version=v2&serviceMinLimit=4&marketMinLimit=2";
+        OkHttpUtils.get()
+                .url(url3)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+
+                        HomeRecommendInfo homeRecommendInfo = gson.fromJson(response, HomeRecommendInfo.class);
+                        recommendAdapter.setData(homeRecommendInfo);
+                        recommendAdapter.notifyDataSetChanged();
+
+                    }
+                });
+
+
+        //头部视图10个分类数据
+        String url2 = "http://api.daoway.cn/daoway/rest/category/for_filter?manualCity=%E5%8E%A6%E9%97%A8&weidian=false&recommendOnly=true&includeChaoshi=true&hasChaoshi=false";
+
+        OkHttpUtils.get()
+                .url(url2)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        HomeServiceInfo homeServiceInfo = gson.fromJson(response, HomeServiceInfo.class);
+                        serviceAdapter.setData(homeServiceInfo);
+                        serviceAdapter.notifyDataSetChanged();
+
+                    }
+                });
+
+
         //顶部banner数据
         String url1 = "http://api.daoway.cn/daoway/rest/config/banners?platform=android&city=%E5%8D%97%E6%98%8C&community_id=203012";
 
@@ -171,7 +254,7 @@ public class HomePageFragment extends Fragment {
                     @Override
                     public void onResponse(String response, int id) {
                         bannerInfo = gson.fromJson(response, BannerInfo.class);
-                        bannerList=bannerInfo.getData();
+                        bannerList.addAll(bannerInfo.getData());
                         banner.getViewPager().getAdapter().notifyDataSetChanged();
                         banner.setPageIndicator(new int[]{R.drawable.btn_check_disabled_nightmode, R.drawable.btn_check_normal});
                     }
@@ -202,6 +285,20 @@ public class HomePageFragment extends Fragment {
                     }
                 });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //开始自动滚动
+        banner.startTurning(2000);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //停止滚动
+        banner.stopTurning();
     }
 
 

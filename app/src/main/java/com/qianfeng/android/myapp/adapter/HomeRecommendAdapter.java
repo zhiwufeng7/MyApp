@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -52,7 +53,7 @@ public class HomeRecommendAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.home_page_header_recommend_grid_item, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.imageView = (CircleImageView) view.findViewById(R.id.home_page_header_recommend_cv);
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.home_page_header_recommend_cv);
             viewHolder.title = (TextView) view.findViewById(R.id.home_page_header_recommend_title);
             viewHolder.service = (TextView) view.findViewById(R.id.home_page_header_recommend_server);
             view.setTag(viewHolder);
@@ -60,14 +61,14 @@ public class HomeRecommendAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
         HomeRecommendInfo.DataBean item = data.getData().get(position);
-       Glide.with(context).load(item.getImg()).into(viewHolder.imageView);
+        Glide.with(context).load(item.getImg()).into(viewHolder.imageView);
         viewHolder.title.setText(item.getTitle());
         viewHolder.service.setText(item.getSubject());
         return view;
     }
 
     class ViewHolder {
-        CircleImageView imageView;
+        ImageView imageView;
         TextView title;
         TextView service;
     }

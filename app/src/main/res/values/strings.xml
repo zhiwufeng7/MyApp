@@ -10,4 +10,5 @@
     <string name="home_page_service_facilitator">服务商</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_page_recommend_service">----------  推荐服务商  ----------</string>
 </resources>
