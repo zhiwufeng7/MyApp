@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements MainView{
 
         initView();
 
-
 //        OkHttpUtils.postString()
 //                .url("http://mobileif.maizuo.com/ver4/banner/list/v2?cityId=15&version=4.7&agentId=wandoujia&channelID=31&clientID=31&revision=4.7&agentID=wandoujia")
 //                .content("{'cityId':'15','type':'2'}")
