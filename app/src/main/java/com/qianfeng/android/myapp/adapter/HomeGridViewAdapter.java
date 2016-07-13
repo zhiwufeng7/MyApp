@@ -15,13 +15,13 @@ import com.qianfeng.android.myapp.bean.HomePageEV;
 /**
  * Created by my on 2016/7/13.
  */
-public class GridViewAdapter extends BaseAdapter {
+public class HomeGridViewAdapter extends BaseAdapter {
 
     private HomePageEV.DataBean data;
     private LayoutInflater inflater;
     private Context context;
 
-    public GridViewAdapter(Context context) {
+    public HomeGridViewAdapter(Context context) {
         inflater = LayoutInflater.from(context);
         this.context=context;
     }
@@ -65,7 +65,7 @@ public class GridViewAdapter extends BaseAdapter {
         viewHolder.name.setText(item.getName());
         viewHolder.serviceTitle.setText(item.getServiceTitle());
         viewHolder.unit.setText(item.getPrice_unit());
-        viewHolder.price.setText(item.getPrice()+"");
+        viewHolder.price.setText(item.getPrice()+"  ");
         return view;
     }
     class ViewHolder {

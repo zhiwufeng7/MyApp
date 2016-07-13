@@ -1,6 +1,10 @@
 [
     {
+<<<<<<< Updated upstream
         "outputFile": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-de\\values-de.xml",
+=======
+        "outputFile": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-de\\values-de.xml",
+>>>>>>> Stashed changes
         "map": [
             {
                 "to": {
@@ -11,7 +15,11 @@
                     "endOffset": 131
                 },
                 "from": {
+<<<<<<< Updated upstream
                     "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-de\\values-de.xml",
+=======
+                    "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-de\\values-de.xml",
+>>>>>>> Stashed changes
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -30,7 +38,11 @@
                     "endOffset": 199
                 },
                 "from": {
+<<<<<<< Updated upstream
                     "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-de\\values-de.xml",
+=======
+                    "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-de\\values-de.xml",
+>>>>>>> Stashed changes
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -49,7 +61,11 @@
                     "endOffset": 286
                 },
                 "from": {
+<<<<<<< Updated upstream
                     "file": "E:\\AndroidStudioProjects\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-de\\values-de.xml",
+=======
+                    "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-de\\values-de.xml",
+>>>>>>> Stashed changes
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,

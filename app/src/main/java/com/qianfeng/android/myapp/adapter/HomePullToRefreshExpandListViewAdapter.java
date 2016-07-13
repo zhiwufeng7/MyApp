@@ -14,12 +14,12 @@ import com.qianfeng.android.myapp.bean.HomePageEV;
 /**
  * Created by my on 2016/7/13.
  */
-public class PullToRefreshExpandListViewAdapter extends BaseExpandableListAdapter {
+public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAdapter {
     private HomePageEV data;
     private Context mContext;
     private LayoutInflater inflater;
 
-    public PullToRefreshExpandListViewAdapter(Context context) {
+    public HomePullToRefreshExpandListViewAdapter(Context context) {
         mContext = context;
         inflater = LayoutInflater.from(mContext);
     }
@@ -37,7 +37,7 @@ public class PullToRefreshExpandListViewAdapter extends BaseExpandableListAdapte
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return data == null ? 0 : data.getData().get(groupPosition).getItems().size();
+        return data == null ? 0 : 1;
     }
 
     @Override
@@ -90,19 +90,19 @@ public class PullToRefreshExpandListViewAdapter extends BaseExpandableListAdapte
 
         View view = convertView;
         ChildViewHolder childViewHolder;
-        GridViewAdapter adapter;
+        HomeGridViewAdapter adapter;
         if (view == null) {
             view = inflater.inflate(R.layout.home_page_child_view, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.gridView = (GridView) view.findViewById(R.id.home_page_child_gv);
-            adapter = new GridViewAdapter(mContext);
             view.setTag(childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) view.getTag();
-            adapter = (GridViewAdapter) childViewHolder.gridView.getAdapter();
         }
+        adapter = new HomeGridViewAdapter(mContext);
         adapter.setData(data.getData().get(groupPosition));
-        adapter.notifyDataSetChanged();
+        childViewHolder.gridView.setAdapter(adapter);
+
         return view;
     }
 

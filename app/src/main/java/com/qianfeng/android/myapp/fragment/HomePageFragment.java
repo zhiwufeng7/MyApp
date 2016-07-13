@@ -1,7 +1,5 @@
 package com.qianfeng.android.myapp.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,13 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
+import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
-import com.qianfeng.android.myapp.adapter.PullToRefreshExpandListViewAdapter;
+import com.qianfeng.android.myapp.adapter.HomePullToRefreshExpandListViewAdapter;
+import com.qianfeng.android.myapp.bean.HomePageEV;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 
 
 public class HomePageFragment extends Fragment {
-    private PullToRefreshExpandListViewAdapter adapter;
+    private HomePullToRefreshExpandListViewAdapter adapter;
 
     private PullToRefreshExpandableListView refreshExpandableListView;
     private ExpandableListView listView;
@@ -25,16 +29,9 @@ public class HomePageFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomePageFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static HomePageFragment newInstance(String param1, String param2) {
+    public static HomePageFragment newInstance() {
         HomePageFragment fragment = new HomePageFragment();
         return fragment;
     }
@@ -47,10 +44,56 @@ public class HomePageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
         refreshExpandableListView = (PullToRefreshExpandableListView) view.findViewById(R.id.home_page_fragment_ev);
         listView = refreshExpandableListView.getRefreshableView();
-        adapter = new PullToRefreshExpandListViewAdapter(getContext());
+        adapter = new HomePullToRefreshExpandListViewAdapter(getContext());
         listView.setAdapter(adapter);
 
+        initData();
+
+        initListener();
+
+
         return view;
+    }
+
+    private void initListener() {
+
+        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                return true;
+            }
+        });
+
+
+
+
+    }
+
+    private void initData() {
+
+        String url="http://api.daoway.cn/daoway/rest/service_items/recommend_top?start=0&size=10&lot=118.778074&lat=32.057236&manualCity=%E5%8D%97%E4%BA%AC&imei=133524632646575&includeNotInScope=true";
+        OkHttpUtils.get()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Gson gson=new Gson();
+                        HomePageEV data=gson.fromJson(response,HomePageEV.class);
+                        adapter.setData(data);
+                        adapter.notifyDataSetChanged();
+                        //默认所有的Group全部展开
+                        for (int i = 0; i < data.getData().size(); i++) {
+                            listView.expandGroup(i);
+                        }
+                    }
+                });
+
     }
 
 
