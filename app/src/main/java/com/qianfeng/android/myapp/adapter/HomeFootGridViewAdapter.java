@@ -1,7 +1,6 @@
 package com.qianfeng.android.myapp.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.qianfeng.android.myapp.R;
-import com.qianfeng.android.myapp.bean.FootListInfo;
-import com.qianfeng.android.myapp.bean.HomePageEVInfo;
+import com.qianfeng.android.myapp.bean.FootInfo;
+
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
  */
 public class HomeFootGridViewAdapter extends BaseAdapter {
 
-    private FootListInfo data;
+    private FootInfo data;
     private LayoutInflater inflater;
     private Context context;
 
@@ -29,8 +28,9 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
-    public void setData(FootListInfo data){
-        this.data=data;
+
+    public void setData(FootInfo  data) {
+        this.data = data;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
 
             viewHolder.imageView = (ImageView) view.findViewById(R.id.home_page_foot_iv);
-            viewHolder.tag=new ImageView[2];
+            viewHolder.tag = new ImageView[2];
             viewHolder.tag[0] = (ImageView) view.findViewById(R.id.home_page_foot_tagIcon1);
             viewHolder.tag[1] = (ImageView) view.findViewById(R.id.home_page_foot_tagIcon2);
             viewHolder.title = (TextView) view.findViewById(R.id.home_page_foot_title);
@@ -68,15 +68,15 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        FootListInfo.DataBean item = data.getData().get(position);
+        FootInfo .DataBean item = data.getData().get(position);
         Glide.with(context).load(item.getImgUrl()).into(viewHolder.imageView);
         viewHolder.title.setText(item.getTitle());
-        viewHolder.count.setText("已接"+item.getOrderTakingCount()+"单");
-        viewHolder.evaluate.setText("好评"+item.getPositiveCommentRate());
-        List list= item.getTagIcons();
-        if (list.size()!=0){
-            for (int i=0; i<list.size();i++){
-                String str= (String) list.get(i);
+        viewHolder.count.setText("已接" + item.getOrderTakingCount() + "单");
+        viewHolder.evaluate.setText("好评" + item.getPositiveCommentRate());
+        List list = item.getTagIcons();
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+                String str = (String) list.get(i);
                 Glide.with(context).load(str).into(viewHolder.tag[i]);
             }
         }
