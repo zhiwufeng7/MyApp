@@ -13,6 +13,7 @@ import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.bean.FootInfo;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public class HomeFootGridViewAdapter extends BaseAdapter {
 
-    private FootInfo data;
+    private List<FootInfo.DataBean> data;
     private LayoutInflater inflater;
     private Context context;
 
@@ -29,18 +30,21 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
-    public void setData(FootInfo  data) {
-        this.data = data;
+    public void upData(List<FootInfo.DataBean> list) {
+        if (data ==null){
+        data=new ArrayList<>();
+        }
+        data.addAll(list);
     }
 
     @Override
     public int getCount() {
-        return data == null ? 0 : data.getData().size();
+        return data == null ? 0 : data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return data.getData().get(position);
+        return data.get(position);
     }
 
     @Override
@@ -68,7 +72,7 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        FootInfo .DataBean item = data.getData().get(position);
+        FootInfo .DataBean item = data.get(position);
         Glide.with(context).load(item.getImgUrl()).into(viewHolder.imageView);
         viewHolder.title.setText(item.getTitle());
         viewHolder.count.setText("已接" + item.getOrderTakingCount() + "单");

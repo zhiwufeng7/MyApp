@@ -11,19 +11,16 @@
         android:layout_height="100dp"
         app:canLoop="true" />
 
-    <ScrollView
+    <com.qianfeng.android.myapp.widget.MyGridView
+        android:id="@+id/home_page_header_my_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numColumns="5"
+        android:stretchMode="columnWidth" />
+    <View
+        android:background="#cccccc"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
-
-        <com.qianfeng.android.myapp.widget.MyGridView
-            android:id="@+id/home_page_header_my_grid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numColumns="5"
-            android:stretchMode="columnWidth" />
-
-    </ScrollView>
-
+        android:layout_height="5dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,6 +48,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="4"
+        android:horizontalSpacing="2dp"
         android:stretchMode="columnWidth" />
-
+    <View
+        android:background="#cccccc"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
 </LinearLayout>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.adapter.HomeFootGridViewAdapter;
@@ -33,8 +33,6 @@ import com.qianfeng.android.myapp.widget.MyGridView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +57,10 @@ public class HomePageFragment extends Fragment {
     private HomeFootGridViewAdapter footGridViewAdapter;
     private SharedPreferences sharedPreferences;
     private String city;
+    private String lot;
+    private String lat;
+    private int index = 0;
+
 
     public HomePageFragment() {
         // Required empty public constructor
@@ -75,26 +77,23 @@ public class HomePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
-
-        try {
-            city = URLEncoder.encode(sharedPreferences.getString("cityName", "北京"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
         // Inflate the layout for this fragment
         mContext = getActivity();
+
+        //得到位置信息
+        sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
+        city = sharedPreferences.getString("cityName", "北京");
+        lot = sharedPreferences.getString("lot", "0");
+        lat = sharedPreferences.getString("lat", "0");
+
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
         View headerView = inflater.inflate(R.layout.home_header_view, null);
         View footView = inflater.inflate(R.layout.home_foot_view, null);
 
         initView(view);
-
         initHeardView(headerView);
-
         initFootView(footView);
+
         //添加头部视图
         expandListView.addHeaderView(headerView);
         //添加底部视图
@@ -112,7 +111,6 @@ public class HomePageFragment extends Fragment {
     private void initFootView(View footView) {
 
         footGrid = (MyGridView) footView.findViewById(R.id.home_page_foot_my_grid);
-
 
     }
 
@@ -172,6 +170,7 @@ public class HomePageFragment extends Fragment {
         refreshExpandableListView = (PullToRefreshExpandableListView) view.findViewById(R.id.home_page_fragment_ev);
         expandListView = refreshExpandableListView.getRefreshableView();
 
+        refreshExpandableListView.setMode(PullToRefreshBase.Mode.BOTH);
     }
 
     private void initListener() {
@@ -184,41 +183,55 @@ public class HomePageFragment extends Fragment {
         });
 
 
+        refreshExpandableListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ExpandableListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ExpandableListView> refreshView) {
+                initData();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ExpandableListView> refreshView) {
+                index += 10;
+                loadFootData();
+            }
+        });
+
+
+    }
+
+    private void loadFootData() {
+        //底部footView
+
+        OkHttpUtils.get()
+                .url(UrlConfig.getRecommendServiceUrl(city, lot, lat,index))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+
+                        FootInfo footListInfo = gson.fromJson(response, FootInfo.class);
+                        List<FootInfo.DataBean> list = footListInfo.getData();
+                        if (list != null) {
+                            footGridViewAdapter.upData(footListInfo.getData());
+                            footGridViewAdapter.notifyDataSetChanged();
+                        }
+                        refreshExpandableListView.onRefreshComplete();
+                    }
+                });
     }
 
     private void initData() {
         if (gson == null) {
             gson = new Gson();
         }
-        //底部footView
-
-        OkHttpUtils.get()
-                .url(UrlConfig.RECOMMEND_SERVICE)
-                .addParams("manualCity",city)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-
-                        Log.i("test", "onResponse: "+response);
-                        
-                        FootInfo footListInfo = gson.fromJson(response, FootInfo.class);
-                        footGridViewAdapter.setData(footListInfo);
-                        footGridViewAdapter.notifyDataSetChanged();
-
-                    }
-                });
-
 
         //今日推荐数据
-       OkHttpUtils.get()
-                .url(UrlConfig.RECOMMEND)
-               .addParams("city",city)
+        OkHttpUtils.get()
+                .url(UrlConfig.getRecommendUrl(city))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -238,23 +251,21 @@ public class HomePageFragment extends Fragment {
 
 
         //头部视图10个分类数据
-        String url2 = "http://api.daoway.cn/daoway/rest/category/for_filter?manualCity=%E5%8E%A6%E9%97%A8&weidian=false&recommendOnly=true&includeChaoshi=true&hasChaoshi=false";
-
         OkHttpUtils.get()
-                .url(url2)
+                .url(UrlConfig.getHomeSevice(city))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+
                         HomeServiceInfo homeServiceInfo = gson.fromJson(response, HomeServiceInfo.class);
                         serviceAdapter.setData(homeServiceInfo);
                         serviceAdapter.notifyDataSetChanged();
-
+                        refreshExpandableListView.onRefreshComplete();
                     }
                 });
 
@@ -274,6 +285,7 @@ public class HomePageFragment extends Fragment {
                     @Override
                     public void onResponse(String response, int id) {
                         bannerInfo = gson.fromJson(response, BannerInfo.class);
+                        bannerList.clear();
                         bannerList.addAll(bannerInfo.getData());
                         banner.getViewPager().getAdapter().notifyDataSetChanged();
                         banner.setPageIndicator(new int[]{R.drawable.btn_check_disabled_nightmode, R.drawable.btn_check_normal});

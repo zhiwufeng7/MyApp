@@ -1,15 +1,44 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.qianfeng.android.myapp.fragment.HomePageFragment">
+ >
+
+        <Button
+            android:id="@+id/home_top_address_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/title_height"
+            android:background="@null"
+            android:drawableLeft="@drawable/img_me_address"
+            android:drawableRight="@drawable/home_img_city_arraw_black" />
+
+        <Button
+            android:id="@+id/home_top_msg_btn"
+            android:layout_width="@dimen/title_height"
+            android:layout_height="@dimen/title_height"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:drawableTop="@drawable/btn_title_msg" />
+
+
+        <Button
+            android:id="@+id/home_top_search_btn"
+            android:layout_width="@dimen/title_height"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/home_top_msg_btn"
+            android:background="@null"
+            android:layout_alignBottom="@id/home_top_msg_btn"
+            android:drawableRight="@drawable/btn_title_search" />
+
+
+
 
     <!-- TODO: Update blank fragment layout -->
 <com.handmark.pulltorefresh.library.PullToRefreshExpandableListView
+android:layout_below="@id/home_top_address_btn"
     android:id="@+id/home_page_fragment_ev"
     android:layout_width="match_parent"
     android:divider="@null"
     android:groupIndicator="@null"
     android:layout_height="match_parent"/>
 
-</FrameLayout>
+</RelativeLayout>

@@ -3,6 +3,7 @@ package com.qianfeng.android.myapp.activity;
 
 import android.os.Bundle;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +12,14 @@ import android.widget.RadioGroup;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.fragment.HomePageFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private RadioGroup radioGroup;
+    private List<Fragment> fragmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +72,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFragment() {
 
+        //初始化fragment
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transition = manager.beginTransaction();
         HomePageFragment homePageFragment = new HomePageFragment();
         transition.add(R.id.main_content_fl, homePageFragment);
         transition.commit();
+
+
+        /**
+         * 在这里添加new fragment 并添加到 fragmentList
+         */
+        fragmentList=new ArrayList<>();
+        fragmentList.add(homePageFragment);
+
+
 
     }
 
@@ -85,16 +100,5 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view
      */
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.main_top_address_btn:
-                break;
-            case R.id.main_top_msg_btn:
-                break;
-            case R.id.main_top_search_btn:
-                break;
 
-        }
-
-    }
 }
