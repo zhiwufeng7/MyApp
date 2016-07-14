@@ -13,6 +13,7 @@
         <RadioButton
             android:id="@+id/main_bottom_home_rb"
             style="@style/main_bottom_radio_button"
+            android:checked="true"
             android:drawableTop="@drawable/slt_main_bottom_home_page"
             android:text="@string/main_bottom_home_page" />
 
@@ -47,11 +48,39 @@
         android:background="@color/gray"
         />
 
+    <Button
+        android:id="@+id/main_top_address_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/title_height"
+        android:background="@null"
+        android:onClick="onClick"
+        android:drawableLeft="@drawable/img_me_address"
+        android:drawableRight="@drawable/home_img_city_arraw_black" />
+
+    <Button
+        android:id="@+id/main_top_msg_btn"
+        android:layout_width="@dimen/title_height"
+        android:layout_height="@dimen/title_height"
+        android:layout_alignParentRight="true"
+        android:onClick="onClick"
+        android:background="@null"
+        android:drawableLeft="@drawable/btn_title_msg" />
+
+
+    <Button
+        android:id="@+id/main_top_search_btn"
+        android:layout_width="@dimen/title_height"
+        android:layout_height="@dimen/title_height"
+        android:layout_toLeftOf="@+id/main_top_msg_btn"
+        android:background="@null"
+        android:onClick="onClick"
+        android:drawableLeft="@drawable/btn_title_search" />
 
 
 
 
     <FrameLayout
+        android:layout_below="@id/main_top_search_btn"
         android:id="@+id/main_content_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

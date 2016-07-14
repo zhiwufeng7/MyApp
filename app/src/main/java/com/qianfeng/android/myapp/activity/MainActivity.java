@@ -1,6 +1,9 @@
 package com.qianfeng.android.myapp.activity;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -8,7 +11,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioGroup;
+
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.fragment.HomePageFragment;
 
@@ -20,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
     private RadioGroup radioGroup;
     private List<Fragment> fragmentList;
+    private Button search;
+    private Button message;
+    private Button addres;
+    private SharedPreferences sharedPreferences;
+    private String village;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
 
         initListener();
 
+
+        initData();
+    }
+
+    private void initData() {
+
+        sharedPreferences = getSharedPreferences("location", Context.MODE_PRIVATE);
+        village = sharedPreferences.getString("plot", "北京");
+        addres.setText(village);
 
     }
 
@@ -83,9 +102,8 @@ public class MainActivity extends AppCompatActivity {
         /**
          * 在这里添加new fragment 并添加到 fragmentList
          */
-        fragmentList=new ArrayList<>();
+        fragmentList = new ArrayList<>();
         fragmentList.add(homePageFragment);
-
 
 
     }
@@ -93,6 +111,28 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
 
         radioGroup = (RadioGroup) findViewById(R.id.main_bottom_rg);
+        search = (Button) findViewById(R.id.main_top_search_btn);
+        message = (Button) findViewById(R.id.main_top_msg_btn);
+        addres = (Button) findViewById(R.id.main_top_address_btn);
+
+    }
+
+    public void onClick(View view) {
+        Intent intent = new Intent();
+
+        switch (view.getId()) {
+            case R.id.main_top_address_btn:
+//                点击地址按钮，跳转mapActivity
+                intent.setClass(this, MapActivity.class);
+                break;
+            case R.id.main_top_msg_btn:
+                break;
+
+            case R.id.main_top_search_btn:
+                break;
+        }
+
+        startActivity(intent);
     }
 
     /**

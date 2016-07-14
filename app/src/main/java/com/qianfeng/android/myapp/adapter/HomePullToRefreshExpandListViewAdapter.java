@@ -77,7 +77,7 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
         } else {
             groupViewHolder = (GroupViewHolder) view.getTag();
         }
-        groupViewHolder.mLeftTxt.setText(data.getData().get(groupPosition).getCategoryName());
+        groupViewHolder.mLeftTxt.setText("  "+data.getData().get(groupPosition).getCategoryName());
         return view;
     }
 
