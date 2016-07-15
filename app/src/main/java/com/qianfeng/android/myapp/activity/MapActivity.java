@@ -158,6 +158,7 @@ public class MapActivity extends AppCompatActivity {
                 break;
             case 2:
                 if (resultCode==1){
+                    setResult(1);
                     finish();
                 }
                 break;

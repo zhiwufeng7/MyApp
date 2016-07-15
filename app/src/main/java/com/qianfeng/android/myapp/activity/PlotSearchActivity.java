@@ -69,7 +69,7 @@ public class PlotSearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PlotSearch.DataBean dataBean = data.get(position);
-                editor.putString("piot", dataBean.getName());
+                editor.putString("plot", dataBean.getName());
                 editor.putString("cityName", cityName);
                 editor.putString("lot", String.valueOf(dataBean.getLot()));
                 editor.putString("lat",String.valueOf(dataBean.getLat()));
