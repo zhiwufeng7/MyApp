@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        android:id="@+id/home_page_header_view_cb"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:canLoop="true" />
+
+    <com.qianfeng.android.myapp.widget.MyGridView
+        android:id="@+id/home_page_header_my_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numColumns="5"
+        android:stretchMode="columnWidth" />
+    <View
+        android:background="#cccccc"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/home_title_tuijian_icon"
+            android:text="@string/home_page_recommend" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableRight="@drawable/seach_go_to_near_arraw"
+            android:gravity="center"
+            android:text="@string/home_page_service_facilitator" />
+
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/home_page_header_recommend_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="4"
+        android:horizontalSpacing="2dp"
+        android:stretchMode="columnWidth" />
+    <View
+        android:background="#cccccc"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
+</LinearLayout>

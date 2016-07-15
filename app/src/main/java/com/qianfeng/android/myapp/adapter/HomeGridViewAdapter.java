@@ -10,22 +10,22 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.qianfeng.android.myapp.R;
-import com.qianfeng.android.myapp.bean.HomePageEV;
+import com.qianfeng.android.myapp.bean.HomePageEVInfo;
 
 /**
  * Created by my on 2016/7/13.
  */
-public class GridViewAdapter extends BaseAdapter {
+public class HomeGridViewAdapter extends BaseAdapter {
 
-    private HomePageEV.DataBean data;
+    private HomePageEVInfo.DataBean data;
     private LayoutInflater inflater;
     private Context context;
 
-    public GridViewAdapter(Context context) {
+    public HomeGridViewAdapter(Context context) {
         inflater = LayoutInflater.from(context);
         this.context=context;
     }
-    public void setData(HomePageEV.DataBean data){
+    public void setData(HomePageEVInfo.DataBean data){
         this.data=data;
     }
 
@@ -49,7 +49,7 @@ public class GridViewAdapter extends BaseAdapter {
         View view=convertView;
         ViewHolder viewHolder = null;
         if (view == null) {
-            view = inflater.inflate(R.layout.child_gridview_item, parent,false);
+            view = inflater.inflate(R.layout.home_child_gridview_item, parent,false);
             viewHolder = new ViewHolder();
             viewHolder.imageView= (ImageView) view.findViewById(R.id.child_item_iv);
             viewHolder.name= (TextView) view.findViewById(R.id.child_item_tv_name);
@@ -60,12 +60,12 @@ public class GridViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        HomePageEV.DataBean.ItemsBean item=data.getItems().get(position);
+        HomePageEVInfo.DataBean.ItemsBean item=data.getItems().get(position);
         Glide.with(context).load(item.getPic_url()).into(viewHolder.imageView);
         viewHolder.name.setText(item.getName());
         viewHolder.serviceTitle.setText(item.getServiceTitle());
         viewHolder.unit.setText(item.getPrice_unit());
-        viewHolder.price.setText(item.getPrice()+"");
+        viewHolder.price.setText(item.getPrice()+"  ");
         return view;
     }
     class ViewHolder {
