@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.fragment.AssortmentFragment;
 import com.qianfeng.android.myapp.fragment.CommonLocationFragment;
 import com.qianfeng.android.myapp.fragment.HomePageFragment;
 import com.qianfeng.android.myapp.fragment.NearbyPlotFragment;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.main_bottom_assortment_rb:
                         //点击分类按钮切换第二个fragment
-                        //switchFragment(1);
+                        switchFragment(1);
                         break;
                     case R.id.main_bottom_shopping_rb:
                         //点击购物车按钮切换第三个fragment
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
          */
         fragmentList = new ArrayList<>();
         fragmentList.add(homePageFragment);
-        //fragmentList.add(homePageFragment);
+        fragmentList.add(AssortmentFragment.newInstance(null));
        // fragmentList.add(homePageFragment);
        // fragmentList.add(homePageFragment);
        // fragmentList.add(homePageFragment);
