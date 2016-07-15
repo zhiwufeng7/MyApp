@@ -6,7 +6,7 @@
     <string name="main_bottom_order_form">订单</string>
     <string name="main_bottom_my">我的</string>
     <string name="main_group_view_right">更多</string>
-<string name="home_page_recommend">今日推荐</string>
+    <string name="home_page_recommend">今日推荐</string>
     <string name="home_page_service_facilitator">服务商</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

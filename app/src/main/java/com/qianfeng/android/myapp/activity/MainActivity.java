@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Fragment> fragmentList;
     private Button search;
     private Button message;
-    private Button addres;
+    private Button address;
     private SharedPreferences sharedPreferences;
     private String village;
     private FragmentManager manager;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private void initData() {
         sharedPreferences = getSharedPreferences("location", Context.MODE_PRIVATE);
         village = sharedPreferences.getString("plot", "北京");
-        addres.setText(village);
+        address.setText(village);
     }
 
 
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.main_bottom_rg);
         search = (Button) findViewById(R.id.main_top_search_btn);
         message = (Button) findViewById(R.id.main_top_msg_btn);
-        addres = (Button) findViewById(R.id.main_top_address_btn);
+        address = (Button) findViewById(R.id.main_top_address_btn);
 
     }
 

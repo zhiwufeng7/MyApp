@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -16,12 +17,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numColumns="5"
+        android:layout_marginBottom="5dp"
         android:stretchMode="columnWidth" />
-    <View
-        android:background="#cccccc"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"/>
+
     <LinearLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -49,9 +49,7 @@
         android:layout_height="match_parent"
         android:numColumns="4"
         android:horizontalSpacing="2dp"
+        android:paddingBottom="5dp"
         android:stretchMode="columnWidth" />
-    <View
-        android:background="#cccccc"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"/>
+
 </LinearLayout>
