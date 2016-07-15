@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,7 +16,9 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.fragment.CommonLocationFragment;
 import com.qianfeng.android.myapp.fragment.HomePageFragment;
+import com.qianfeng.android.myapp.fragment.NearbyPlotFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private Button addres;
     private SharedPreferences sharedPreferences;
     private String village;
+    private FragmentManager manager;
+    private int curIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,24 +67,24 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.main_bottom_home_rb:
                         //点击首页按钮切换第一个fragment
-
+                        switchFragment(0);
                         break;
                     case R.id.main_bottom_assortment_rb:
                         //点击分类按钮切换第二个fragment
-
+                        //switchFragment(1);
                         break;
                     case R.id.main_bottom_shopping_rb:
                         //点击购物车按钮切换第三个fragment
 
-
+                       // switchFragment(2);
                         break;
                     case R.id.main_bottom_order_form_rb:
                         //点击订单按钮切换第四个fragment
-
+                       // switchFragment(3);
                         break;
                     case R.id.main_bottom_my_rb:
                         //点击我的按钮切换第五个fragment
-
+                        //switchFragment(4);
                         break;
                 }
             }
@@ -91,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     private void initFragment() {
 
         //初始化fragment
-        FragmentManager manager = getSupportFragmentManager();
+        manager = getSupportFragmentManager();
         FragmentTransaction transition = manager.beginTransaction();
         HomePageFragment homePageFragment = new HomePageFragment();
         transition.add(R.id.main_content_fl, homePageFragment);
@@ -103,6 +108,10 @@ public class MainActivity extends AppCompatActivity {
          */
         fragmentList = new ArrayList<>();
         fragmentList.add(homePageFragment);
+        //fragmentList.add(homePageFragment);
+       // fragmentList.add(homePageFragment);
+       // fragmentList.add(homePageFragment);
+       // fragmentList.add(homePageFragment);
 
 
     }
@@ -145,5 +154,23 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 3 && resultCode == 1) {
             initData();
         }
+    }
+
+    protected void switchFragment(int i) {
+        FragmentTransaction transaction = manager.beginTransaction();
+        Fragment fragment = fragmentList.get(i);
+        if (!fragment.isAdded()) {
+            transaction.hide(fragmentList.get(curIndex)).add(R.id.main_content_fl, fragment);
+        } else {
+            transaction.hide(fragmentList.get(curIndex)).show(fragment);
+        }
+        transaction.commit();
+
+        curIndex = i;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //super.onSaveInstanceState(outState);
     }
 }
