@@ -88,8 +88,8 @@
                     "startLine": 3,
                     "startColumn": 4,
                     "startOffset": 116,
-                    "endColumn": 66,
-                    "endOffset": 178
+                    "endColumn": 65,
+                    "endOffset": 177
                 },
                 "from": {
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-zh\\values-zh.xml",
@@ -97,8 +97,8 @@
                         "startLine": 3,
                         "startColumn": 4,
                         "startOffset": 116,
-                        "endColumn": 66,
-                        "endOffset": 178
+                        "endColumn": 65,
+                        "endOffset": 177
                     }
                 }
             },
@@ -106,18 +106,18 @@
                 "to": {
                     "startLine": 4,
                     "startColumn": 4,
-                    "startOffset": 183,
+                    "startOffset": 182,
                     "endColumn": 64,
-                    "endOffset": 243
+                    "endOffset": 242
                 },
                 "from": {
                     "file": "E:\\MyApp\\MyApp\\Pull\\build\\intermediates\\bundles\\debug\\res\\values-zh\\values-zh.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
-                        "startOffset": 183,
+                        "startOffset": 182,
                         "endColumn": 64,
-                        "endOffset": 243
+                        "endOffset": 242
                     }
                 }
             }
