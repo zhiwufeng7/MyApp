@@ -42,17 +42,16 @@ public class MainActivity extends AppCompatActivity {
 
         initListener();
 
-
         initData();
+
     }
 
     private void initData() {
-
         sharedPreferences = getSharedPreferences("location", Context.MODE_PRIVATE);
         village = sharedPreferences.getString("plot", "北京");
         addres.setText(village);
-
     }
+
 
     private void initListener() {
         //底部的radioGroup设置监听  实现fragment的切换
@@ -117,6 +116,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 首页头部的监听
+     *
+     * @param view
+     */
     public void onClick(View view) {
         Intent intent = new Intent();
 
@@ -124,21 +128,24 @@ public class MainActivity extends AppCompatActivity {
             case R.id.main_top_address_btn:
 //                点击地址按钮，跳转mapActivity
                 intent.setClass(this, MapActivity.class);
+                startActivityForResult(intent, 3);
                 break;
             case R.id.main_top_msg_btn:
+
                 break;
 
             case R.id.main_top_search_btn:
+
                 break;
         }
 
         startActivity(intent);
     }
 
-    /**
-     * 首页头部的监听
-     *
-     * @param view
-     */
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 3 && resultCode == 1) {
+            initData();
+        }
+    }
 }
