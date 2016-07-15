@@ -321,7 +321,7 @@ public class HomePageFragment extends Fragment {
 
                         HomePageEVInfo data = gson.fromJson(response, HomePageEVInfo.class);
                         expandAdapter.setData(data);
-                        expandAdapter.notifyDataSetChanged();
+                        expandListView.setAdapter(expandAdapter);
                         //默认所有的Group全部展开
                         for (int i = 0; i < data.getData().size(); i++) {
                             expandListView.expandGroup(i);

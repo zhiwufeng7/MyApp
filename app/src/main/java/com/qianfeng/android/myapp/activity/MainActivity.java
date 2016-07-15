@@ -148,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.main_top_search_btn:
-
+                intent.setClass(this, SearchAcitvity.class);
+                startActivity(intent);
                 break;
         }
     }

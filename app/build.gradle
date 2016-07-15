@@ -41,4 +41,5 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.google.code.gson:gson:2.2.4'
+    compile 'org.greenrobot:greendao:2.2.0'
 }

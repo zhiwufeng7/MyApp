@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/back_red"
+                android:onClick="onBack"/>
+
+            <EditText
+                android:id="@+id/search_et"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:background="@android:drawable/editbox_background_normal"
+                android:hint="搜索商家、商品、服务"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/normal_text_size"
+                android:inputType="text"
+                />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/img_home_search_icom"
+                android:onClick="onSearch"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/activity_padding"
+            android:text="服务热搜"
+            android:textSize="@dimen/min_text_size" />
+
+        <com.qianfeng.android.myapp.widget.MyGridView
+            android:id="@+id/search_gv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="4"
+            android:background="@color/white">
+
+        </com.qianfeng.android.myapp.widget.MyGridView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/activity_padding"
+            android:text="历史搜索"
+            android:textSize="@dimen/min_text_size" />
+
+        <com.qianfeng.android.myapp.widget.MyListView
+            android:id="@+id/search_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+        </com.qianfeng.android.myapp.widget.MyListView>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height"
+            android:text="清除搜索记录"
+            android:onClick="onClear"
+            android:gravity="center"
+            android:textSize="@dimen/normal_text_size"
+            android:background="@color/white"
+            android:textColor="@color/gray"
+            />
+    </LinearLayout>
+</ScrollView>
