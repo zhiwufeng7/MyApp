@@ -61,6 +61,7 @@ public class HomePageFragment extends Fragment {
     private String lot;
     private String lat;
     public int index = 0;
+    private String id;
 
 
     public HomePageFragment() {
@@ -234,6 +235,7 @@ public class HomePageFragment extends Fragment {
         city = sharedPreferences.getString("cityName", "北京");
         lot = sharedPreferences.getString("lot", "0");
         lat = sharedPreferences.getString("lat", "0");
+       id=sharedPreferences.getString("id","0");
     }
 
     public void initData() {
@@ -284,10 +286,8 @@ public class HomePageFragment extends Fragment {
 
 
         //顶部banner数据
-        String url1 = "http://api.daoway.cn/daoway/rest/config/banners?platform=android&city=%E5%8D%97%E6%98%8C&community_id=203012";
-
         OkHttpUtils.get()
-                .url(url1)
+                .url(UrlConfig.getBannerBase(city,id))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -307,9 +307,8 @@ public class HomePageFragment extends Fragment {
 
 
         //中部的expandableListView数据
-        String url = "http://api.daoway.cn/daoway/rest/service_items/recommend_top?start=0&size=10&lot=118.778074&lat=32.057236&manualCity=%E5%8D%97%E4%BA%AC&imei=133524632646575&includeNotInScope=true";
         OkHttpUtils.get()
-                .url(url)
+                .url(UrlConfig.getHomeEV(city))
                 .build()
                 .execute(new StringCallback() {
                     @Override

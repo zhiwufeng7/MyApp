@@ -35,12 +35,13 @@ public class UrlConfig {
     }
 
     //首页--expandListView（传入城市名称）
-    public static final String HOME_EV =
-            "http://api.daoway.cn/daoway/rest/service_items/recommend_top?start=0&size=10";
+    public static String getHomeEV(String city){
+        return "http://api.daoway.cn/daoway/rest/service_items/recommend_top?start=0&size=10&lot=118.778074&lat=32.057236&imei=133524632646575&includeNotInScope=true"
+                +"&manualCity="+city;
+    }
 
     //首页--推荐服务商（传入城市 和经纬度）
     public static String getRecommendServiceUrl(String city, String lot, String lat,int index) {
-
         return "http://api.daoway.cn/daoway/rest/services?start="+(index-10)+"&size="+index+"&manualCity="
                 + city + "&lot=" + lot + "&lat=" + lat + "&includeNotInScope=true";
     }
