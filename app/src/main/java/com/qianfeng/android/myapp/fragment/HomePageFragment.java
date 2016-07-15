@@ -276,7 +276,6 @@ public class HomePageFragment extends Fragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-
                         HomeServiceInfo homeServiceInfo = gson.fromJson(response, HomeServiceInfo.class);
                         serviceAdapter.setData(homeServiceInfo);
                         serviceAdapter.notifyDataSetChanged();
