@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:padding="2dp"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <ImageView
@@ -32,12 +33,14 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/child_item_tv_price"
         android:layout_toRightOf="@id/child_item_tv_price"
+
         android:textColor="@color/red" />
 
     <TextView
         android:id="@+id/child_item_tv_serviceTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/min_text_size"
         android:layout_alignParentBottom="true"
         android:singleLine="true"
         android:drawableLeft="@drawable/img_store_icon" />

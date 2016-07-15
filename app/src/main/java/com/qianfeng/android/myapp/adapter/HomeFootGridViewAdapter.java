@@ -29,7 +29,6 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
-
     public void upData(List<FootInfo.DataBean> list) {
         if (data ==null){
         data=new ArrayList<>();

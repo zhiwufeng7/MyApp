@@ -11,8 +11,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import com.qianfeng.android.myapp.R;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private String village;
     private FragmentManager manager;
     private int curIndex;
+    private HomePageFragment homePageFragment;
+    private FrameLayout viewGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         //初始化fragment
         manager = getSupportFragmentManager();
         FragmentTransaction transition = manager.beginTransaction();
-        HomePageFragment homePageFragment = new HomePageFragment();
+       homePageFragment = new HomePageFragment();
         transition.add(R.id.main_content_fl, homePageFragment);
         transition.commit();
 
@@ -113,12 +117,11 @@ public class MainActivity extends AppCompatActivity {
        // fragmentList.add(homePageFragment);
        // fragmentList.add(homePageFragment);
        // fragmentList.add(homePageFragment);
-
-
     }
 
     private void initView() {
 
+       viewGroup= (FrameLayout) findViewById(R.id.main_content_fl);
         radioGroup = (RadioGroup) findViewById(R.id.main_bottom_rg);
         search = (Button) findViewById(R.id.main_top_search_btn);
         message = (Button) findViewById(R.id.main_top_msg_btn);
@@ -154,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 3 && resultCode == 1) {
             initData();
+           homePageFragment.initData();
+            homePageFragment.index=0;
+            homePageFragment.loadFootData();
         }
     }
 

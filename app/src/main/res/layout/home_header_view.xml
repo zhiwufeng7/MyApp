@@ -48,7 +48,7 @@
     <GridView
         android:id="@+id/home_page_header_recommend_grid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:numColumns="4"
         android:horizontalSpacing="2dp"
         android:paddingBottom="5dp"

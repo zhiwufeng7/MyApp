@@ -63,9 +63,9 @@ public class HomeGridViewAdapter extends BaseAdapter {
         HomePageEVInfo.DataBean.ItemsBean item=data.getItems().get(position);
         Glide.with(context).load(item.getPic_url()).into(viewHolder.imageView);
         viewHolder.name.setText(item.getName());
-        viewHolder.serviceTitle.setText(item.getServiceTitle());
+        viewHolder.serviceTitle.setText("  "+item.getServiceTitle());
         viewHolder.unit.setText(item.getPrice_unit());
-        viewHolder.price.setText(item.getPrice()+"  ");
+        viewHolder.price.setText(item.getPrice()+" ");
         return view;
     }
     class ViewHolder {

@@ -1,6 +1,7 @@
 package com.qianfeng.android.myapp.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by my on 2016/7/13.
+ *
  */
 public class HomeRecommendAdapter extends BaseAdapter {
     private HomeRecommendInfo data;
@@ -64,6 +66,26 @@ public class HomeRecommendAdapter extends BaseAdapter {
         Glide.with(context).load(item.getImg()).into(viewHolder.imageView);
         viewHolder.title.setText(item.getTitle());
         viewHolder.service.setText(item.getSubject());
+        switch (position){
+            case 1:
+                view.setBackgroundResource(R.color.colorPrimaryDark);
+                viewHolder.title.setTextColor(Color.YELLOW);
+                break;
+            case 2:
+                view.setBackgroundResource(R.color.colorAccent);
+                viewHolder.title.setTextColor(Color.WHITE);
+
+                break;
+            case 3:
+                view.setBackgroundResource(R.color.backColor);
+                viewHolder.title.setTextColor(Color.GREEN);
+                break;
+            case 4:
+                view.setBackgroundResource(R.color.yellow);
+                viewHolder.title.setTextColor(Color.RED);
+                break;
+        }
+
         return view;
     }
 

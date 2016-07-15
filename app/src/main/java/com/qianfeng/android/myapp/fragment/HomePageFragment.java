@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ public class HomePageFragment extends Fragment {
     private String city;
     private String lot;
     private String lat;
-    private int index = 0;
+    public int index = 0;
 
 
     public HomePageFragment() {
@@ -79,12 +80,8 @@ public class HomePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mContext = getActivity();
+        index = 0;
 
-        //得到位置信息
-        sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
-        city = sharedPreferences.getString("cityName", "北京");
-        lot = sharedPreferences.getString("lot", "0");
-        lat = sharedPreferences.getString("lat", "0");
 
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
         View headerView = inflater.inflate(R.layout.home_header_view, null);
@@ -199,11 +196,16 @@ public class HomePageFragment extends Fragment {
 
     }
 
-    private void loadFootData() {
+    public void loadFootData() {
         //底部footView
 
+        if (index == 0) {
+            footGridViewAdapter = new HomeFootGridViewAdapter(mContext);
+            footGrid.setAdapter(footGridViewAdapter);
+            return;
+        }
         OkHttpUtils.get()
-                .url(UrlConfig.getRecommendServiceUrl(city, lot, lat,index))
+                .url(UrlConfig.getRecommendServiceUrl(city, lot, lat, index))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -215,19 +217,30 @@ public class HomePageFragment extends Fragment {
 
                         FootInfo footListInfo = gson.fromJson(response, FootInfo.class);
                         List<FootInfo.DataBean> list = footListInfo.getData();
+
                         if (list != null) {
                             footGridViewAdapter.upData(footListInfo.getData());
                             footGridViewAdapter.notifyDataSetChanged();
                         }
+
                         refreshExpandableListView.onRefreshComplete();
                     }
                 });
     }
 
-    private void initData() {
+    private void getAdress() {
+        //得到位置信息
+        sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
+        city = sharedPreferences.getString("cityName", "北京");
+        lot = sharedPreferences.getString("lot", "0");
+        lat = sharedPreferences.getString("lat", "0");
+    }
+
+    public void initData() {
         if (gson == null) {
             gson = new Gson();
         }
+        getAdress();
 
         //今日推荐数据
         OkHttpUtils.get()
@@ -316,6 +329,7 @@ public class HomePageFragment extends Fragment {
                         }
                     }
                 });
+
 
     }
 
