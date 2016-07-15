@@ -30,7 +30,7 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/7/15.
  */
-public class SearchAcitvity extends AppCompatActivity{
+public class SearchActivity extends AppCompatActivity{
     private EditText et;
     private MyGridView gv;
     private MyListView lv;
@@ -99,8 +99,8 @@ public class SearchAcitvity extends AppCompatActivity{
     }
 
     private void setAdapter() {
-        gv.setAdapter(new HotSearchAdapter(SearchAcitvity.this,R.layout.hot_city_item,hotList));
-        historyAdapter = new HistoryAdapter(SearchAcitvity.this, R.layout.history_item, historyList);
+        gv.setAdapter(new HotSearchAdapter(SearchActivity.this,R.layout.hot_city_item,hotList));
+        historyAdapter = new HistoryAdapter(SearchActivity.this, R.layout.history_item, historyList);
         lv.setAdapter(historyAdapter);
     }
 

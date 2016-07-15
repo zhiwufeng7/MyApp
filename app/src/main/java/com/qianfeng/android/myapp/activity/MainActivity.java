@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,9 +17,7 @@ import android.widget.RadioGroup;
 
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.fragment.AssortmentFragment;
-import com.qianfeng.android.myapp.fragment.CommonLocationFragment;
 import com.qianfeng.android.myapp.fragment.HomePageFragment;
-import com.qianfeng.android.myapp.fragment.NearbyPlotFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.main_top_search_btn:
-                intent.setClass(this, SearchAcitvity.class);
+                intent.setClass(this, SearchActivity.class);
                 startActivity(intent);
                 break;
         }

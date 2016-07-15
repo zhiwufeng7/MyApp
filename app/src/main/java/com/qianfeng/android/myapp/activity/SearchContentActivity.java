@@ -9,7 +9,7 @@ import com.qianfeng.android.myapp.R;
 /**
  * Created by Administrator on 2016/7/15.
  */
-public class SearchContentAcitvity extends AppCompatActivity{
+public class SearchContentActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
