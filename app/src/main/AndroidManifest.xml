@@ -45,7 +45,8 @@
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.RecommendActivity"/>
         <activity android:name=".activity.SearchContentActivity" />
-
+        <activity android:name=".activity.ProjectListActivity"/>
+        <activity android:name=".activity.ServiceTypeActivity"/>
         <!-- 百度地图 -->
         <service
             android:name="com.baidu.location.f"

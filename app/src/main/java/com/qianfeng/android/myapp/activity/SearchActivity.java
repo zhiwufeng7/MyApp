@@ -1,5 +1,6 @@
 package com.qianfeng.android.myapp.activity;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -57,6 +58,14 @@ public class SearchActivity extends AppCompatActivity{
                 onSearch(null);
             }
         });
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                et.setText(historyList.get(position));
+                onSearch(null);
+            }
+        });
     }
 
     private void initGreenDao() {
@@ -78,7 +87,7 @@ public class SearchActivity extends AppCompatActivity{
     }
 
     private void initData() {
-        OkHttpUtils.get().url(Url.SEARCH)
+        OkHttpUtils.get().url(Url.HOT_SEARCH)
                 .build()
                 .execute(new StringCallback() {
             @Override
@@ -121,6 +130,9 @@ public class SearchActivity extends AppCompatActivity{
         if (!TextUtils.isEmpty(text)){
             historyListAdd(text);
             historyAdapter.notifyDataSetChanged();
+            Intent intent = new Intent(this,SearchContentActivity.class);
+            intent.putExtra("content",text);
+            startActivity(intent);
         }
 
     }
