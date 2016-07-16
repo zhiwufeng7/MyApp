@@ -82,6 +82,7 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
             viewHolder.evaluate.setText("好评" + item.getPositiveCommentRate());
         } else {
             viewHolder.evaluate.setText("暂无评价");
+
         }
         List list = item.getTagIcons();
         if (list != null) {
