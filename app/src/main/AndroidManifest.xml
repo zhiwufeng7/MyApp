@@ -49,13 +49,14 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"></service>
+            android:process=":remote" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="yH3AI0G9S3ZY7sNjcXYiL585hcjYHWPx" />
 
-        <activity android:name=".activity.ServiceTypeActivity"></activity>
+        <activity android:name=".activity.ServiceTypeActivity" />
+        <activity android:name=".activity.ProjectListActivity"></activity>
     </application>
 
 </manifest>

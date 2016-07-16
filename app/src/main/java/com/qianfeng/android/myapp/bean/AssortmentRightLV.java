@@ -123,9 +123,9 @@ public class AssortmentRightLV {
             private String name;
             private String description;
             private String pic_url;
-            private double price;
+            private int price;
             private String price_unit;
-            private double originalPrice;
+            private int originalPrice;
             private String minBuyNum;
             private String positiveCommentRate;
             private String orderTakingRate;
@@ -233,11 +233,11 @@ public class AssortmentRightLV {
                 this.pic_url = pic_url;
             }
 
-            public double getPrice() {
+            public int getPrice() {
                 return price;
             }
 
-            public void setPrice(double price) {
+            public void setPrice(int price) {
                 this.price = price;
             }
 
@@ -249,11 +249,11 @@ public class AssortmentRightLV {
                 this.price_unit = price_unit;
             }
 
-            public double getOriginalPrice() {
+            public int getOriginalPrice() {
                 return originalPrice;
             }
 
-            public void setOriginalPrice(double originalPrice) {
+            public void setOriginalPrice(int originalPrice) {
                 this.originalPrice = originalPrice;
             }
 

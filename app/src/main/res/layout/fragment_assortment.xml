@@ -58,13 +58,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#DDDDDD">
+        android:background="#DDDDDD"
+
+        >
 
         <TextView
             android:id="@+id/assortment_left_header"
             android:layout_width="85dp"
             android:layout_height="match_parent"
-            android:background="#DDDDDD"
             android:drawableLeft="@drawable/shape_assortment_left_header"
             android:drawableRight="@drawable/img_category_arrow_up"
             android:gravity="center"
@@ -83,13 +84,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/assortment_left_header_null_tv"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:layout_centerHorizontal="true"
+            >
 
             <LinearLayout
                 android:id="@+id/assortment_right_linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="33dp"
                 android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 />
         </HorizontalScrollView>
         <!-- <android.support.v7.widget.RecyclerView
@@ -97,7 +102,6 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:layout_toRightOf="@id/assortment_left_header_null_tv"
-
              >
          </android.support.v7.widget.RecyclerView>-->
     </RelativeLayout>
@@ -112,7 +116,8 @@
             android:layout_width="85dp"
             android:layout_height="match_parent"
             android:choiceMode="singleChoice"
-            android:scrollbars="none" />
+            android:scrollbars="none"
+            android:background="@color/white"/>
 
 
         <com.handmark.pulltorefresh.library.PullToRefreshListView
@@ -120,27 +125,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/assortment_left_lv"
-            android:scrollbars="none" />
+            android:scrollbars="none"
+            android:background="@color/white"/>
 
         <RelativeLayout
             android:id="@+id/assortment_right_content_null_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/assortment_left_lv"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="#ffffff">
 
             <ImageView
                 android:id="@+id/my_order_no_order_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:src="@drawable/img_my_order_no_order" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/my_order_no_order_iv"
-
                 android:layout_marginTop="20dp"
                 android:text="没有数据"
                 android:textSize="@dimen/big_text_size" />

@@ -2,24 +2,19 @@ package com.qianfeng.android.myapp.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.content.res.XmlResourceParser;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -29,6 +24,7 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.activity.ProjectListActivity;
 import com.qianfeng.android.myapp.adapter.AssortmentRightAdapter;
 import com.qianfeng.android.myapp.bean.AssortmentLeftLV;
 import com.qianfeng.android.myapp.bean.AssortmentRightLV;
@@ -57,14 +53,17 @@ public class AssortmentFragment extends Fragment {
     private ArrayAdapter leftAdapter;
     private ListView leftListView;
     private PullToRefreshListView rightRefreshListView;
-    private List<AssortmentRightLV.DataBean.ItemsBean> items = new ArrayList<>();
+    private List<AssortmentRightLV.DataBean.ItemsBean> mItems = new ArrayList<>();
     private AssortmentRightAdapter rightAdapter;
     private Map<String, List<String>> buttonMap = new HashMap<>();
     private LinearLayout linearLayoutTitle;
     private List<String> buttonList = new ArrayList<>();
-    private TextView addressTV;
     private RelativeLayout nullLinearLayout;
     private int startNum = 0;
+    private int sizeNum = 20;
+    private SharedPreferences sharedPreferences;
+
+
 
 
     /**
@@ -87,7 +86,11 @@ public class AssortmentFragment extends Fragment {
         if (view == null) {
             view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_assortment, null);
         }
-        //初始化左右两边ListView及中间RadioGroup数据源
+        sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
+        //初始化控件
+        initView();
+
+        //初始化左右两边ListView及中间标题数据源
         initData();
 
     }
@@ -96,15 +99,7 @@ public class AssortmentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return view;
-    }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //初始化控件
-        initView();
 
         //初始化适配器
         initAdapter();
@@ -115,6 +110,14 @@ public class AssortmentFragment extends Fragment {
         //设置监听
         initListener();
 
+        return view;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     //设置监听
@@ -123,85 +126,118 @@ public class AssortmentFragment extends Fragment {
         leftListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RightTitleData(position);
-                RightListViewData(position,startNum);
-            }
-        });
-        rightRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
-        rightRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                startNum=0;
-                RightListViewData(0,startNum);
-            }
-
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                startNum+=10;
-                RightListViewData(0,startNum);
+               //加载标题
+                rightTitleData(position);
+                mItems.clear();//清空列表内容
+                rightListViewData(position, 0, 20);//设置默认内容
+                refreshRightContent(0, position);//刷新
             }
         });
 
     }
 
     //加载右边标题
-    private void RightTitleData(final int position) {
+    private void rightTitleData(final int position) {
         linearLayoutTitle.removeAllViews();
         buttonList = buttonMap.get(names.get(position));
         //如果已添加“全部”选项，则不重复添加
         if (!buttonList.get(0).equals("全部")) {
             buttonList.add(0, "全部");
         }
-        int size = buttonList.size();
-        final Button[] buttons = new Button[size];
+        final int size = buttonList.size();
         for (int i = 0; i < size; i++) {
             Button button = new Button(getActivity());
+            button.setGravity(Gravity.CENTER);
             button.setTag(i);
-            buttons[i] = button;
             button.setTextSize(12);
             button.setBackgroundResource(R.drawable.assortment_right_title_text_style);
-            button.setHeight(30);
+            button.setGravity(Gravity.CENTER);
             button.setText(buttonList.get(i));
-            ColorStateList csl=getActivity().getResources().getColorStateList(R.color.assortment_right_title_text_color);
+            //设置标题文字颜色
+            ColorStateList csl = getActivity().getResources().getColorStateList(R.color.assortment_right_title_text_color);
             button.setTextColor(csl);
             linearLayoutTitle.addView(button);
         }
-        buttons[0].setEnabled(false);
-        final int childCount = linearLayoutTitle.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            buttons[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.setEnabled(false);
-                    int tag = (int) v.getTag();
-                    if (tag == 0) {
-                        RightListViewData(position,0);
-                    } else {
-                        RightListContentFL(buttonList.get(tag), position);
-                    }
-                    for (int i = 0; i < childCount; i++) {
-                        if (tag != i) {
-                            buttons[i].setEnabled(true);
-                        }
-                    }
-                }
-            });
-        }
+        linearLayoutTitle.getChildAt(0).setEnabled(false);
+        //根据标题的位置刷新列表内容
+        rightTitleListener(position);
 
     }
 
-    //加载分类子项数据
+    //设置点击右边标题监听
+    private void rightTitleListener(final int position) {
+        final int childCount = linearLayoutTitle.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            linearLayoutTitle.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setEnabled(false);
+                    final int tag = (int) v.getTag();
+                    mItems.clear();
+                    if (tag == 0) {
+                        rightListViewData(position, 0, 20);
+                    } else {
+                        rightListContentFL(buttonList.get(tag), position, 0, 20);
+                    }
+                    for (int i = 0; i < childCount; i++) {
+                        if (tag != i) {
+                            linearLayoutTitle.getChildAt(i).setEnabled(true);
+                        }
+                    }
+                    //根据标题位置设置刷新
+                    refreshRightContent(tag, position);
+                }
+            });
+        }
+    }
 
-    private void RightListContentFL(String title, int position) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
+    //右边listview刷新
+    private void refreshRightContent(final int tag, final int position) {
+        rightRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
+        rightRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                mItems.clear();
+                startNum = 0;
+                sizeNum = 20;
+                if (tag == 0) {
+                    rightListViewData(position, startNum, sizeNum);
+                } else {
+                    rightListContentFL(buttonList.get(tag), position, startNum, sizeNum);
+                }
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                startNum += 20;
+                sizeNum += 20;
+                //如果标题为全部，加载“全部”对应详情，否则加载子类详情
+                if (tag == 0) {
+                    rightListViewData(position, startNum, sizeNum);
+                } else {
+                    rightListContentFL(buttonList.get(tag), position, startNum, sizeNum);
+                }
+
+            }
+        });
+    }
+
+
+    //通过获取到的地址更新数据
+    public void refresh() {
+        initData();
+    }
+
+
+    //加载分类子项数据
+    private void rightListContentFL(String title, int position, int startNum, int sizeNum) {
         String city = sharedPreferences.getString("cityName", "北京");
         String lot = sharedPreferences.getString("lot", "0");
         String lat = sharedPreferences.getString("lat", "0");
-        String start = "0";
-        String size = "20";
+        String start = startNum + "";
+        String size = sizeNum + "";
         String category = categoryIds.get(position);
-        String titleTag = title;
-        String tag = titleTag;
+        String tag = title;
         OkHttpUtils.get()
                 .url(AssortmentURL.ASSORTMENT_SUBITEM).addParams("start", start).addParams("size", size)
                 .addParams("category", category).addParams("tag", tag)
@@ -215,26 +251,24 @@ public class AssortmentFragment extends Fragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-
+                        List<AssortmentRightLV.DataBean.ItemsBean> items = new ArrayList<>();
                         Gson gson = new Gson();
                         AssortmentRightLV assortmentRightLV = gson.fromJson(response, AssortmentRightLV.class);
                         items = assortmentRightLV.getData().getItems();
-                        //rightAdapter.notifyDataSetChanged();
-
-                        if (items.isEmpty()) {
+                        mItems.addAll(items);
+                        if (mItems.isEmpty()) {
                             nullLinearLayout.setVisibility(View.VISIBLE);
                             rightRefreshListView.setVisibility(View.GONE);
                         } else {
                             rightRefreshListView.setVisibility(View.VISIBLE);
                             nullLinearLayout.setVisibility(View.GONE);
-                            rightAdapter = new AssortmentRightAdapter(getActivity(), items);
-                            rightRefreshListView.setAdapter(rightAdapter);
                         }
-
-
+                        rightAdapter.notifyDataSetChanged();
+                        rightRefreshListView.onRefreshComplete();
                     }
                 });
     }
+
 
     //初始化视图控件
     private void initView() {
@@ -246,16 +280,29 @@ public class AssortmentFragment extends Fragment {
         //右边标题
         linearLayoutTitle = (LinearLayout) view.findViewById(R.id.assortment_right_linearLayout);
 
+         //程序调试，请删掉！
+        TextView text = (TextView) view.findViewById(R.id.assortment_left_header);
+        text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ProjectListActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
+
 
     //绑定适配器
     private void bindAdapter() {
         //绑定左边适配器
         leftListView.setAdapter(leftAdapter);
+        rightRefreshListView.setAdapter(rightAdapter);
         //设置默认选中项为第一个
         leftListView.setItemChecked(0, true);
 
     }
+
 
     //初始化适配器
     private void initAdapter() {
@@ -263,35 +310,32 @@ public class AssortmentFragment extends Fragment {
         leftAdapter = new ArrayAdapter(getActivity(), R.layout.assortment_left_listview, names);
         //初始化右边RefreshListView适配器
         // rightAdapter = new AssortmentRightAdapter(getActivity(),items);
+        rightAdapter = new AssortmentRightAdapter(getActivity(), mItems);
 
     }
+
 
     //初始化数据
     private void initData() {
         //初始化左边ListView数据
-        LeftListViewData();
-
+        leftListViewData();
 
     }
 
+
     //加载右边listview数据
-    private void RightListViewData(int position,int startNum) {
-        //设置默认值
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
+    private void rightListViewData(int position, int startNum, int sizeNum) {
         String city = sharedPreferences.getString("cityName", "北京");
         String lot = sharedPreferences.getString("lot", "0");
         String lat = sharedPreferences.getString("lat", "0");
-        //从默认显示第一页
-        String start = startNum+"";
-        String size = "0";
+        String start = startNum + "";
+        String size = sizeNum + "";
         //根据左边项目名称获取相应内容
         String category = categoryIds.get(position);
         OkHttpUtils.get()
-                //解析数据为空
                 .url(AssortmentURL.ASSORTMENT_SUBITEM)
                 .addParams("lot", lot).addParams("lat", lat).addParams("manualCity", city)
                 .addParams("start", start).addParams("category", category).addParams("size", size)
-
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -300,26 +344,26 @@ public class AssortmentFragment extends Fragment {
 
                     @Override
                     public void onResponse(String response, int id) {
+                        List<AssortmentRightLV.DataBean.ItemsBean> items = new ArrayList<>();
                         Gson gson = new Gson();
                         AssortmentRightLV assortmentRightLV = gson.fromJson(response, AssortmentRightLV.class);
                         items = assortmentRightLV.getData().getItems();
-                        if (items.isEmpty()) {
+                        mItems.addAll(items);
+                        if (mItems.isEmpty()) {
                             nullLinearLayout.setVisibility(View.VISIBLE);
                             rightRefreshListView.setVisibility(View.GONE);
                         } else {
                             rightRefreshListView.setVisibility(View.VISIBLE);
                             nullLinearLayout.setVisibility(View.GONE);
-                            rightAdapter = new AssortmentRightAdapter(getActivity(), items);
-                            rightRefreshListView.setAdapter(rightAdapter);
                         }
-
+                        rightAdapter.notifyDataSetChanged();
+                        rightRefreshListView.onRefreshComplete();
                     }
                 });
     }
 
     //加载左边listview数据
-    private void LeftListViewData() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
+    private void leftListViewData() {
         String city = URLEncoder.encode(sharedPreferences.getString("cityName", "北京"));
         String lot = sharedPreferences.getString("lot", "0");
         String lat = sharedPreferences.getString("lat", "0");
@@ -348,12 +392,11 @@ public class AssortmentFragment extends Fragment {
                             names.add(name);
                             buttonMap.put(name, rbList);
                         }
-
                         leftAdapter.notifyDataSetChanged();
                         //初始化右边标题内容默认为左边第一项
-                        RightTitleData(0);
+                        rightTitleData(0);
                         //设置右边listview默认数据为左边列表全部详情
-                        RightListViewData(0,0);
+                        rightListViewData(0, 0, 10);
                     }
                 });
     }

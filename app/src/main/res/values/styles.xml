@@ -16,6 +16,13 @@
     <item name="android:textColor">@color/slt_main_bottom_text_color</item>
 
 </style>
+    <style name="project_title_text_color">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/project_slt_color</item>
 
+    </style>
 
 </resources>
