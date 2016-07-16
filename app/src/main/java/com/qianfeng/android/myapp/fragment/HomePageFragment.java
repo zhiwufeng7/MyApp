@@ -1,13 +1,15 @@
 package com.qianfeng.android.myapp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.activity.RecommendActivity;
 import com.qianfeng.android.myapp.adapter.HomeFootGridViewAdapter;
 import com.qianfeng.android.myapp.adapter.HomeHeaderServiceAdapter;
 import com.qianfeng.android.myapp.adapter.HomePullToRefreshExpandListViewAdapter;
@@ -62,6 +65,8 @@ public class HomePageFragment extends Fragment {
     private String lat;
     public int index = 0;
     private String id;
+    private Button service;
+    private HomeServiceInfo homeServiceInfo;
 
 
     public HomePageFragment() {
@@ -129,6 +134,7 @@ public class HomePageFragment extends Fragment {
     }
 
     private void initHeardView(View heardView) {
+        service = (Button) heardView.findViewById(R.id.home_page_header_recommend_btn);
         banner = (ConvenientBanner) heardView.findViewById(R.id.home_page_header_view_cb);
         myGridView = (MyGridView) heardView.findViewById(R.id.home_page_header_my_grid);
         headerGridView = (GridView) heardView.findViewById(R.id.home_page_header_recommend_grid);
@@ -194,7 +200,32 @@ public class HomePageFragment extends Fragment {
             }
         });
 
+        service.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, RecommendActivity.class);
+                intent.putExtra("city", city);
+                intent.putExtra("lot", lot);
+                intent.putExtra("lat", lat);
+                startActivity(intent);
+            }
+        });
 
+        //头部10个服务分类的监听
+        myGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                /**
+                 * 在这里写需要跳转的activity
+                 */
+//                intent.setClass(mContext,)
+                intent.putStringArrayListExtra("tags", (ArrayList<String>) homeServiceInfo.getData().get(position).getTags());
+                intent.putExtra("id", homeServiceInfo.getData().get(position).getId());
+                startActivity(intent);
+
+            }
+        });
     }
 
     public void loadFootData() {
@@ -235,7 +266,7 @@ public class HomePageFragment extends Fragment {
         city = sharedPreferences.getString("cityName", "北京");
         lot = sharedPreferences.getString("lot", "0");
         lat = sharedPreferences.getString("lat", "0");
-       id=sharedPreferences.getString("id","0");
+        id = sharedPreferences.getString("id", "0");
     }
 
     public void initData() {
@@ -276,7 +307,7 @@ public class HomePageFragment extends Fragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        HomeServiceInfo homeServiceInfo = gson.fromJson(response, HomeServiceInfo.class);
+                        homeServiceInfo = gson.fromJson(response, HomeServiceInfo.class);
                         serviceAdapter.setData(homeServiceInfo);
                         serviceAdapter.notifyDataSetChanged();
                         refreshExpandableListView.onRefreshComplete();
@@ -286,7 +317,7 @@ public class HomePageFragment extends Fragment {
 
         //顶部banner数据
         OkHttpUtils.get()
-                .url(UrlConfig.getBannerBase(city,id))
+                .url(UrlConfig.getBannerBase(city, id))
                 .build()
                 .execute(new StringCallback() {
                     @Override

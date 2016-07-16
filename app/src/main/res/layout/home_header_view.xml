@@ -25,22 +25,27 @@
     <LinearLayout
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_margin="5dp"
+        android:gravity="center"
         android:layout_marginTop="5dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+           android:gravity="center_vertical"
             android:drawableLeft="@drawable/home_title_tuijian_icon"
             android:text="@string/home_page_recommend" />
 
-        <TextView
+        <Button
+            android:id="@+id/home_page_header_recommend_btn"
+            android:background="@null"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawableRight="@drawable/seach_go_to_near_arraw"
             android:gravity="center"
+            android:layout_marginRight="5dp"
             android:text="@string/home_page_service_facilitator" />
 
     </LinearLayout>

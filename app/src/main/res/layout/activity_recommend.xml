@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    tools:context="com.qianfeng.android.myapp.activity.RecommendActivity">
+
+    <ImageView
+        android:id="@+id/recommend_service_back_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/title_height"
+        android:src="@drawable/back_red" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/title_height"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/activity_recommend_service"
+        android:textSize="@dimen/big_text_size"
+        android:textStyle="bold" />
+
+
+    <com.handmark.pulltorefresh.library.PullToRefreshGridView
+        android:id="@+id/recommend_service_gv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/recommend_service_back_iv"
+        android:layout_marginTop="1dp"
+        android:background="@color/backColor"
+        android:numColumns="2"
+        ptr:ptrDrawable="@drawable/ad_button_015_refresh_down_arrow"
+        ptr:ptrAnimationStyle="flip"
+        ptr:ptrHeaderBackground="@color/backColor"
+        android:stretchMode="columnWidth"/>
+
+
+
+
+</RelativeLayout>

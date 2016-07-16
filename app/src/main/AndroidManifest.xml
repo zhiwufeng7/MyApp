@@ -43,6 +43,7 @@
         <activity android:name=".activity.CutCityActivity" />
         <activity android:name=".activity.PlotSearchActivity" />
         <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.RecommendActivity"/>
         <activity android:name=".activity.SearchContentActivity" />
 
         <!-- 百度地图 -->

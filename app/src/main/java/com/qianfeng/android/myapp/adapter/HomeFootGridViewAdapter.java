@@ -73,7 +73,7 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         }
         FootInfo .DataBean item = data.get(position);
         Glide.with(context).load(item.getImgUrl()).into(viewHolder.imageView);
-        viewHolder.title.setText(item.getTitle());
+        viewHolder.title.setText(" "+item.getTitle());
         viewHolder.count.setText("已接" + item.getOrderTakingCount() + "单");
         viewHolder.evaluate.setText("好评" + item.getPositiveCommentRate());
         List list = item.getTagIcons();

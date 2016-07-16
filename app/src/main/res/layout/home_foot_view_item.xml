@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="200dp">
 
     <ImageView
-
         android:id="@+id/home_page_foot_iv"
         android:layout_width="wrap_content"
         android:layout_height="150dp" />
@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/home_page_foot_iv"
         android:drawableLeft="@drawable/img_store_icon"
         android:singleLine="true" />
@@ -23,6 +24,7 @@
         android:id="@+id/home_page_foot_tagIcon1"
         android:layout_width="10dp"
         android:layout_height="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_alignBottom="@id/home_page_foot_title"
         />
     <ImageView
@@ -30,6 +32,7 @@
         android:id="@+id/home_page_foot_tagIcon2"
         android:layout_width="10dp"
         android:layout_height="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_alignBottom="@id/home_page_foot_title"
         />
     
