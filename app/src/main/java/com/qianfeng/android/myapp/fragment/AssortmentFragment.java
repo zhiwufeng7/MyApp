@@ -289,15 +289,6 @@ public class AssortmentFragment extends Fragment {
         //右边标题
         linearLayoutTitle = (LinearLayout) view.findViewById(R.id.assortment_right_linearLayout);
 
-        //程序调试，请删掉！
-        TextView text = (TextView) view.findViewById(R.id.assortment_left_header);
-        text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProjectListActivity.class);
-                startActivity(intent);
-            }
-        });
 
     }
 

@@ -62,7 +62,7 @@ public class ProjectListActivity extends AppCompatActivity {
     List<String> titles;
     private ViewPager viewPager;
     private SharedPreferences sharedPreferences;
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
     private RelativeLayout project_rl;
     private PopupWindow popWnd;
     private MyGridView myGridView;
@@ -70,6 +70,7 @@ public class ProjectListActivity extends AppCompatActivity {
     private int sizeNum = 20;
     private List<FootInfo.DataBean> datas = new ArrayList<>();
     private HomeFootGridViewAdapter mYGridViewAdapter;
+    private String id;
 
 
     @Override
@@ -79,6 +80,8 @@ public class ProjectListActivity extends AppCompatActivity {
         //从跳转页面获取一下信息：category(子项目id)，tags(List<Srting>子项目名)
         Intent intent = getIntent();
 
+        tags = intent.getStringArrayListExtra("tags");
+        id = intent.getStringExtra("id");
         //获取地址
         getAddress();
 
@@ -148,7 +151,7 @@ public class ProjectListActivity extends AppCompatActivity {
         OkHttpUtils.get()
                 .url(url).addParams("start", strat).addParams("size", size)
                 .addParams("lot", lot).addParams("lat", lat)
-                .addParams("category", category).addParams("manualCity", manualCity)
+                .addParams("category", id).addParams("manualCity", manualCity)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -178,7 +181,6 @@ public class ProjectListActivity extends AppCompatActivity {
         tabLayoutAdapter = new ProjectTabLayoutAdapter(getSupportFragmentManager(), fragments, titles);
     }
 
-
     private void initView() {
         project_rl = (RelativeLayout) findViewById(R.id.project_rl);
         viewPager = (ViewPager) findViewById(R.id.project_vp);
@@ -193,33 +195,20 @@ public class ProjectListActivity extends AppCompatActivity {
         initTitles();
         fragments = new ArrayList<>();
         Bundle bundle = new Bundle();
-        bundle.putString("lot", lot);
-        bundle.putString("lat", lat);
-        bundle.putString("category", category);
-        bundle.putString("manualCity", manualCity);
-        fragments.add(ProjactViewPagerFragment.newInstance(bundle));
-        fragments.add(ProjactViewPagerFragment.newInstance(bundle));
-        fragments.add(ProjactViewPagerFragment.newInstance(bundle));
-        fragments.add(ProjactViewPagerFragment.newInstance(bundle));
-        fragments.add(ProjactViewPagerFragment.newInstance(bundle));
-        fragments.add(ProjactViewPagerFragment.newInstance(bundle));
-        fragments.add(ProjactViewPagerFragment.newInstance(bundle));
+        bundle.putString("category", id);
+        for (int i = 0; i <tags.size() ; i++) {
+            fragments.add(ProjactViewPagerFragment.newInstance(bundle));
+        }
 
     }
 
     private void initTitles() {
         titles = new ArrayList<>();
-        titles.add("标题一");
-        titles.add("标题二");
-        titles.add("标题二");
-        titles.add("标题二");
-        titles.add("标题二");
-        titles.add("标题二");
-        titles.add("标题二");
 
-
+        for (int i = 0; i <tags.size() ; i++) {
+            titles.add(tags.get(i));
+        }
     }
-
 
     public void getAddress() {
         sharedPreferences = this.getSharedPreferences("location", Context.MODE_PRIVATE);

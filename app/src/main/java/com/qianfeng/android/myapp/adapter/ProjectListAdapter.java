@@ -56,7 +56,7 @@ public class ProjectListAdapter extends BaseAdapter{
             viewHolderEvent.price = (TextView) convertView.findViewById(R.id.assortment_right_content_price_tv);
             viewHolderEvent.price_unit = (TextView) convertView.findViewById(R.id.assortment_right_content_price_unit_tv);
             viewHolderEvent.originalPrice = (TextView) convertView.findViewById(R.id.assortment_right_content_originalPrice_tv);
-            viewHolderEvent.minBuyNum = (TextView) convertView.findViewById(R.id.assortment_right_content_minBuyNum_tv);
+            viewHolderEvent.saledNum = (TextView) convertView.findViewById(R.id.assortment_right_content_salednum_tv);
             viewHolderEvent.serviceTitle = (TextView) convertView.findViewById(R.id.assortment_right_content_serviceTitle_tv);
             viewHolderEvent.positiveCommentRate = (TextView) convertView.findViewById(R.id.assortment_right_content_positiveCommentRate_tv);
             viewHolderEvent.ticket1= (ImageView) convertView.findViewById(R.id.assortment_right_content_ticket1_iv);
@@ -83,20 +83,28 @@ public class ProjectListAdapter extends BaseAdapter{
             originalPrice = String.valueOf(iOriginalPrice);
         }
 
-        if (iOriginalPrice!=iPrice){
+        if (items.get(position).getPrice()!=items.get(position).getOriginalPrice()){
             viewHolderEvent.originalPrice.setText("￥"+originalPrice);
+        }else{
+            viewHolderEvent.originalPrice.setText("");
         }
+
         viewHolderEvent.name.setText(items.get(position).getName());
         viewHolderEvent.description.setText(items.get(position).getDescription());
         viewHolderEvent.price.setText(price);
         viewHolderEvent.price_unit.setText(items.get(position).getPrice_unit());
-        viewHolderEvent.minBuyNum.setText(items.get(position).getMinBuyNum());
+        viewHolderEvent.saledNum.setText(items.get(position).getBooster().getSaledNum()+"");
         viewHolderEvent.serviceTitle.setText(items.get(position).getServiceTitle());
         viewHolderEvent.positiveCommentRate.setText("好评"+items.get(position).getPositiveCommentRate());
         int size = items.get(position).getTagIcons().size();
         switch (size){
+            case 0:
+                viewHolderEvent.ticket1.setImageDrawable(null);
+                viewHolderEvent.ticket2.setImageDrawable(null);
+                break;
             case 1:
                 Glide.with(context).load(items.get(position).getTagIcons().get(0)).into(viewHolderEvent.ticket1);
+                viewHolderEvent.ticket2.setImageDrawable(null);
                 break;
             case 2:
                 Glide.with(context).load(items.get(position).getTagIcons().get(0)).into(viewHolderEvent.ticket1);
@@ -116,7 +124,7 @@ public class ProjectListAdapter extends BaseAdapter{
         TextView price;
         TextView price_unit;
         TextView originalPrice;
-        TextView minBuyNum;
+        TextView saledNum;
         TextView serviceTitle;
         TextView positiveCommentRate;
         ImageView icon;

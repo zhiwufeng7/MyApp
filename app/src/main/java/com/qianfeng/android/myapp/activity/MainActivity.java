@@ -157,8 +157,11 @@ public class MainActivity extends AppCompatActivity {
            homePageFragment.initData();
             homePageFragment.index=0;
             homePageFragment.loadFootData();
-            AssortmentFragment assortmentFragment = (AssortmentFragment) (fragmentList.get(1));
-            assortmentFragment.refresh();
+            if(fragmentList.get(1).isAdded()){
+                AssortmentFragment assortmentFragment = (AssortmentFragment) (fragmentList.get(1));
+                assortmentFragment.refresh();
+            }
+
         }
     }
 

@@ -139,7 +139,7 @@
                 android:textSize="@dimen/min_text_size" />
 
             <TextView
-                android:id="@+id/assortment_right_content_minBuyNum_tv"
+                android:id="@+id/assortment_right_content_salednum_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/assortment_right_content_Buy_tv"
@@ -151,10 +151,8 @@
                 android:id="@+id/assortment_right_content_positiveCommentRate_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/assortment_right_content_minBuyNum_tv"
+                android:layout_toRightOf="@id/assortment_right_content_salednum_tv"
                 android:textSize="@dimen/min_text_size" />
-
-
         </RelativeLayout>
 
 

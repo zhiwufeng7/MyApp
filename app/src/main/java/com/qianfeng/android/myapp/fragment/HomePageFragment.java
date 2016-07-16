@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.activity.ProjectListActivity;
 import com.qianfeng.android.myapp.activity.RecommendActivity;
 import com.qianfeng.android.myapp.adapter.HomeFootGridViewAdapter;
 import com.qianfeng.android.myapp.adapter.HomeHeaderServiceAdapter;
@@ -219,7 +220,7 @@ public class HomePageFragment extends Fragment {
                 /**
                  * 在这里写需要跳转的activity
                  */
-//                intent.setClass(mContext,)
+                intent.setClass(mContext, ProjectListActivity.class);
                 intent.putStringArrayListExtra("tags", (ArrayList<String>) homeServiceInfo.getData().get(position).getTags());
                 intent.putExtra("id", homeServiceInfo.getData().get(position).getId());
                 startActivity(intent);

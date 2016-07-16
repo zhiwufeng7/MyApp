@@ -2,6 +2,7 @@ package com.qianfeng.android.myapp.adapter;
 
 import android.content.Context;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class AssortmentRightAdapter extends BaseAdapter {
             viewHolderEvent.price = (TextView) convertView.findViewById(R.id.assortment_right_content_price_tv);
             viewHolderEvent.price_unit = (TextView) convertView.findViewById(R.id.assortment_right_content_price_unit_tv);
             viewHolderEvent.originalPrice = (TextView) convertView.findViewById(R.id.assortment_right_content_originalPrice_tv);
-            viewHolderEvent.minBuyNum = (TextView) convertView.findViewById(R.id.assortment_right_content_minBuyNum_tv);
+            viewHolderEvent.saledNum = (TextView) convertView.findViewById(R.id.assortment_right_content_salednum_tv);
             viewHolderEvent.serviceTitle = (TextView) convertView.findViewById(R.id.assortment_right_content_serviceTitle_tv);
             viewHolderEvent.ticket1 = (ImageView) convertView.findViewById(R.id.assortment_right_content_ticket1_iv);
             viewHolderEvent.ticket2 = (ImageView) convertView.findViewById(R.id.assortment_right_content_ticket2_iv);
@@ -71,6 +72,7 @@ public class AssortmentRightAdapter extends BaseAdapter {
         double iOriginalPrice = items.get(position).getOriginalPrice();
         String price;
         String originalPrice;
+
         if (iPrice % 1.0 == 0) {
             price = String.valueOf((int) iPrice);
         } else {
@@ -83,21 +85,27 @@ public class AssortmentRightAdapter extends BaseAdapter {
             originalPrice = String.valueOf(iOriginalPrice);
         }
 
-        if (iOriginalPrice!=iPrice){
-            viewHolderEvent.originalPrice.setText("￥" + originalPrice);
+        if (items.get(position).getPrice()!=items.get(position).getOriginalPrice()){
+            viewHolderEvent.originalPrice.setText("￥"+originalPrice);
+        }else{
+            viewHolderEvent.originalPrice.setText("");
         }
 
         viewHolderEvent.name.setText(items.get(position).getName());
         viewHolderEvent.description.setText(items.get(position).getDescription());
         viewHolderEvent.price.setText(price);
         viewHolderEvent.price_unit.setText(items.get(position).getPrice_unit());
-
-        viewHolderEvent.minBuyNum.setText(items.get(position).getMinBuyNum());
+        viewHolderEvent.saledNum.setText(items.get(position).getBooster().getSaledNum()+"");
         viewHolderEvent.serviceTitle.setText(items.get(position).getServiceTitle());
         int size = items.get(position).getTagIcons().size();
         switch (size) {
+            case 0:
+                viewHolderEvent.ticket1.setImageDrawable(null);
+                viewHolderEvent.ticket2.setImageDrawable(null);
+                break;
             case 1:
                 Glide.with(context).load(items.get(position).getTagIcons().get(0)).into(viewHolderEvent.ticket1);
+                viewHolderEvent.ticket2.setImageDrawable(null);
                 break;
             case 2:
                 Glide.with(context).load(items.get(position).getTagIcons().get(0)).into(viewHolderEvent.ticket1);
@@ -109,7 +117,6 @@ public class AssortmentRightAdapter extends BaseAdapter {
         return convertView;
     }
 
-
     static class ViewHolderEvent {
         TextView nullView;
         TextView name;
@@ -117,7 +124,7 @@ public class AssortmentRightAdapter extends BaseAdapter {
         TextView price;
         TextView price_unit;
         TextView originalPrice;
-        TextView minBuyNum;
+        TextView saledNum;
         TextView serviceTitle;
         ImageView icon;
         ImageView ticket1;
