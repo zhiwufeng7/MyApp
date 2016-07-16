@@ -1,6 +1,8 @@
 package com.qianfeng.android.myapp.fragment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,13 +34,15 @@ public class ProjactViewPagerFragment extends Fragment {
     private View view;
     private int stratNum = 0;
     private int sizeNum = 20;
-    private String lot="0";
-    private String lat="0";
-    private String category="0";
-    private String manualCity="0";
+    private String lot;
+    private String lat;
+    private String category;
+    private String manualCity;
+    private String tag;
     private List<AssortmentRightLV.DataBean.ItemsBean> mItems = new ArrayList<>();
     private ProjectListAdapter adapter;
     private PullToRefreshListView ptrListView;
+    private SharedPreferences sharedPreferences;
 
     // TODO: Rename and change types and number of parameters
     public static ProjactViewPagerFragment newInstance(Bundle args) {
@@ -46,6 +50,7 @@ public class ProjactViewPagerFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,17 +68,16 @@ public class ProjactViewPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+            view =inflater.inflate(R.layout.fragment_projact_view_pager, container,false);
+        initView();
         return view;
     }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView();
         initAdapter();
         bindAdapter();
     }
-
     private void initView() {
         ptrListView = (PullToRefreshListView) view.findViewById(R.id.project_ptr_lv);
     }
@@ -87,6 +91,14 @@ public class ProjactViewPagerFragment extends Fragment {
     }
 
     private void listViewData() {
+        sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
+        //先设置一个默认值
+        lot = sharedPreferences.getString("lot", "0");
+        lat = sharedPreferences.getString("lat", "0");
+        manualCity = sharedPreferences.getString("cityName", "北京");
+       // tags = new ArrayList<>();//各类服务的子服务名称集合，需要从跳转页面传过来
+        category = "36";//各类服务名称
+        tag = "小时工";//从Bundle中获取
         String size = sizeNum + "";
         String strat = stratNum + "";
         String url = AssortmentURL.ASSORTMENT_SUBITEM;

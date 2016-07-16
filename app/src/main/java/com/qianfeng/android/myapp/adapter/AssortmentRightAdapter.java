@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by chengxiao on 2016/7/13.
  */
-public class AssortmentRightAdapter extends BaseAdapter{
+public class AssortmentRightAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
@@ -32,7 +32,7 @@ public class AssortmentRightAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return items.size()==0?0:items.size();
+        return items.size() == 0 ? 0 : items.size();
     }
 
     @Override
@@ -51,6 +51,7 @@ public class AssortmentRightAdapter extends BaseAdapter{
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.assortment_right_listview_content, parent, false);
             viewHolderEvent = new ViewHolderEvent();
+            viewHolderEvent.nullView =(TextView)convertView.findViewById(R.id.assortment_right_content_null_view);
             viewHolderEvent.name = (TextView) convertView.findViewById(R.id.assortment_right_content_name_tv);
             viewHolderEvent.description = (TextView) convertView.findViewById(R.id.assortment_right_content_description_tv);
             viewHolderEvent.price = (TextView) convertView.findViewById(R.id.assortment_right_content_price_tv);
@@ -58,23 +59,43 @@ public class AssortmentRightAdapter extends BaseAdapter{
             viewHolderEvent.originalPrice = (TextView) convertView.findViewById(R.id.assortment_right_content_originalPrice_tv);
             viewHolderEvent.minBuyNum = (TextView) convertView.findViewById(R.id.assortment_right_content_minBuyNum_tv);
             viewHolderEvent.serviceTitle = (TextView) convertView.findViewById(R.id.assortment_right_content_serviceTitle_tv);
-            viewHolderEvent.ticket1= (ImageView) convertView.findViewById(R.id.assortment_right_content_ticket1_iv);
-            viewHolderEvent.ticket2= (ImageView) convertView.findViewById(R.id.assortment_right_content_ticket2_iv);
-            viewHolderEvent.icon= (ImageView) convertView.findViewById(R.id.assortment_right_content_icon_iv);
+            viewHolderEvent.ticket1 = (ImageView) convertView.findViewById(R.id.assortment_right_content_ticket1_iv);
+            viewHolderEvent.ticket2 = (ImageView) convertView.findViewById(R.id.assortment_right_content_ticket2_iv);
+            viewHolderEvent.icon = (ImageView) convertView.findViewById(R.id.assortment_right_content_icon_iv);
             convertView.setTag(viewHolderEvent);
         } else {
             viewHolderEvent = (ViewHolderEvent) convertView.getTag();
         }
+        //价格若为小数点后显示小数，若无小数，显示整数。
+        double iPrice = items.get(position).getPrice();
+        double iOriginalPrice = items.get(position).getOriginalPrice();
+        String price;
+        String originalPrice;
+        if (iPrice % 1.0 == 0) {
+            price = String.valueOf((int) iPrice);
+        } else {
+            price = String.valueOf(iPrice);
+        }
+
+        if (iOriginalPrice % 1.0 == 0) {
+            originalPrice = String.valueOf((int) iOriginalPrice);
+        } else {
+            originalPrice = String.valueOf(iOriginalPrice);
+        }
+
+        if (iOriginalPrice!=iPrice){
+            viewHolderEvent.originalPrice.setText("￥" + originalPrice);
+        }
 
         viewHolderEvent.name.setText(items.get(position).getName());
         viewHolderEvent.description.setText(items.get(position).getDescription());
-        viewHolderEvent.price.setText(""+items.get(position).getPrice());
+        viewHolderEvent.price.setText(price);
         viewHolderEvent.price_unit.setText(items.get(position).getPrice_unit());
-        viewHolderEvent.originalPrice.setText("￥"+items.get(position).getOriginalPrice());
+
         viewHolderEvent.minBuyNum.setText(items.get(position).getMinBuyNum());
         viewHolderEvent.serviceTitle.setText(items.get(position).getServiceTitle());
         int size = items.get(position).getTagIcons().size();
-        switch (size){
+        switch (size) {
             case 1:
                 Glide.with(context).load(items.get(position).getTagIcons().get(0)).into(viewHolderEvent.ticket1);
                 break;
@@ -89,8 +110,8 @@ public class AssortmentRightAdapter extends BaseAdapter{
     }
 
 
-    static class ViewHolderEvent{
-
+    static class ViewHolderEvent {
+        TextView nullView;
         TextView name;
         TextView description;
         TextView price;

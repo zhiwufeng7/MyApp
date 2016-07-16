@@ -95,10 +95,10 @@
                 android:id="@+id/assortment_right_content_originalPrice_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12"
                 android:textSize="@dimen/micro_text_size" />
 
             <TextView
+                android:id="@+id/assortment_right_content_null_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_gravity="center"

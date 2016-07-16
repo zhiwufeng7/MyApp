@@ -59,7 +59,6 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#DDDDDD"
-
         >
 
         <TextView
@@ -91,11 +90,13 @@
             <LinearLayout
                 android:id="@+id/assortment_right_linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="33dp"
+                android:layout_height="35dp"
                 android:orientation="horizontal"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                />
+                >
+
+            </LinearLayout>
         </HorizontalScrollView>
         <!-- <android.support.v7.widget.RecyclerView
              android:id="@+id/assortment_right_title_recyclerView"

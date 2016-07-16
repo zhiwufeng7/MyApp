@@ -50,6 +50,7 @@ public class ProjectListAdapter extends BaseAdapter{
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.assortment_right_listview_content, parent, false);
             viewHolderEvent = new ViewHolderEvent();
+            viewHolderEvent.nullView =(TextView)convertView.findViewById(R.id.assortment_right_content_null_view);
             viewHolderEvent.name = (TextView) convertView.findViewById(R.id.assortment_right_content_name_tv);
             viewHolderEvent.description = (TextView) convertView.findViewById(R.id.assortment_right_content_description_tv);
             viewHolderEvent.price = (TextView) convertView.findViewById(R.id.assortment_right_content_price_tv);
@@ -65,12 +66,30 @@ public class ProjectListAdapter extends BaseAdapter{
         } else {
             viewHolderEvent = (ViewHolderEvent) convertView.getTag();
         }
+        //价格若为小数点后显示小数，若无小数，显示整数。
+        double iPrice = items.get(position).getPrice();
+        double iOriginalPrice = items.get(position).getOriginalPrice();
+        String price;
+        String originalPrice;
+        if(iPrice % 1.0 == 0){
+            price = String.valueOf((int) iPrice);
+        }else {
+            price = String.valueOf(iPrice);
+        }
 
+        if(iOriginalPrice % 1.0 == 0){
+            originalPrice = String.valueOf((int) iOriginalPrice);
+        }else {
+            originalPrice = String.valueOf(iOriginalPrice);
+        }
+
+        if (iOriginalPrice!=iPrice){
+            viewHolderEvent.originalPrice.setText("￥"+originalPrice);
+        }
         viewHolderEvent.name.setText(items.get(position).getName());
         viewHolderEvent.description.setText(items.get(position).getDescription());
-        viewHolderEvent.price.setText(""+items.get(position).getPrice());
+        viewHolderEvent.price.setText(price);
         viewHolderEvent.price_unit.setText(items.get(position).getPrice_unit());
-        viewHolderEvent.originalPrice.setText("￥"+items.get(position).getOriginalPrice());
         viewHolderEvent.minBuyNum.setText(items.get(position).getMinBuyNum());
         viewHolderEvent.serviceTitle.setText(items.get(position).getServiceTitle());
         viewHolderEvent.positiveCommentRate.setText("好评"+items.get(position).getPositiveCommentRate());
@@ -91,7 +110,7 @@ public class ProjectListAdapter extends BaseAdapter{
 
 
     static class ViewHolderEvent{
-
+        TextView nullView;
         TextView name;
         TextView description;
         TextView price;

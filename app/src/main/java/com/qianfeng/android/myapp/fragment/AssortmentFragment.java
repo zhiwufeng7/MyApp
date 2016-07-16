@@ -62,8 +62,9 @@ public class AssortmentFragment extends Fragment {
     private int startNum = 0;
     private int sizeNum = 20;
     private SharedPreferences sharedPreferences;
-
-
+    private String city;
+    private String lot;
+    private String lat;
 
 
     /**
@@ -83,42 +84,53 @@ public class AssortmentFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //创建视图
-        if (view == null) {
-            view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_assortment, null);
-        }
-        sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
-        //初始化控件
-        initView();
 
-        //初始化左右两边ListView及中间标题数据源
-        initData();
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
+        view = inflater.inflate(R.layout.fragment_assortment, null);
+        //初始化左右两边ListView及中间标题数据源
+        initData();
+        //初始化控件
+        initView();
         //初始化适配器
         initAdapter();
-
         //绑定适配器
         bindAdapter();
-
         //设置监听
         initListener();
+        //默认页面全部选项的刷新。
+        initAllBtnRefresh();
 
         return view;
     }
 
+    //默认页面全部选项的刷新。
+    private void initAllBtnRefresh() {
+        startNum = 0;
+        sizeNum = 20;
+        rightRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
+        rightRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                mItems.clear();
+                startNum = 0;
+                sizeNum = 20;
+                rightListViewData(0, startNum, sizeNum);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+            }
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                startNum += 20;
+                sizeNum += 20;
+                rightListViewData(0, startNum, sizeNum);
+            }
+        });
     }
+
 
     //设置监听
     private void initListener() {
@@ -126,10 +138,10 @@ public class AssortmentFragment extends Fragment {
         leftListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               //加载标题
+                //加载标题
                 rightTitleData(position);
                 mItems.clear();//清空列表内容
-                rightListViewData(position, 0, 20);//设置默认内容
+                rightListViewData(position, 0, 20);//设置默认内容，显示各子项的全部信息
                 refreshRightContent(0, position);//刷新
             }
         });
@@ -147,7 +159,6 @@ public class AssortmentFragment extends Fragment {
         final int size = buttonList.size();
         for (int i = 0; i < size; i++) {
             Button button = new Button(getActivity());
-            button.setGravity(Gravity.CENTER);
             button.setTag(i);
             button.setTextSize(12);
             button.setBackgroundResource(R.drawable.assortment_right_title_text_style);
@@ -193,7 +204,8 @@ public class AssortmentFragment extends Fragment {
 
     //右边listview刷新
     private void refreshRightContent(final int tag, final int position) {
-        rightRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
+        startNum = 0;
+        sizeNum = 20;
         rightRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -231,9 +243,6 @@ public class AssortmentFragment extends Fragment {
 
     //加载分类子项数据
     private void rightListContentFL(String title, int position, int startNum, int sizeNum) {
-        String city = sharedPreferences.getString("cityName", "北京");
-        String lot = sharedPreferences.getString("lot", "0");
-        String lat = sharedPreferences.getString("lat", "0");
         String start = startNum + "";
         String size = sizeNum + "";
         String category = categoryIds.get(position);
@@ -280,7 +289,7 @@ public class AssortmentFragment extends Fragment {
         //右边标题
         linearLayoutTitle = (LinearLayout) view.findViewById(R.id.assortment_right_linearLayout);
 
-         //程序调试，请删掉！
+        //程序调试，请删掉！
         TextView text = (TextView) view.findViewById(R.id.assortment_left_header);
         text.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -317,17 +326,24 @@ public class AssortmentFragment extends Fragment {
 
     //初始化数据
     private void initData() {
+        mItems.clear();
+        categoryIds.clear();
+        names.clear();
+        buttonMap.clear();
+        buttonList.clear();
+        sharedPreferences = getActivity().getSharedPreferences("location", Context.MODE_PRIVATE);
+        city = sharedPreferences.getString("cityName", "北京");
+        lot = sharedPreferences.getString("lot", "0");
+        lat = sharedPreferences.getString("lat", "0");
         //初始化左边ListView数据
         leftListViewData();
+
 
     }
 
 
     //加载右边listview数据
     private void rightListViewData(int position, int startNum, int sizeNum) {
-        String city = sharedPreferences.getString("cityName", "北京");
-        String lot = sharedPreferences.getString("lot", "0");
-        String lat = sharedPreferences.getString("lat", "0");
         String start = startNum + "";
         String size = sizeNum + "";
         //根据左边项目名称获取相应内容
@@ -364,9 +380,6 @@ public class AssortmentFragment extends Fragment {
 
     //加载左边listview数据
     private void leftListViewData() {
-        String city = URLEncoder.encode(sharedPreferences.getString("cityName", "北京"));
-        String lot = sharedPreferences.getString("lot", "0");
-        String lat = sharedPreferences.getString("lat", "0");
         OkHttpUtils.get()
                 .url(AssortmentURL.ASSORTMENT_CATEGORY)
                 .addParams("manualCity", city).addParams("lot", lot).addParams("lat", lat)
@@ -374,7 +387,6 @@ public class AssortmentFragment extends Fragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
                     }
 
                     @Override
@@ -392,11 +404,12 @@ public class AssortmentFragment extends Fragment {
                             names.add(name);
                             buttonMap.put(name, rbList);
                         }
+                        leftListView.setItemChecked(0, true);
                         leftAdapter.notifyDataSetChanged();
                         //初始化右边标题内容默认为左边第一项
                         rightTitleData(0);
                         //设置右边listview默认数据为左边列表全部详情
-                        rightListViewData(0, 0, 10);
+                        rightListViewData(0, 0, 20);
                     }
                 });
     }
