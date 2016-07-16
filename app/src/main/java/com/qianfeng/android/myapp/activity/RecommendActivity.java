@@ -23,7 +23,6 @@ import okhttp3.Call;
 
 public class RecommendActivity extends AppCompatActivity {
 
-
     private HomeFootGridViewAdapter adapter;
     private GridView gridView;
     private ImageView back;
@@ -64,7 +63,6 @@ public class RecommendActivity extends AppCompatActivity {
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-
                 index += 10;
                 initData();
             }

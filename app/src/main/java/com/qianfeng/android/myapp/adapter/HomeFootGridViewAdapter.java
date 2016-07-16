@@ -1,6 +1,7 @@
 package com.qianfeng.android.myapp.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,10 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
+
     public void upData(List<FootInfo.DataBean> list) {
-        if (data ==null){
-        data=new ArrayList<>();
+        if (data == null) {
+            data = new ArrayList<>();
         }
         data.addAll(list);
     }
@@ -58,7 +60,6 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.home_foot_view_item, parent, false);
             viewHolder = new ViewHolder();
-
             viewHolder.imageView = (ImageView) view.findViewById(R.id.home_page_foot_iv);
             viewHolder.tag = new ImageView[2];
             viewHolder.tag[0] = (ImageView) view.findViewById(R.id.home_page_foot_tagIcon1);
@@ -71,11 +72,18 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        FootInfo .DataBean item = data.get(position);
+        FootInfo.DataBean item = data.get(position);
         Glide.with(context).load(item.getImgUrl()).into(viewHolder.imageView);
-        viewHolder.title.setText(" "+item.getTitle());
-        viewHolder.count.setText("已接" + item.getOrderTakingCount() + "单");
-        viewHolder.evaluate.setText("好评" + item.getPositiveCommentRate());
+        viewHolder.title.setText(" " + item.getTitle());
+
+        int num = item.getOrderTakingCount();
+        viewHolder.count.setText("已接" + num + "单");
+        if (num > 0) {
+            viewHolder.evaluate.setText("好评" + item.getPositiveCommentRate());
+        } else {
+            viewHolder.evaluate.setText("暂无评价");
+
+        }
         List list = item.getTagIcons();
         if (list != null) {
             for (int i = 0; i < list.size(); i++) {
