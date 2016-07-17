@@ -233,8 +233,6 @@ public class HomePageFragment extends Fragment {
 
     public void loadFootData() {
         //底部footView
-
-        Log.i("test", "loadFootData: "+UrlConfig.getRecommendServiceUrl(city, lot, lat, index));
         if (index == 0) {
             footGridViewAdapter = new HomeFootGridViewAdapter(mContext);
             footGrid.setAdapter(footGridViewAdapter);

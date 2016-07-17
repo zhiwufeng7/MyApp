@@ -14,10 +14,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.fragment.AssortmentFragment;
 import com.qianfeng.android.myapp.fragment.HomePageFragment;
+import com.qianfeng.android.myapp.fragment.OrderFormFragment;
+import com.qianfeng.android.myapp.fragment.ShoppingFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private int curIndex;
     private HomePageFragment homePageFragment;
     private FrameLayout viewGroup;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,23 +71,42 @@ public class MainActivity extends AppCompatActivity {
                 switch (checkedId) {
 
                     case R.id.main_bottom_home_rb:
+                        //显示地址和搜索按钮
+                        title.setText("");
+                        address.setVisibility(View.VISIBLE);
+                        search.setVisibility(View.VISIBLE);
                         //点击首页按钮切换第一个fragment
                         switchFragment(0);
                         break;
                     case R.id.main_bottom_assortment_rb:
+                        //显示地址和搜索按钮
+                        title.setText("");
+                        address.setVisibility(View.VISIBLE);
+                        search.setVisibility(View.VISIBLE);
                         //点击分类按钮切换第二个fragment
                         switchFragment(1);
                         break;
                     case R.id.main_bottom_shopping_rb:
+                        //隐藏地址和搜索按钮 设置标题
+                        address.setVisibility(View.INVISIBLE);
+                        search.setVisibility(View.INVISIBLE);
+                        title.setText("购物车");
                         //点击购物车按钮切换第三个fragment
-
-                       // switchFragment(2);
+                         switchFragment(2);
                         break;
                     case R.id.main_bottom_order_form_rb:
+                        //隐藏地址和搜索按钮 设置标题
+                        address.setVisibility(View.INVISIBLE);
+                        search.setVisibility(View.INVISIBLE);
+                        title.setText("我的订单");
                         //点击订单按钮切换第四个fragment
-                       // switchFragment(3);
+                         switchFragment(3);
                         break;
                     case R.id.main_bottom_my_rb:
+                        //隐藏地址和搜索按钮 设置标题
+                        address.setVisibility(View.INVISIBLE);
+                        search.setVisibility(View.INVISIBLE);
+                        title.setText("我的");
                         //点击我的按钮切换第五个fragment
                         //switchFragment(4);
                         break;
@@ -99,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         //初始化fragment
         manager = getSupportFragmentManager();
         FragmentTransaction transition = manager.beginTransaction();
-       homePageFragment = new HomePageFragment();
+        homePageFragment = HomePageFragment.newInstance();
         transition.add(R.id.main_content_fl, homePageFragment);
         transition.commit();
 
@@ -110,19 +133,19 @@ public class MainActivity extends AppCompatActivity {
         fragmentList = new ArrayList<>();
         fragmentList.add(homePageFragment);
         fragmentList.add(AssortmentFragment.newInstance(null));
-       // fragmentList.add(homePageFragment);
-       // fragmentList.add(homePageFragment);
-       // fragmentList.add(homePageFragment);
+        fragmentList.add(ShoppingFragment.newInstance());
+        fragmentList.add(OrderFormFragment.newInstance());
+
     }
 
     private void initView() {
 
-       viewGroup= (FrameLayout) findViewById(R.id.main_content_fl);
+        viewGroup = (FrameLayout) findViewById(R.id.main_content_fl);
         radioGroup = (RadioGroup) findViewById(R.id.main_bottom_rg);
         search = (Button) findViewById(R.id.main_top_search_btn);
         message = (Button) findViewById(R.id.main_top_msg_btn);
         address = (Button) findViewById(R.id.main_top_address_btn);
-
+        title = (TextView) findViewById(R.id.main_top_tv_show);
     }
 
     /**
@@ -135,17 +158,20 @@ public class MainActivity extends AppCompatActivity {
 
         switch (view.getId()) {
             case R.id.main_top_address_btn:
-//                点击地址按钮，跳转mapActivity
+//               点击地址按钮，跳转mapActivity
                 intent.setClass(this, MapActivity.class);
                 startActivityForResult(intent, 3);
                 break;
             case R.id.main_top_msg_btn:
 
+
                 break;
 
             case R.id.main_top_search_btn:
+
                 intent.setClass(this, SearchActivity.class);
                 startActivity(intent);
+
                 break;
         }
     }
@@ -154,10 +180,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 3 && resultCode == 1) {
             initData();
-           homePageFragment.initData();
-            homePageFragment.index=0;
+            homePageFragment.initData();
+            homePageFragment.index = 0;
             homePageFragment.loadFootData();
-            if(fragmentList.get(1).isAdded()){
+            if (fragmentList.get(1).isAdded()) {
                 AssortmentFragment assortmentFragment = (AssortmentFragment) (fragmentList.get(1));
                 assortmentFragment.refresh();
             }
