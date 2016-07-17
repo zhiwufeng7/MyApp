@@ -17,6 +17,7 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:id="@+id/shopping_empty_btn"
         android:layout_marginTop="20dp"
         android:textColor="@color/white"
         android:text="@string/shopping_empty_button"

@@ -28,7 +28,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RadioGroup radioGroup;
+    public RadioGroup radioGroup;
     private List<Fragment> fragmentList;
     private Button search;
     private Button message;
