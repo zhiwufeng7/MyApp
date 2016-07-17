@@ -5,7 +5,7 @@
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="70dp"
         android:orientation="vertical">
         <TextView
             android:text="定位"
@@ -36,36 +36,13 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:paddingRight="50dp"
+                android:layout_marginRight="50dp"
                 android:src="@drawable/img_refresh"
                 android:background="@null"
                 android:onClick="onRefresh"
                 />
 
         </RelativeLayout>
-
-        <TextView
-            android:text="热门"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/min_text_size"
-            android:paddingLeft="@dimen/activity_padding"
-            />
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-            <com.qianfeng.android.myapp.widget.MyGridView
-                android:id="@+id/cut_city_head_gv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/activity_padding"
-                android:numColumns="4"
-                >
-
-            </com.qianfeng.android.myapp.widget.MyGridView>
-        </FrameLayout>
 
     </LinearLayout>
 </LinearLayout>

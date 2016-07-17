@@ -1,28 +1,27 @@
 package com.qianfeng.android.myapp.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.model.LatLng;
+import com.bigkoo.quicksidebar.QuickSideBarTipsView;
+import com.bigkoo.quicksidebar.QuickSideBarView;
+import com.bigkoo.quicksidebar.listener.OnQuickSideBarTouchListener;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.adapter.CutCityExpadnListAdapter;
 import com.qianfeng.android.myapp.adapter.HotCityAdapter;
-import com.qianfeng.android.myapp.adapter.PlotListAdapter;
 import com.qianfeng.android.myapp.bean.City;
 import com.qianfeng.android.myapp.data.Url;
 import com.qianfeng.android.myapp.widget.MyGridView;
@@ -53,6 +52,9 @@ public class CutCityActivity extends AppCompatActivity {
     private ImageButton location_btn;
     private String lat;
     private String lot;
+    private QuickSideBarView quickSideBarView;
+    private QuickSideBarTipsView quickSideBarTipsView;
+    private View headView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,31 @@ public class CutCityActivity extends AppCompatActivity {
                 intent.putExtra("cityName",cityName);
                 CutCityActivity.this.setResult(1,intent);
                 CutCityActivity.this.finish();
+            }
+        });
+
+        quickSideBarView.setOnQuickSideBarTouchListener(new OnQuickSideBarTouchListener() {
+            @TargetApi(Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onLetterChanged(String letter, int position, float y) {
+                quickSideBarTipsView.setText(letter, position, y);
+                switch (position){
+                    case 0:
+                        elv.setSelection(0);
+                        break;
+                    case 1:
+                        elv.setSelection(1);
+                        break;
+                    default:
+                        elv.setSelectedGroup(position-2);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onLetterTouching(boolean touching) {
+                quickSideBarTipsView.setVisibility(touching? View.VISIBLE:View.INVISIBLE);
             }
         });
     }
@@ -167,6 +194,11 @@ public class CutCityActivity extends AppCompatActivity {
     }
 
     private void setAdapter() {
+        ArrayList<String> letters = new ArrayList<>();
+        letters.add("*");
+        letters.add("#");
+        letters.addAll(groupName);
+        quickSideBarView.setLetters(letters);
         elv.setAdapter(new CutCityExpadnListAdapter(this,groupName,cityMap));
         //设置ExpandableListView点击不收缩
         elv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -219,10 +251,14 @@ public class CutCityActivity extends AppCompatActivity {
     private void initView() {
         elv = (ExpandableListView) findViewById(R.id.cut_city_elv);
         headView = LayoutInflater.from(this).inflate(R.layout.cut_city_head, null);
+        headView2 = LayoutInflater.from(this).inflate(R.layout.cut_city_head2, null);
         elv.addHeaderView(headView);
-        gv = (MyGridView) headView.findViewById(R.id.cut_city_head_gv);
+        elv.addHeaderView(headView2);
+        gv = (MyGridView) headView2.findViewById(R.id.cut_city_head_gv);
         my_city = (TextView)headView.findViewById(R.id.cut_city_head_my_city_tv);
         location_btn = (ImageButton)headView.findViewById(R.id.cut_city_head_location_btn);
+        quickSideBarView = (QuickSideBarView) findViewById(R.id.quickSideBarView);
+        quickSideBarTipsView = (QuickSideBarTipsView) findViewById(R.id.quickSideBarTipsView);
     }
 
     public void onBack(View view) {
@@ -231,6 +267,7 @@ public class CutCityActivity extends AppCompatActivity {
 
 
     public void onRefresh(View view) {
+        view.startAnimation(AnimationUtils.loadAnimation(this, R.anim.refresh_loction_btn));
         mLocationClient.start();
         my_city.setText("正在定位中...");
     }
