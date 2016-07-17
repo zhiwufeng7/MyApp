@@ -49,7 +49,7 @@ public class SearchContentActivity extends AppCompatActivity implements View.OnC
     private String sort_by = "auto";
     private String sort = "desc";
     private String[] sorts = {"auto", "sale", "price", "comment"};
-    boolean order = true;
+    boolean order = false;
     private ArrayList<RadioButton> radioButtons;
     private SharedPreferences sharedPreferences;
     private PullToRefreshListView pull;
