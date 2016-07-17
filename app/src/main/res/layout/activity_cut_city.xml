@@ -69,5 +69,15 @@
             app:sidebarTextColorChoose="@color/colorPrimary"
             app:sidebarTextSize="@dimen/textSize_quicksidebar"
             app:sidebarTextSizeChoose="@dimen/textSize_quicksidebar_choose" />
+        <TextView
+            android:id="@+id/cut_city_group_name"
+            android:text="定位"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/min_text_size"
+            android:paddingLeft="@dimen/activity_padding"
+            android:background="@color/backColor"
+            />
     </RelativeLayout>
 </LinearLayout>

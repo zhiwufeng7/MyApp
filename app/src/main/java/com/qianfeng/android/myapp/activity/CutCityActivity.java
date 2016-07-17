@@ -8,10 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -43,7 +45,7 @@ public class CutCityActivity extends AppCompatActivity {
     private String cityName;
     private ExpandableListView elv;
     private ArrayList<City> hotCitys;
-    private HashMap<String,  ArrayList<City>> cityMap;
+    private HashMap<String, ArrayList<City>> cityMap;
     private ArrayList<String> a_z;
     private ArrayList<String> groupName;
     private View headView;
@@ -55,6 +57,7 @@ public class CutCityActivity extends AppCompatActivity {
     private QuickSideBarView quickSideBarView;
     private QuickSideBarTipsView quickSideBarTipsView;
     private View headView2;
+    private TextView cut_city_group_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +78,10 @@ public class CutCityActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 City city = cityMap.get(groupName.get(groupPosition)).get(childPosition);
                 Intent intent = new Intent();
-                intent.putExtra("lot",city.getLot());
-                intent.putExtra("lat",city.getLat());
-                intent.putExtra("cityName",city.getName());
-                CutCityActivity.this.setResult(1,intent);
+                intent.putExtra("lot", city.getLot());
+                intent.putExtra("lat", city.getLat());
+                intent.putExtra("cityName", city.getName());
+                CutCityActivity.this.setResult(1, intent);
                 CutCityActivity.this.finish();
                 return true;
             }
@@ -89,10 +92,10 @@ public class CutCityActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 City city = hotCitys.get(position);
                 Intent intent = new Intent();
-                intent.putExtra("lot",city.getLot());
-                intent.putExtra("lat",city.getLat());
-                intent.putExtra("cityName",city.getName());
-                CutCityActivity.this.setResult(1,intent);
+                intent.putExtra("lot", city.getLot());
+                intent.putExtra("lat", city.getLat());
+                intent.putExtra("cityName", city.getName());
+                CutCityActivity.this.setResult(1, intent);
                 CutCityActivity.this.finish();
             }
         });
@@ -101,10 +104,10 @@ public class CutCityActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("lot",lot);
-                intent.putExtra("lat",lat);
-                intent.putExtra("cityName",cityName);
-                CutCityActivity.this.setResult(1,intent);
+                intent.putExtra("lot", lot);
+                intent.putExtra("lat", lat);
+                intent.putExtra("cityName", cityName);
+                CutCityActivity.this.setResult(1, intent);
                 CutCityActivity.this.finish();
             }
         });
@@ -114,15 +117,18 @@ public class CutCityActivity extends AppCompatActivity {
             @Override
             public void onLetterChanged(String letter, int position, float y) {
                 quickSideBarTipsView.setText(letter, position, y);
-                switch (position){
+                switch (position) {
                     case 0:
                         elv.setSelection(0);
+                        cut_city_group_name.setText("定位");
                         break;
                     case 1:
                         elv.setSelection(1);
+                        cut_city_group_name.setText("热门");
                         break;
                     default:
-                        elv.setSelectedGroup(position-2);
+                        cut_city_group_name.setText(letter);
+                        elv.setSelectedGroup(position - 2);
                         break;
                 }
 
@@ -130,10 +136,54 @@ public class CutCityActivity extends AppCompatActivity {
 
             @Override
             public void onLetterTouching(boolean touching) {
-                quickSideBarTipsView.setVisibility(touching? View.VISIBLE:View.INVISIBLE);
+                quickSideBarTipsView.setVisibility(touching ? View.VISIBLE : View.INVISIBLE);
             }
         });
+
+        elv.setOnScrollListener(new AbsListView.OnScrollListener() {
+            boolean start;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState != 0) {
+                    start = true;
+                } else {
+                    start = false;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (start) {
+                    switch (firstVisibleItem) {
+                        case 0:
+                            cut_city_group_name.setText("定位");
+                            break;
+                        case 1:
+                            cut_city_group_name.setText("热门");
+                            break;
+                        default:
+                            setGroupName(firstVisibleItem);
+                            break;
+                    }
+                }
+            }
+        });
+
     }
+
+    private void setGroupName(int item) {
+        item -= 2;
+        for (int i = 0; i < groupName.size(); i++) {
+            String name = groupName.get(i);
+            item -= (cityMap.get(name).size() + 1);
+            if (item < 0) {
+                cut_city_group_name.setText(name);
+                return;
+            }
+        }
+    }
+
 
     private void initData() {
         OkHttpUtils.get().url(Url.CITY_LIST)
@@ -166,10 +216,10 @@ public class CutCityActivity extends AppCompatActivity {
                                 String name = object.getString("name");
                                 String lot = object.getString("lot");
                                 String lat = object.getString("lat");
-                                City item = new City(name,lot,lat);
+                                City item = new City(name, lot, lat);
                                 hotCitys.add(item);
                             }
-                            for (int i = 0; i < a_z.size(); i++){
+                            for (int i = 0; i < a_z.size(); i++) {
                                 JSONArray cityArray = data.getJSONArray(a_z.get(i));
                                 ArrayList<City> citys = new ArrayList<>();
                                 for (int n = 0; n < cityArray.length(); n++) {
@@ -177,12 +227,12 @@ public class CutCityActivity extends AppCompatActivity {
                                     String name = object.getString("name");
                                     String lot = object.getString("lot");
                                     String lat = object.getString("lat");
-                                    City item = new City(name,lot,lat);
+                                    City item = new City(name, lot, lat);
                                     citys.add(item);
                                 }
-                                if (citys.size()>0){
+                                if (citys.size() > 0) {
                                     groupName.add(a_z.get(i));
-                                    cityMap.put(a_z.get(i),citys);
+                                    cityMap.put(a_z.get(i), citys);
                                 }
                             }
                         } catch (JSONException e) {
@@ -199,7 +249,7 @@ public class CutCityActivity extends AppCompatActivity {
         letters.add("#");
         letters.addAll(groupName);
         quickSideBarView.setLetters(letters);
-        elv.setAdapter(new CutCityExpadnListAdapter(this,groupName,cityMap));
+        elv.setAdapter(new CutCityExpadnListAdapter(this, groupName, cityMap));
         //设置ExpandableListView点击不收缩
         elv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -214,7 +264,7 @@ public class CutCityActivity extends AppCompatActivity {
         for (int i = 0; i < groupName.size(); i++) {
             elv.expandGroup(i);
         }
-        gv.setAdapter(new HotCityAdapter(this,R.layout.hot_city_item,hotCitys));
+        gv.setAdapter(new HotCityAdapter(this, R.layout.hot_city_item, hotCitys));
     }
 
     private void setLocationClient() {
@@ -227,8 +277,8 @@ public class CutCityActivity extends AppCompatActivity {
                 my_city.setText(cityName);
                 double latNum = bdLocation.getLatitude();
                 double lotNum = bdLocation.getLongitude();
-                lat=String.valueOf(latNum);
-                lot=String.valueOf(lotNum);
+                lat = String.valueOf(latNum);
+                lot = String.valueOf(lotNum);
                 mLocationClient.stop();
             }
         });
@@ -255,10 +305,11 @@ public class CutCityActivity extends AppCompatActivity {
         elv.addHeaderView(headView);
         elv.addHeaderView(headView2);
         gv = (MyGridView) headView2.findViewById(R.id.cut_city_head_gv);
-        my_city = (TextView)headView.findViewById(R.id.cut_city_head_my_city_tv);
-        location_btn = (ImageButton)headView.findViewById(R.id.cut_city_head_location_btn);
+        my_city = (TextView) headView.findViewById(R.id.cut_city_head_my_city_tv);
+        location_btn = (ImageButton) headView.findViewById(R.id.cut_city_head_location_btn);
         quickSideBarView = (QuickSideBarView) findViewById(R.id.quickSideBarView);
         quickSideBarTipsView = (QuickSideBarTipsView) findViewById(R.id.quickSideBarTipsView);
+        cut_city_group_name = (TextView) findViewById(R.id.cut_city_group_name);
     }
 
     public void onBack(View view) {
