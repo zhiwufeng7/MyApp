@@ -80,6 +80,15 @@
         android:onClick="onClick"
         android:drawableLeft="@drawable/btn_title_search" />
 
+    <TextView
+        android:id="@+id/main_top_tv_show"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/big_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/title_height" />
+
     <FrameLayout
         android:layout_below="@id/main_top_search_btn"
         android:id="@+id/main_content_fl"

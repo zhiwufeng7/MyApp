@@ -13,4 +13,13 @@
     <string name="home_page_recommend_service">----------  推荐服务商  ----------</string>
     <string name="title_activity_recommend_service">RecommendServiceActivity</string>
     <string name="activity_recommend_service">推荐服务商</string>
+    <string name="order_form_all">全部</string>
+    <string name="order_form_obligation">待付款</string>
+    <string name="order_form_untreated">未处理</string>
+    <string name="order_form_under_way">进行中</string>
+    <string name="order_form_assess">待评价</string>
+    <string name="order_form_no_order">亲，您还没有订单</string>
+    <string name="shopping_empty_text">您还什么都没买呢</string>
+    <string name="shopping_empty_button">去逛逛</string>
+
 </resources>

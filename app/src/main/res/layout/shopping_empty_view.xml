@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:gravity="center"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:src="@drawable/no_cart_data"
+        />
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:text="@string/shopping_empty_text"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/shopping_empty_btn"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:text="@string/shopping_empty_button"
+        android:background="@color/red"
+        android:layout_width="80dp"
+        android:layout_height="40dp" />
+
+
+</LinearLayout>

@@ -43,10 +43,11 @@
         <activity android:name=".activity.CutCityActivity" />
         <activity android:name=".activity.PlotSearchActivity" />
         <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.RecommendActivity"/>
+        <activity android:name=".activity.RecommendActivity" />
         <activity android:name=".activity.SearchContentActivity" />
-        <activity android:name=".activity.ProjectListActivity"/>
-        <activity android:name=".activity.ServiceTypeActivity"/>
+        <activity android:name=".activity.ProjectListActivity" />
+
+
         <!-- 百度地图 -->
         <service
             android:name="com.baidu.location.f"
@@ -57,8 +58,7 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="yH3AI0G9S3ZY7sNjcXYiL585hcjYHWPx" />
 
-        <activity android:name=".activity.ServiceTypeActivity" />
-        <activity android:name=".activity.ProjectListActivity"></activity>
+
     </application>
 
 </manifest>
