@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="E:\AndroidStudioProjects\MyApp\Pull\src\main\assets"/><source path="E:\AndroidStudioProjects\MyApp\Pull\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="E:\AndroidStudioProjects\MyApp\Pull\src\release\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="D:\workSpace\MyApp\Pull\src\main\assets"/><source path="D:\workSpace\MyApp\Pull\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="D:\workSpace\MyApp\Pull\src\release\assets"/></dataSet></merger>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -232,6 +233,7 @@ public class HomePageFragment extends Fragment {
     public void loadFootData() {
         //底部footView
 
+        Log.i("test", "loadFootData: "+UrlConfig.getRecommendServiceUrl(city, lot, lat, index));
         if (index == 0) {
             footGridViewAdapter = new HomeFootGridViewAdapter(mContext);
             footGrid.setAdapter(footGridViewAdapter);

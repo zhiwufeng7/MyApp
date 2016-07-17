@@ -42,7 +42,7 @@ public class UrlConfig {
 
     //首页--推荐服务商（传入城市 和经纬度）
     public static String getRecommendServiceUrl(String city, String lot, String lat,int index) {
-        return "http://api.daoway.cn/daoway/rest/services?start="+(index-10)+"&size="+index+"&manualCity="
+        return "http://api.daoway.cn/daoway/rest/services?start="+(index-10)+"&size=10&manualCity="
                 + city + "&lot=" + lot + "&lat=" + lat + "&includeNotInScope=true";
     }
 }
