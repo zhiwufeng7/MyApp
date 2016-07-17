@@ -99,6 +99,7 @@ public class HomePageFragment extends Fragment {
         initHeardView(headerView);
         initFootView(footView);
 
+
         //添加头部视图
         expandListView.addHeaderView(headerView);
         //添加底部视图
