@@ -1,2 +1,2 @@
-include ':app', ':greendao'
+include ':app', ':greendao', ':PullToZoomView'
 include ':Pull'

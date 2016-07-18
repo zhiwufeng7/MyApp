@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.ecloud.pulltozoomview.PullToZoomScrollViewEx
+        android:id="@+id/merchant_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <com.ecloud.pulltozoomview.TransparentToolBar
+        android:id="@+id/merchant_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        >
+
+    </com.ecloud.pulltozoomview.TransparentToolBar>
+</RelativeLayout>

@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Pull" />
+            <option value="$PROJECT_DIR$/PullToZoomView" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/greendao" />
           </set>
@@ -18,6 +19,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Pull" />
+            <option value="$PROJECT_DIR$/PullToZoomView" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/greendao" />
           </set>

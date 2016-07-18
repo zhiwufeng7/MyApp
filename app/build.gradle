@@ -43,4 +43,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'org.greenrobot:greendao:2.2.0'
     compile 'com.bigkoo:quicksidebar:1.0.2'
+    compile project(':PullToZoomView')
 }

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MyApp.iml" filepath="$PROJECT_DIR$/MyApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/Pull/Pull.iml" filepath="$PROJECT_DIR$/Pull/Pull.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PullToZoomView/PullToZoomView.iml" filepath="$PROJECT_DIR$/PullToZoomView/PullToZoomView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/greendao/greendao.iml" filepath="$PROJECT_DIR$/greendao/greendao.iml" />
     </modules>
