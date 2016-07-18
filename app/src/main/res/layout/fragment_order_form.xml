@@ -15,6 +15,7 @@
     android:layout_height="@dimen/title_height">
 
     <TextView
+        android:textColor="@color/black"
         android:text="@string/order_form_all"
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -25,9 +26,10 @@
         android:layout_marginBottom="5dp"
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/black"/>
+        android:background="@color/gloomy"/>
 
     <TextView
+        android:textColor="@color/black"
         android:text="@string/order_form_obligation"
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -38,8 +40,9 @@
         android:layout_marginBottom="5dp"
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/black"/>
+        android:background="@color/gloomy"/>
     <TextView
+        android:textColor="@color/black"
         android:text="@string/order_form_untreated"
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -50,8 +53,9 @@
         android:layout_marginBottom="5dp"
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/black"/>
+        android:background="@color/gloomy"/>
     <TextView
+        android:textColor="@color/black"
         android:text="@string/order_form_under_way"
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -62,8 +66,9 @@
         android:layout_marginBottom="5dp"
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/black"/>
+        android:background="@color/gloomy"/>
     <TextView
+        android:textColor="@color/black"
         android:text="@string/order_form_assess"
         android:layout_width="0dp"
         android:layout_weight="1"

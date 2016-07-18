@@ -4,11 +4,17 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     >
-
+    <FrameLayout
+        android:id="@+id/main_radio_lay"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        >
     <RadioGroup
         android:id="@+id/main_bottom_rg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_height"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="@color/white"
@@ -45,8 +51,24 @@
             android:drawableTop="@drawable/slt_main_bottom_my"
             android:text="@string/main_bottom_my" />
     </RadioGroup>
+    <TextView
+        android:layout_marginLeft="12dp"
+        android:id="@+id/main_shopping_cart_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:background="@drawable/shapecount"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="#ffffffff"
+        android:textSize="10sp"
+        android:text="5"
+        android:visibility="invisible"
+        />
+    </FrameLayout>
     <View
-        android:layout_above="@id/main_bottom_rg"
+        android:layout_above="@id/main_radio_lay"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray"
@@ -94,7 +116,7 @@
         android:id="@+id/main_content_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/main_bottom_rg"
+        android:layout_above="@id/main_radio_lay"
         android:background="@color/backColor"
      />
 

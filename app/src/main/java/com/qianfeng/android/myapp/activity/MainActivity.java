@@ -4,6 +4,7 @@ package com.qianfeng.android.myapp.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -17,6 +18,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.dao.DaoMaster;
+import com.qianfeng.android.myapp.dao.DaoSession;
+import com.qianfeng.android.myapp.dao.ShoppingCart;
+import com.qianfeng.android.myapp.dao.ShoppingCartDao;
 import com.qianfeng.android.myapp.fragment.AssortmentFragment;
 import com.qianfeng.android.myapp.fragment.HomePageFragment;
 import com.qianfeng.android.myapp.fragment.MyFragment;
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private HomePageFragment homePageFragment;
     private FrameLayout viewGroup;
     private TextView title;
+    private TextView shoppingCartNo;
 
 
     @Override
@@ -149,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         address = (Button) findViewById(R.id.main_top_address_btn);
         title = (TextView) findViewById(R.id.main_top_tv_show);
 
-
+        shoppingCartNo = (TextView) findViewById(R.id.main_shopping_cart_tv);
 
 
     }
@@ -214,4 +220,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         //super.onSaveInstanceState(outState);
     }
+
+    public void initShoppingCart() {
+
+        //创建一个开发环境的Helper类，如果是正式环境调用DaoMaster.OpenHelper
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this, "liuzhao", null);
+        //通过Handler类获得数据库对象
+        SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
+        //通过数据库对象生成DaoMaster对象
+        DaoMaster daoMaster = new DaoMaster(readableDatabase);
+        //获取DaoSession对象
+        DaoSession daoSession = daoMaster.newSession();
+        //通过DaoSeesion对象获得CustomerDao对象
+        ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
+        List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
+        if (shoppingCarts==null || shoppingCarts.size()==0){
+            shoppingCartNo.setVisibility(View.INVISIBLE);
+            return;
+        }
+        int sum = 0;
+        for (int i = 0; i < shoppingCarts.size(); i++) {
+           sum+= shoppingCarts.get(i).getBuyNum();
+        }
+        if (sum>99){
+            shoppingCartNo.setText("99+");
+        }else {
+            shoppingCartNo.setText(sum+"");
+        }
+
+    }
+
+
 }
