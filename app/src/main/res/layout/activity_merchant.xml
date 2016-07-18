@@ -11,6 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
         >
-
+        <ImageButton
+            android:id="@+id/merchant_ib_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_padding"
+            android:src="@drawable/btn_left_back_3"
+            android:background="@null"
+            />
+        <TextView
+            android:id="@+id/merchant_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/big_text_size"
+            android:text="商家名"
+            android:layout_centerInParent="true"
+            />
+        <ImageButton
+            android:id="@+id/merchant_ib_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_padding"
+            android:src="@drawable/btn_menu_3"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            />
     </com.ecloud.pulltozoomview.TransparentToolBar>
 </RelativeLayout>

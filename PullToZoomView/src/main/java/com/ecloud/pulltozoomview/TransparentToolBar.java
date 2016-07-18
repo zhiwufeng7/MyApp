@@ -7,7 +7,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * Created by hrz on 2016/7/3.
@@ -15,10 +17,14 @@ import android.widget.RelativeLayout;
 public class TransparentToolBar extends RelativeLayout {
 
     private static final String TAG = TransparentToolBar.class.getSimpleName();
-    private static final String TRANS_COLOR = "#00000000";//默认透明颜色
+    private static final String TRANS_COLOR = "#00ffffff";//默认透明颜色
     private float mOffset = 0;//ToolBar从透明到有颜色的偏移量
     private int mBackGroundColor = 0;//ToolBar背景色
     private OnScrollStateListener mOnScrollStateListener;
+    private TextView tv_name;
+    private ImageButton ib_back;
+    private ImageButton ib_menu;
+    private int mNameTVColor = 0;
 
     public TransparentToolBar(Context context) {
         super(context);
@@ -50,6 +56,10 @@ public class TransparentToolBar extends RelativeLayout {
         mBackGroundColor = color;
     }
 
+    public void setNameTVColor(int color) {
+        mNameTVColor = color;
+    }
+
     /** 改变ToolBar颜色透明度 */
     public void setChangeTop(float top) {
         //如果没有设置最大偏移量与背景色。则不会执行
@@ -73,12 +83,24 @@ public class TransparentToolBar extends RelativeLayout {
         //计算出最新的背景色颜色值，设置到toolBar背景色中
         int newColor = changeAlpha(mBackGroundColor, fraction);
         setBackgroundColor(newColor);
+        newColor = changeAlpha(mNameTVColor, fraction);
+        tv_name.setTextColor(newColor);
+        if (fraction<0.5){
+            ib_back.setImageDrawable(getResources().getDrawable(R.drawable.btn_left_back_3));
+            ib_menu.setImageDrawable(getResources().getDrawable(R.drawable.btn_menu_3));
+            ib_back.setAlpha(1-fraction*2);
+            ib_menu.setAlpha(1-fraction*2);
+        }else {
+            ib_back.setImageDrawable(getResources().getDrawable(R.drawable.back_red));
+            ib_menu.setImageDrawable(getResources().getDrawable(R.drawable.mune_red));
+            ib_back.setAlpha(fraction*2-1);
+            ib_menu.setAlpha(fraction*2-1);
+        }
 
         if(mOnScrollStateListener != null) {
             mOnScrollStateListener.updateFraction(fraction);
         }
 
-        Log.i(TAG, "mOffset:" + mOffset + " ,top:" + top + ", newColor:" + newColor + " ,fraction:" + fraction);
     }
 
     /** 根据百分比改变颜色透明度 */
@@ -98,4 +120,16 @@ public class TransparentToolBar extends RelativeLayout {
         mOnScrollStateListener = listener;
     }
 
+    public void setNameTV(TextView tv_name) {
+        this.tv_name = tv_name;
+        tv_name.setTextColor(Color.parseColor(TRANS_COLOR));
+    }
+
+    public void setBackIB(ImageButton ib_back) {
+        this.ib_back = ib_back;
+    }
+
+    public void setMenuIB(ImageButton ib_menu) {
+        this.ib_menu = ib_menu;
+    }
 }
