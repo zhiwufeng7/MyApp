@@ -14,6 +14,7 @@
         android:layout_height="40dp">
 
         <ImageView
+            android:id="@+id/project_back_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -43,6 +44,7 @@
         </RadioGroup>
 
         <ImageView
+            android:id="@+id/project_search_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -68,6 +70,7 @@
             android:layout_marginRight="5dp"
             />
         <ImageView
+            android:id="@+id/project_tableLayout_slide_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/btn_arrow_right_gray"

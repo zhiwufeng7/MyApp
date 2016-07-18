@@ -38,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import okhttp3.Call;
 
 
@@ -122,6 +124,7 @@ public class AssortmentFragment extends Fragment {
                 rightListViewData(0, startNum, sizeNum);
 
             }
+
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
                 startNum += 20;
@@ -289,6 +292,30 @@ public class AssortmentFragment extends Fragment {
         //右边标题
         linearLayoutTitle = (LinearLayout) view.findViewById(R.id.assortment_right_linearLayout);
 
+        //调试，请删除
+        TextView textView = (TextView) view.findViewById(R.id.assortment_left_header);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ShareSDK.initSDK(getActivity());
+                OnekeyShare oks = new OnekeyShare();
+                //关闭sso授权
+                oks.disableSSOWhenAuthorize();
+                // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+                oks.setTitle("分享");
+
+                // text是分享文本，所有平台都需要这个字段
+                oks.setText("我是分享文本");
+
+                // url仅在微信（包括好友和朋友圈）中使用
+                oks.setUrl("http://sharesdk.cn");
+
+                // 启动分享GUI
+                oks.show(getContext());
+            }
+
+        });
 
     }
 

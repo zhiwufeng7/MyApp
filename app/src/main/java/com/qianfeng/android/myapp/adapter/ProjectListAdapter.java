@@ -93,7 +93,7 @@ public class ProjectListAdapter extends BaseAdapter{
         viewHolderEvent.description.setText(items.get(position).getDescription());
         viewHolderEvent.price.setText(price);
         viewHolderEvent.price_unit.setText(items.get(position).getPrice_unit());
-        viewHolderEvent.saledNum.setText(items.get(position).getBooster().getSaledNum()+"");
+        viewHolderEvent.saledNum.setText(items.get(position).getSalesNum()+"");
         viewHolderEvent.serviceTitle.setText(items.get(position).getServiceTitle());
         viewHolderEvent.positiveCommentRate.setText("好评"+items.get(position).getPositiveCommentRate());
         int size = items.get(position).getTagIcons().size();
