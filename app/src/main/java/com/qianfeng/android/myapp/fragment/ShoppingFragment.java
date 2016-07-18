@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import android.widget.RadioButton;
-import android.widget.SimpleAdapter;
 
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.activity.MainActivity;
@@ -17,7 +16,7 @@ import com.qianfeng.android.myapp.activity.MainActivity;
 public class ShoppingFragment extends Fragment {
 
 
-    private ListView listView;
+    private ExpandableListView expandableListView;
     private Button emptyButton;
 
     public ShoppingFragment() {
@@ -39,7 +38,7 @@ public class ShoppingFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
 
-        listView = (ListView) view.findViewById(R.id.shopping_lv);
+        expandableListView = (ExpandableListView) view.findViewById(R.id.shopping_lv);
 
         //设置空视图
         initEmptyView(inflater);
@@ -70,10 +69,10 @@ public class ShoppingFragment extends Fragment {
 
         emptyButton = (Button) emptyView.findViewById(R.id.shopping_empty_btn);
 
-        ViewGroup viewGroup = (ViewGroup) listView.getParent();
+        ViewGroup viewGroup = (ViewGroup) expandableListView.getParent();
 
         viewGroup.addView(emptyView);
-        listView.setEmptyView(emptyView);
+        expandableListView.setEmptyView(emptyView);
 
     }
 
