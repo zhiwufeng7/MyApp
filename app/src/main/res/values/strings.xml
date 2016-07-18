@@ -29,6 +29,6 @@
     <string name="my_address">常用地址</string>
     <string name="my_wallet">我的钱包</string>
     <string name="my_coupons">我的代金券</string>
-    <string name="my_shop">我的代金券</string>
-    <string name="my_more">我的代金券</string>
+    <string name="my_shop">商家入驻</string>
+    <string name="my_more">更多</string>
 </resources>

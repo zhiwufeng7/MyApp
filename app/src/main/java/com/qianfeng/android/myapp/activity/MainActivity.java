@@ -26,7 +26,6 @@ import com.qianfeng.android.myapp.fragment.ShoppingFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity {
 
     public RadioGroup radioGroup;
@@ -41,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private HomePageFragment homePageFragment;
     private FrameLayout viewGroup;
     private TextView title;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                         search.setVisibility(View.INVISIBLE);
                         title.setText("购物车");
                         //点击购物车按钮切换第三个fragment
-                         switchFragment(2);
+                        switchFragment(2);
                         break;
                     case R.id.main_bottom_order_form_rb:
                         //隐藏地址和搜索按钮 设置标题
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                         search.setVisibility(View.INVISIBLE);
                         title.setText("我的订单");
                         //点击订单按钮切换第四个fragment
-                         switchFragment(3);
+                        switchFragment(3);
                         break;
                     case R.id.main_bottom_my_rb:
                         //隐藏地址和搜索按钮 设置标题
@@ -148,6 +148,10 @@ public class MainActivity extends AppCompatActivity {
         message = (Button) findViewById(R.id.main_top_msg_btn);
         address = (Button) findViewById(R.id.main_top_address_btn);
         title = (TextView) findViewById(R.id.main_top_tv_show);
+
+
+
+
     }
 
     /**
