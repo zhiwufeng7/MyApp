@@ -21,5 +21,14 @@
     <string name="order_form_no_order">亲，您还没有订单</string>
     <string name="shopping_empty_text">您还什么都没买呢</string>
     <string name="shopping_empty_button">去逛逛</string>
-
+    <string name="shopping_total">合计：</string>
+    <string name="shopping_free">（免费上门）</string>
+    <string name="shopping_pay">去结算</string>
+    <string name="my_collection">我的收藏</string>
+    <string name="my_buy">我常买</string>
+    <string name="my_address">常用地址</string>
+    <string name="my_wallet">我的钱包</string>
+    <string name="my_coupons">我的代金券</string>
+    <string name="my_shop">我的代金券</string>
+    <string name="my_more">我的代金券</string>
 </resources>

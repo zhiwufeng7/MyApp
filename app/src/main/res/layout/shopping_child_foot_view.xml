@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_height="@dimen/title_height"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/shopping_total"
+        android:textSize="@dimen/normal_text_size" />
+
+    <TextView
+        android:id="@+id/shopping_child_total"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="@color/red" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="@string/shopping_free"
+        android:textSize="@dimen/micro_text_size" />
+
+
+    <Button
+        android:id="@+id/shopping_child_foot_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/red"
+        android:text="@string/shopping_pay"
+        android:textColor="@color/white"
+        android:textSize="@dimen/big_text_size" />
+
+
+</LinearLayout>

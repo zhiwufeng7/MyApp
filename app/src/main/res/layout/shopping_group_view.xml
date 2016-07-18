@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:layout_height="match_parent">
+    android:orientation="horizontal">
 
-<ImageView
 
-    android:id="@+id/shopping_group_left_iv"
-    android:src="@drawable/radiobutton_selected"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
-    <ImageView
-        android:layout_marginLeft="5dp"
-        android:src="@drawable/img_order_details_shop_icon"
+    <CheckBox
+        android:id="@+id/shopping_group_cb"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:button="@null"
+        android:checked="true"
+        android:drawableLeft="@drawable/slt_shopping_left_checkbox" />
+
     <TextView
+        android:drawableLeft="@drawable/img_order_details_shop_icon"
         android:id="@+id/shopping_group_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

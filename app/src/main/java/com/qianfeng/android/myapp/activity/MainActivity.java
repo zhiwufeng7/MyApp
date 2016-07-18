@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.fragment.AssortmentFragment;
 import com.qianfeng.android.myapp.fragment.HomePageFragment;
+import com.qianfeng.android.myapp.fragment.MyFragment;
 import com.qianfeng.android.myapp.fragment.OrderFormFragment;
 import com.qianfeng.android.myapp.fragment.ShoppingFragment;
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                         search.setVisibility(View.INVISIBLE);
                         title.setText("我的");
                         //点击我的按钮切换第五个fragment
-                        //switchFragment(4);
+                        switchFragment(4);
                         break;
                 }
             }
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentList.add(AssortmentFragment.newInstance(null));
         fragmentList.add(ShoppingFragment.newInstance());
         fragmentList.add(OrderFormFragment.newInstance());
+        fragmentList.add(MyFragment.newInstance());
 
     }
 
