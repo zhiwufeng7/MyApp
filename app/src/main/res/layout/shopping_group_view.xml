@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:layout_height="@dimen/title_height"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
 
     <CheckBox
+        android:layout_margin="10dp"
         android:id="@+id/shopping_group_cb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
         android:button="@null"
+        android:background="@null"
         android:checked="true"
         android:drawableLeft="@drawable/slt_shopping_left_checkbox" />
 
     <TextView
+        android:layout_marginLeft="10dp"
         android:drawableLeft="@drawable/img_order_details_shop_icon"
         android:id="@+id/shopping_group_title"
         android:layout_width="wrap_content"

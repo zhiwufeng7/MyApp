@@ -11,6 +11,11 @@ import android.widget.RadioButton;
 
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.activity.MainActivity;
+import com.qianfeng.android.myapp.adapter.ShoppingCartEVAdapter;
+import com.qianfeng.android.myapp.dao.ShoppingCart;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ShoppingFragment extends Fragment {
@@ -43,9 +48,25 @@ public class ShoppingFragment extends Fragment {
         //设置空视图
         initEmptyView(inflater);
 
+        initAdapter();
+
         initListener();
 
         return view;
+    }
+
+    private void initAdapter() {
+
+        List<ShoppingCart> list = new ArrayList<>();
+
+        list.add(new ShoppingCart((long) 1, "hehe", "sm", "22", "111", 2, 3));
+
+        ShoppingCartEVAdapter adapter = new ShoppingCartEVAdapter(getActivity(), list);
+        expandableListView.setAdapter(adapter);
+
+        for (int i = 0; i < adapter.getGroupCount(); i++) {
+            expandableListView.expandGroup(i);
+        }
     }
 
     private void initListener() {
@@ -60,6 +81,12 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                return true;
+            }
+        });
 
     }
 
