@@ -32,9 +32,9 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private LayoutInflater inflater;
     private boolean[] groupFlag;
-    private boolean[] childFlag;
+    private Map<Integer, boolean[]> childFlag;
     private int sum = 0;
-    private  int isChange=-1;
+    private int isChange = -1;
 
 
     public ShoppingCartEVAdapter(Context context, List<ShoppingCart> data) {
@@ -42,20 +42,37 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         inflater = LayoutInflater.from(mContext);
         getGroupList(data);
         getChildList(data, groupList);
-        groupFlag = new boolean[groupList.size()];
 
-        for (int i = 0; i < groupFlag.length; i++) {
+
+        MainActivity activity = (MainActivity) mContext;
+        activity.initShoppingCart();
+        initFlag();
+
+    }
+
+    private void initFlag() {
+        int groupLength = groupList.size();
+        groupFlag = new boolean[groupLength];
+
+        for (int i = 0; i < groupLength; i++) {
             groupFlag[i] = true;
         }
+        childFlag = new HashMap<>();
+        for (int i = 0; i < groupLength; i++) {
+            int childLength = childData.get(groupList.get(i)).size();
+            boolean[] child = new boolean[childLength];
+            for (int j = 0; j < child.length; j++) {
+                child[j] = true;
+            }
+            childFlag.put(i, child);
+        }
 
-    MainActivity activity=(MainActivity)mContext;
-        activity.initShoppingCart();
+
     }
 
     private void getChildList(List<ShoppingCart> data, List<String> groupList) {
         if (childData == null) {
             childData = new HashMap<>();
-
         }
         for (String str : groupList) {
             List<ShoppingCart> carts = new ArrayList<>();
@@ -67,7 +84,6 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
                 if (str.equals(title)) {
 
                     carts.add(shoppingCart);
-                    break;
                 }
             }
 
@@ -157,20 +173,22 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         groupViewHolder.checkBox.setChecked(groupFlag[groupPosition]);
 
         groupViewHolder.title.setText(" " + groupList.get(groupPosition));
-        groupViewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+        groupViewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                groupFlag[groupPosition] = isChecked;
-                if (isChecked) {
-                    isChange = groupPosition;
-                }
+            public void onClick(View v) {
+                //点击group的checkbox的时候让checked改变
+                CheckBox checkBox = (CheckBox) v;
+                isChange = groupPosition;
+                groupFlag[groupPosition] = checkBox.isChecked();
                 notifyDataSetChanged();
             }
         });
 
-
         return view;
     }
+
 
     class GroupViewHolder {
         TextView title;
@@ -179,15 +197,19 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-      if (childPosition==0){
-          childFlag=new boolean[childData.get(groupList.get(groupPosition)).size()];
-          for (int i = 0; i < childFlag.length; i++) {
-              childFlag[i] = true;
-          }
+        if (childPosition == 0) {
+            sum=0;
+            if (isChange == groupPosition) {
+                boolean flag = groupFlag[groupPosition];
+                boolean[] child = childFlag.get(groupPosition);
+                for (int i = 0; i < child.length; i++) {
+                    child[i] = flag;
+                }
+                isChange=-1;
+            }
+        }
 
-      }
 
-        TextView total = null;
         View view = convertView;
         ViewHolder viewHolder;
 
@@ -195,9 +217,9 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         List<ShoppingCart> list = childData.get(groupList.get(groupPosition));
         if (isLastChild) {
             view = inflater.inflate(R.layout.shopping_child_foot_view, parent, false);
-            total = (TextView) view.findViewById(R.id.shopping_child_total);
+            TextView total = (TextView) view.findViewById(R.id.shopping_child_total);
             Button pay = (Button) view.findViewById(R.id.shopping_child_foot_btn);
-            total.setText("¥ "+sum + "");
+            total.setText("¥ " + sum + "");
             return view;
         }
 
@@ -220,40 +242,35 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         viewHolder.title.setText(item.getName());
         viewHolder.price.setText(item.getOriginalPrice() + "");
         viewHolder.num.setText(item.getBuyNum() + "");
+        viewHolder.checkBox.setChecked(childFlag.get(groupPosition)[childPosition]);
 
+        if (viewHolder.checkBox.isChecked()) {
+            int num = Integer.valueOf(item.getOriginalPrice());
+            sum += (num * item.getBuyNum());
 
-
-
-        if (groupFlag[groupPosition]) {
-            if (viewHolder.checkBox.isChecked()) {
-                int num = Integer.valueOf(item.getOriginalPrice());
-                sum += (num * item.getBuyNum());
-
-            }
-
-        } else {
-            viewHolder.checkBox.setChecked(false);
-        }
-        if (isChange==groupPosition){
-            viewHolder.checkBox.setChecked(true);
-            isChange=-1;
         }
 
-        viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (! isChecked){
-                childFlag[childPosition]=false;
-                for (boolean boo: childFlag){
-                    if (boo){
-                        break;
+            public void onClick(View v) {
+                CheckBox checkBox = (CheckBox) v;
+                boolean isCheck = checkBox.isChecked();
+               boolean[] child= childFlag.get(groupPosition);
+                if (isCheck) {
+                    groupFlag[groupPosition] = true;
+                   child[childPosition]=true;
+                } else {
+                    child[childPosition]=false;
+                    for (boolean boo :child) {
+                        if (boo) {
+                            isCheck = true;
+                            break;
+                        }
                     }
-                    groupFlag[groupPosition]=false;
-                }
-
-                }else {
-                        groupFlag[groupPosition]=true;
+                    if (!isCheck) {
+                        groupFlag[groupPosition] = false;
+                    }
                 }
                 notifyDataSetChanged();
             }

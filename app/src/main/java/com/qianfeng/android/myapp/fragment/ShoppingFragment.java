@@ -60,6 +60,7 @@ public class ShoppingFragment extends Fragment {
         List<ShoppingCart> list = new ArrayList<>();
 
         list.add(new ShoppingCart((long) 1, "hehe", "sm", "22", "111", 2, 3));
+        list.add(new ShoppingCart((long) 1, "hehe", "sm", "11", "111", 3, 3));
 
         ShoppingCartEVAdapter adapter = new ShoppingCartEVAdapter(getActivity(), list);
         expandableListView.setAdapter(adapter);
