@@ -156,6 +156,7 @@ public class HomePageFragment extends Fragment {
                 .setPageIndicator(new int[]{R.drawable.page, R.drawable.page_now})
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
 
+        banner.setBackgroundResource(R.drawable.img_banner_default_bg);
     }
 
 
@@ -180,8 +181,8 @@ public class HomePageFragment extends Fragment {
     private void initView(View view) {
         refreshExpandableListView = (PullToRefreshExpandableListView) view.findViewById(R.id.home_page_fragment_ev);
         expandListView = refreshExpandableListView.getRefreshableView();
-
         refreshExpandableListView.setMode(PullToRefreshBase.Mode.BOTH);
+
     }
 
     private void initListener() {
