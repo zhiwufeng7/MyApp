@@ -3,6 +3,7 @@ package com.qianfeng.android.myapp.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class MyListView extends ListView {
@@ -25,5 +26,8 @@ public class MyListView extends ListView {
         super.onMeasure(widthMeasureSpec, expandSpec);
     }
 
-
+    @Override
+    public void setAdapter(ListAdapter adapter) {
+        super.setAdapter(adapter);
+    }
 }

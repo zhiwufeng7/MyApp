@@ -149,7 +149,7 @@ public class HomePageFragment extends Fragment {
                 return new HeaderBannerViewHolder();
             }
         }, bannerList)
-                .setPageIndicator(new int[]{R.drawable.btn_check_disabled_nightmode, R.drawable.btn_check_normal})
+                .setPageIndicator(new int[]{R.drawable.page, R.drawable.page_now})
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
 
     }
@@ -333,7 +333,7 @@ public class HomePageFragment extends Fragment {
                         bannerList.clear();
                         bannerList.addAll(bannerInfo.getData());
                         banner.getViewPager().getAdapter().notifyDataSetChanged();
-                        banner.setPageIndicator(new int[]{R.drawable.btn_check_disabled_nightmode, R.drawable.btn_check_normal});
+                        banner.setPageIndicator(new int[]{R.drawable.page, R.drawable.page_now});
                     }
                 });
 
