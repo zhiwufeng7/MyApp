@@ -10,7 +10,7 @@
     <CheckBox
         android:layout_margin="10dp"
         android:id="@+id/shopping_group_cb"
-        android:layout_width="40dp"
+        android:layout_width="20dp"
         android:layout_height="match_parent"
         android:button="@null"
         android:background="@null"

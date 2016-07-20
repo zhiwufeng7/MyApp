@@ -226,9 +226,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void initShoppingCart() {
-
-        //创建一个开发环境的Helper类，如果是正式环境调用DaoMaster.OpenHelper
-        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this, "liuzhao", null);
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(MainActivity.this,"liuxiao",null);
         //通过Handler类获得数据库对象
         SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
         //通过数据库对象生成DaoMaster对象
@@ -236,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         //获取DaoSession对象
         DaoSession daoSession = daoMaster.newSession();
         //通过DaoSeesion对象获得CustomerDao对象
-        ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
+        ShoppingCartDao   shoppingCartDao = daoSession.getShoppingCartDao();
         List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
 
         if (shoppingCarts==null || shoppingCarts.size()==0){

@@ -1,5 +1,6 @@
 package com.qianfeng.android.myapp.fragment;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +13,10 @@ import android.widget.RadioButton;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.activity.MainActivity;
 import com.qianfeng.android.myapp.adapter.ShoppingCartEVAdapter;
+import com.qianfeng.android.myapp.dao.DaoMaster;
+import com.qianfeng.android.myapp.dao.DaoSession;
 import com.qianfeng.android.myapp.dao.ShoppingCart;
+import com.qianfeng.android.myapp.dao.ShoppingCartDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +27,7 @@ public class ShoppingFragment extends Fragment {
 
     private ExpandableListView expandableListView;
     private Button emptyButton;
+    private ShoppingCartEVAdapter adapter;
 
     public ShoppingFragment() {
         // Required empty public constructor
@@ -48,22 +53,26 @@ public class ShoppingFragment extends Fragment {
         //设置空视图
         initEmptyView(inflater);
 
-        initAdapter();
-
         initListener();
 
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        initAdapter();
+    }
+
     private void initAdapter() {
+        if(adapter==null){
+            adapter = new ShoppingCartEVAdapter(getActivity());
+            expandableListView.setAdapter(adapter);
+        }else {
+            adapter.initData();
+            adapter.notifyDataSetChanged();
+        }
 
-        List<ShoppingCart> list = new ArrayList<>();
-
-        list.add(new ShoppingCart((long) 1, "hehe", "sm", "22", "111", 2, 3));
-        list.add(new ShoppingCart((long) 1, "hehe", "sm", "11", "111", 3, 3));
-
-        ShoppingCartEVAdapter adapter = new ShoppingCartEVAdapter(getActivity(), list);
-        expandableListView.setAdapter(adapter);
 
         for (int i = 0; i < adapter.getGroupCount(); i++) {
             expandableListView.expandGroup(i);
@@ -103,6 +112,7 @@ public class ShoppingFragment extends Fragment {
         expandableListView.setEmptyView(emptyView);
 
     }
+
 
 
 }

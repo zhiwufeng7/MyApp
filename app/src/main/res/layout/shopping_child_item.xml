@@ -2,25 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
+    android:padding="5dp"
     android:background="@color/white"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
+
+
     <CheckBox
         android:id="@+id/shopping_child_cb"
-        android:layout_width="40dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
         android:background="@null"
         android:button="@null"
         android:checked="true"
-        android:drawableLeft="@drawable/slt_shopping_left_checkbox"
-        android:paddingTop="1dp" />
+        android:gravity="center"
+        android:drawableLeft="@drawable/slt_shopping_left_checkbox" />
 
     <ImageView
         android:id="@+id/shopping_child_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@mipmap/ic_launcher" />
 
     <LinearLayout
@@ -40,14 +42,15 @@
             android:orientation="horizontal">
 
             <TextView
+                android:textColor="@color/red"
                 android:id="@+id/shopping_child_price_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/shopping_child_add"
-                android:layout_width="wrap_content"
+                android:id="@+id/shopping_child_minus"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:background="@null"
@@ -60,7 +63,7 @@
                 android:layout_marginRight="10dp" />
 
             <Button
-                android:id="@+id/shopping_child_minus"
+                android:id="@+id/shopping_child_add"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:background="@null"
