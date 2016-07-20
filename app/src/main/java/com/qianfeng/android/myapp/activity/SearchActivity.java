@@ -150,8 +150,6 @@ public class SearchActivity extends AppCompatActivity{
 
     public void onBack(View view){
         finish();
-        Intent intent = new Intent(this,MerchantActivity.class);
-        startActivity(intent);
     }
 
     @Override

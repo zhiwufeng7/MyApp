@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -92,6 +93,18 @@ public class SearchContentActivity extends AppCompatActivity implements View.OnC
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 order = true;
                 sort = "desc";
+            }
+        });
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SearchContentActivity.this, ServiceDetailsActivity.class);
+                String mId = items.get(position-1).getId();
+                String serviceId = items.get(position-1).getServiceId();
+                intent.putExtra("id",mId);
+                intent.putExtra("serviceId",serviceId);
+                startActivity(intent);
             }
         });
     }

@@ -1,14 +1,17 @@
 package com.qianfeng.android.myapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.activity.ServiceDetailsActivity;
 import com.qianfeng.android.myapp.bean.HomePageEVInfo;
 
 /**
@@ -86,7 +89,7 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         View view = convertView;
         ChildViewHolder childViewHolder;
@@ -102,6 +105,17 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
         adapter = new HomeGridViewAdapter(mContext);
         adapter.setData(data.getData().get(groupPosition));
         childViewHolder.gridView.setAdapter(adapter);
+        childViewHolder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(mContext, ServiceDetailsActivity.class);
+                String mId = data.getData().get(groupPosition).getItems().get(position).getId();
+                String serviceId = data.getData().get(groupPosition).getItems().get(position).getServiceId();
+                intent.putExtra("id",mId);
+                intent.putExtra("serviceId",serviceId);
+                mContext.startActivity(intent);
+            }
+        });
 
         return view;
     }
