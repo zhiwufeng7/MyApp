@@ -222,6 +222,14 @@ public class MainActivity extends AppCompatActivity {
         //super.onSaveInstanceState(outState);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initShoppingCart();
+    }
+
+
+
     public void initShoppingCart() {
 
         //创建一个开发环境的Helper类，如果是正式环境调用DaoMaster.OpenHelper

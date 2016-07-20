@@ -3,6 +3,7 @@ package com.qianfeng.android.myapp.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,10 @@ import com.google.gson.Gson;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.adapter.MerchantRecyclerAdapter;
 import com.qianfeng.android.myapp.bean.MerchantDetails;
+import com.qianfeng.android.myapp.dao.DaoMaster;
+import com.qianfeng.android.myapp.dao.DaoSession;
+import com.qianfeng.android.myapp.dao.ShoppingCart;
+import com.qianfeng.android.myapp.dao.ShoppingCartDao;
 import com.qianfeng.android.myapp.data.Url;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -81,6 +86,10 @@ public class MerchantActivity extends AppCompatActivity {
     private MerchantRecyclerAdapter adapter;
     private RelativeLayout add_rl;
     private String id;
+    private String title;
+    private TextView tv_cat_num;
+    private TextView tv_cat_sum;
+    private DaoMaster daoMaster;
 
 
     @Override
@@ -92,6 +101,7 @@ public class MerchantActivity extends AppCompatActivity {
         initView();
         setToolBar();
         initData();
+        refresh();
     }
 
     private void setListener() {
@@ -100,7 +110,7 @@ public class MerchantActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 if (position>0){
-                    adapter = new MerchantRecyclerAdapter(MerchantActivity.this,classifyPrices.get(position-1));
+                    adapter = new MerchantRecyclerAdapter(MerchantActivity.this,classifyPrices.get(position-1),id,title);
                     rv.setAdapter(adapter);
                 }else {
                     rv_data.clear();
@@ -123,6 +133,12 @@ public class MerchantActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        //创建一个开发环境的Helper类，如果是正式环境调用DaoMaster.OpenHelper
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this,"liuxiao",null);
+        //通过Handler类获得数据库对象
+        SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
+        //通过数据库对象生成DaoMaster对象
+        daoMaster = new DaoMaster(readableDatabase);
         SharedPreferences sharedPreferences = getSharedPreferences("location", Context.MODE_PRIVATE);
         String lot = sharedPreferences.getString("lot", "0");
         String lat = sharedPreferences.getString("lat", "0");
@@ -149,6 +165,7 @@ public class MerchantActivity extends AppCompatActivity {
 
     private void classifyData() {
         prices = data.getPrices();
+        title = data.getTitle();
         classifyPrices = new ArrayList<>();
         for (int i = 0; i < subCategories.size(); i++) {
             MerchantDetails.DataBean.SubCategoriesBean subCategoriesBean = subCategories.get(i);
@@ -282,6 +299,29 @@ public class MerchantActivity extends AppCompatActivity {
 
     }
 
+    public void refresh() {
+        //获取DaoSession对象
+        DaoSession daoSession = daoMaster.newSession();
+        //通过DaoSeesion对象获得CustomerDao对象
+        ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
+        List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
+        int shoppingNum = 0;
+        Double shoppingPrice = 0.00;
+        for (int i=0; i<shoppingCarts.size();i++){
+            ShoppingCart shoppingCart = shoppingCarts.get(i);
+            int buyNum = shoppingCart.getBuyNum();
+            shoppingNum+=buyNum;
+            shoppingPrice+=(Double.valueOf(shoppingCart.getOriginalPrice())*buyNum);
+        }
+        if (shoppingNum==0){
+            tv_cat_num.setVisibility(View.GONE);
+        }else {
+            tv_cat_num.setVisibility(View.VISIBLE);
+            tv_cat_num.setText(shoppingNum+"");
+        }
+        tv_cat_sum.setText(shoppingPrice+"");
+    }
+
     class LocalImageHolderView implements Holder<MerchantDetails.DataBean.ImgsBean> {
         ImageView imageView;
 
@@ -354,6 +394,9 @@ public class MerchantActivity extends AppCompatActivity {
         iv_tag1 = (ImageView) findViewById(R.id.merchant_iv_tag1);
         iv_tag2 = (ImageView) findViewById(R.id.merchant_iv_tag2);
         add_rl = (RelativeLayout) findViewById(R.id.merchant_rv_foot_rl);
+
+        tv_cat_num = (TextView) findViewById(R.id.merchant_tv_cat_num);
+        tv_cat_sum = (TextView) findViewById(R.id.merchant_tv_sum);
     }
 
     public void onBack(View view) {
@@ -373,7 +416,7 @@ public class MerchantActivity extends AppCompatActivity {
             }
             add_rl.setVisibility(View.GONE);
         }
-        adapter = new MerchantRecyclerAdapter(MerchantActivity.this,rv_data);
+        adapter = new MerchantRecyclerAdapter(MerchantActivity.this,rv_data,id,title);
         rv.setAdapter(adapter);
     }
 }
