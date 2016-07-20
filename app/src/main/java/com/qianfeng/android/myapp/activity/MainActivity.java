@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private void initData() {
         sharedPreferences = getSharedPreferences("location", Context.MODE_PRIVATE);
         village = sharedPreferences.getString("plot", "北京");
@@ -222,12 +223,6 @@ public class MainActivity extends AppCompatActivity {
         //super.onSaveInstanceState(outState);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        initShoppingCart();
-    }
-
 
 
     public void initShoppingCart() {
@@ -243,10 +238,12 @@ public class MainActivity extends AppCompatActivity {
         //通过DaoSeesion对象获得CustomerDao对象
         ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
         List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
+
         if (shoppingCarts==null || shoppingCarts.size()==0){
             shoppingCartNo.setVisibility(View.INVISIBLE);
             return;
         }
+        shoppingCartNo.setVisibility(View.VISIBLE);
         int sum = 0;
         for (int i = 0; i < shoppingCarts.size(); i++) {
            sum+= shoppingCarts.get(i).getBuyNum();
@@ -256,8 +253,11 @@ public class MainActivity extends AppCompatActivity {
         }else {
             shoppingCartNo.setText(sum+"");
         }
-
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initShoppingCart();
+    }
 }

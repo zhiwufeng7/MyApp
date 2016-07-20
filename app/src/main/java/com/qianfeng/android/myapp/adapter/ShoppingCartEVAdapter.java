@@ -43,7 +43,6 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         getGroupList(data);
         getChildList(data, groupList);
 
-
         MainActivity activity = (MainActivity) mContext;
         activity.initShoppingCart();
         initFlag();
@@ -248,8 +247,22 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
             sum += (num * item.getBuyNum());
 
         }
+        //点击 + 按钮的监听
+        viewHolder.add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+        //点击 - 按钮的监听
+        viewHolder.minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+
+        //左边的选中按钮的监听
         viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
