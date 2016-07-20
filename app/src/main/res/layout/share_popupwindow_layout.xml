@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/pop_layout2"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/connection_seller_layout"
+            android:layout_width="170dp"
+            android:layout_height="65dp"
+            android:background="#4A4A4A"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_service_details_chat_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="联系商家"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/big_text_size" />
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="170dp"
+            android:layout_height="1dp"
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#4A4A4A"/>
+            <View
+                android:layout_width="145dp"
+                android:layout_height="match_parent"
+                android:background="#22ffffff"
+                android:layout_gravity="center_horizontal"/>
+        </FrameLayout>
+        <LinearLayout
+            android:id="@+id/share_layout"
+            android:layout_width="170dp"
+            android:layout_height="65dp"
+            android:background="#4A4A4A"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_service_details_share_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="分享商品"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/big_text_size" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

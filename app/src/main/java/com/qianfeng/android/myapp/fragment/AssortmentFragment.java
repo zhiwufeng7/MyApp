@@ -25,6 +25,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.activity.ProjectListActivity;
+import com.qianfeng.android.myapp.activity.ServiceDetailsActivity;
 import com.qianfeng.android.myapp.adapter.AssortmentRightAdapter;
 import com.qianfeng.android.myapp.bean.AssortmentLeftLV;
 import com.qianfeng.android.myapp.bean.AssortmentRightLV;
@@ -144,8 +145,24 @@ public class AssortmentFragment extends Fragment {
                 //加载标题
                 rightTitleData(position);
                 mItems.clear();//清空列表内容
-                rightListViewData(position, 0, 20);//设置默认内容，显示各子项的全部信息
+                startRightListViewData(position, 0, 20);//设置默认内容，显示各子项的全部信息
                 refreshRightContent(0, position);//刷新
+            }
+        });
+
+        //点击跳转到详情页面
+        rightRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ServiceDetailsActivity.class);
+                String id1 = mItems.get(position-1).getId();
+                String serviceId = mItems.get(position-1).getServiceId();
+
+                intent.putExtra("id",id1);
+                intent.putExtra("serviceId",serviceId);
+                startActivity(intent);
+
+
             }
         });
 
@@ -189,9 +206,9 @@ public class AssortmentFragment extends Fragment {
                     final int tag = (int) v.getTag();
                     mItems.clear();
                     if (tag == 0) {
-                        rightListViewData(position, 0, 20);
+                        startRightListViewData(position, 0, 20);
                     } else {
-                        rightListContentFL(buttonList.get(tag), position, 0, 20);
+                        startRightListContentFL(buttonList.get(tag), position, 0, 20);
                     }
                     for (int i = 0; i < childCount; i++) {
                         if (tag != i) {
@@ -292,30 +309,6 @@ public class AssortmentFragment extends Fragment {
         //右边标题
         linearLayoutTitle = (LinearLayout) view.findViewById(R.id.assortment_right_linearLayout);
 
-        //调试，请删除
-        TextView textView = (TextView) view.findViewById(R.id.assortment_left_header);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ShareSDK.initSDK(getActivity());
-                OnekeyShare oks = new OnekeyShare();
-                //关闭sso授权
-                oks.disableSSOWhenAuthorize();
-                // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-                oks.setTitle("分享");
-
-                // text是分享文本，所有平台都需要这个字段
-                oks.setText("我是分享文本");
-
-                // url仅在微信（包括好友和朋友圈）中使用
-                oks.setUrl("http://sharesdk.cn");
-
-                // 启动分享GUI
-                oks.show(getContext());
-            }
-
-        });
 
     }
 
@@ -427,7 +420,84 @@ public class AssortmentFragment extends Fragment {
                         //初始化右边标题内容默认为左边第一项
                         rightTitleData(0);
                         //设置右边listview默认数据为左边列表全部详情
-                        rightListViewData(0, 0, 20);
+                        startRightListViewData(0, 0, 20);
+                    }
+                });
+    }
+
+
+
+    //开始进入页面加载右边listview数据
+    private void startRightListViewData(int position, int startNum, int sizeNum) {
+        String start = startNum + "";
+        String size = sizeNum + "";
+        //根据左边项目名称获取相应内容
+        String category = categoryIds.get(position);
+        OkHttpUtils.get()
+                .url(AssortmentURL.ASSORTMENT_SUBITEM)
+                .addParams("lot", lot).addParams("lat", lat).addParams("manualCity", city)
+                .addParams("start", start).addParams("category", category).addParams("size", size)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        List<AssortmentRightLV.DataBean.ItemsBean> items = new ArrayList<>();
+                        Gson gson = new Gson();
+                        AssortmentRightLV assortmentRightLV = gson.fromJson(response, AssortmentRightLV.class);
+                        items = assortmentRightLV.getData().getItems();
+                        mItems.addAll(items);
+                        if (mItems.isEmpty()) {
+                            nullLinearLayout.setVisibility(View.VISIBLE);
+                            rightRefreshListView.setVisibility(View.GONE);
+                        } else {
+                            rightRefreshListView.setVisibility(View.VISIBLE);
+                            nullLinearLayout.setVisibility(View.GONE);
+                        }
+                        rightAdapter = new AssortmentRightAdapter(getActivity(),mItems);
+                        rightRefreshListView.setAdapter(rightAdapter);
+                        //rightAdapter.notifyDataSetChanged();
+                        rightRefreshListView.onRefreshComplete();
+                    }
+                });
+    }
+
+    //开始加载分类子项数据
+    private void startRightListContentFL(String title, int position, int startNum, int sizeNum) {
+        String start = startNum + "";
+        String size = sizeNum + "";
+        String category = categoryIds.get(position);
+        String tag = title;
+        OkHttpUtils.get()
+                .url(AssortmentURL.ASSORTMENT_SUBITEM).addParams("start", start).addParams("size", size)
+                .addParams("category", category).addParams("tag", tag)
+                .addParams("manualCity", city).addParams("lot", lot).addParams("lat", lat)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        List<AssortmentRightLV.DataBean.ItemsBean> items = new ArrayList<>();
+                        Gson gson = new Gson();
+                        AssortmentRightLV assortmentRightLV = gson.fromJson(response, AssortmentRightLV.class);
+                        items = assortmentRightLV.getData().getItems();
+                        mItems.addAll(items);
+                        if (mItems.isEmpty()) {
+                            nullLinearLayout.setVisibility(View.VISIBLE);
+                            rightRefreshListView.setVisibility(View.GONE);
+                        } else {
+                            rightRefreshListView.setVisibility(View.VISIBLE);
+                            nullLinearLayout.setVisibility(View.GONE);
+                        }
+                        rightAdapter.notifyDataSetChanged();
+                        rightRefreshListView.onRefreshComplete();
                     }
                 });
     }

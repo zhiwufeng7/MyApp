@@ -14,12 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -125,7 +127,7 @@ public class ProjectListActivity extends AppCompatActivity {
                 if (popWnd.isShowing()){
                     popWnd.dismiss();
                 }
-                finish();
+               onBackPressed();
             }
         });
 
@@ -145,6 +147,8 @@ public class ProjectListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
     //显示商家列表
@@ -225,7 +229,6 @@ public class ProjectListActivity extends AppCompatActivity {
                         datas.addAll(footInfo.getData());
                         //初始化商家列表PopupWindow中GridView的适配器
                         initMYGridViewAdapter();
-
                         //绑定商家列表PopupWindow中GridView的适配器
                         bindMYGridViewAdapter();
                         myGridView.onRefreshComplete();
@@ -281,6 +284,7 @@ public class ProjectListActivity extends AppCompatActivity {
 
                         //MyGridView上拉加载下拉刷新
                         InitMyGridViewListener();
+
                         popWnd.setContentView(myGridView);
                         if (datas.isEmpty()) {
                             popWnd.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -292,12 +296,21 @@ public class ProjectListActivity extends AppCompatActivity {
                             popWnd.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 
                         }
-                        popWnd.setFocusable(false);
+                        popWnd.setFocusable(true);
                         popWnd.setBackgroundDrawable(getResources().getDrawable(R.drawable.project_popup_backgroud));
                         popWnd.setOutsideTouchable(true);
                         popWnd.update();
                         popWnd.showAsDropDown(project_rl);
                         myGridView.onRefreshComplete();
+                        myGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                String serviceId = datas.get(position).getServiceId();
+                                Intent intent = new Intent(ProjectListActivity.this,MerchantActivity.class);
+                                intent.putExtra("id",serviceId);
+                                startActivity(intent);
+                            }
+                        });
 
                     }
 

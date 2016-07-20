@@ -2,6 +2,7 @@ package com.qianfeng.android.myapp.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -17,6 +19,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.activity.ProjectListActivity;
+import com.qianfeng.android.myapp.activity.ServiceDetailsActivity;
 import com.qianfeng.android.myapp.adapter.ProjectListAdapter;
 import com.qianfeng.android.myapp.bean.AssortmentRightLV;
 import com.qianfeng.android.myapp.data.AssortmentURL;
@@ -106,6 +109,18 @@ public class ProjactViewPagerFragment extends Fragment {
                 sizeNum +=20;
                 listViewData();
 
+            }
+        });
+
+        ptrListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ServiceDetailsActivity.class);
+                String id1 = mItems.get(position-1).getId();
+                String serviceId = mItems.get(position-1).getServiceId();
+                intent.putExtra("id",id1);
+                intent.putExtra("serviceId",serviceId);
+                startActivity(intent);
             }
         });
     }
