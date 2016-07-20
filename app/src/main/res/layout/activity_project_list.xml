@@ -11,7 +11,9 @@
     <RelativeLayout
         android:id="@+id/project_rl"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        android:background="@color/white"
+        >
 
         <ImageView
             android:id="@+id/project_back_iv"

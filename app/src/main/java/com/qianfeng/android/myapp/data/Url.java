@@ -9,6 +9,11 @@ public class Url {
     public static final String PLOT_SEARCH="http://api.daoway.cn/daoway/rest/community/search";
     public static final String HOT_SEARCH ="http://api.daoway.cn/daoway/rest/services/hot_search";
     public static final String SEARCH = "http://api.daoway.cn/daoway/rest/service_items/search";
+    public static String getMerchantUrl(String id, String lot ,String lat){
+
+        return "http://api.daoway.cn/daoway/rest/service/"+id+"?lot="+lot+"&lat="+lat;
+    }
+
     /*
     * 商家详情页面
 http://api.daoway.cn/daoway/rest/service/2d546e36b4eb401294c55c39924d64a8?lot=121.593478&lat=38.94871

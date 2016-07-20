@@ -72,16 +72,16 @@ public class HomeRecommendAdapter extends BaseAdapter {
                 viewHolder.title.setTextColor(Color.YELLOW);
                 break;
             case 2:
-                view.setBackgroundResource(R.color.colorAccent);
+                view.setBackgroundColor(Color.RED);
                 viewHolder.title.setTextColor(Color.WHITE);
 
                 break;
             case 3:
-                view.setBackgroundResource(R.color.backColor);
+                view.setBackgroundResource(R.color.yellow);
                 viewHolder.title.setTextColor(Color.GREEN);
                 break;
-            case 4:
-                view.setBackgroundResource(R.color.yellow);
+            case 0:
+                view.setBackgroundColor(Color.CYAN);
                 viewHolder.title.setTextColor(Color.RED);
                 break;
         }

@@ -9,7 +9,9 @@
     <com.bigkoo.convenientbanner.ConvenientBanner
         android:id="@+id/home_page_header_view_cb"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:background="@drawable/img_banner_default_bg"
+        />
 
     <com.qianfeng.android.myapp.widget.MyGridView
         android:id="@+id/home_page_header_my_grid"
@@ -50,6 +52,7 @@
 
     <GridView
         android:id="@+id/home_page_header_recommend_grid"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:numColumns="4"

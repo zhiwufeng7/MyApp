@@ -1,6 +1,8 @@
 package com.qianfeng.android.myapp.activity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import com.google.gson.Gson;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.adapter.MerchantRecyclerAdapter;
 import com.qianfeng.android.myapp.bean.MerchantDetails;
+import com.qianfeng.android.myapp.data.Url;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -77,12 +80,15 @@ public class MerchantActivity extends AppCompatActivity {
     private PullToZoomScrollViewEx.InternalScrollView internalScrollView;
     private MerchantRecyclerAdapter adapter;
     private RelativeLayout add_rl;
+    private String id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchant);
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
         initView();
         setToolBar();
         initData();
@@ -117,7 +123,10 @@ public class MerchantActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        OkHttpUtils.get().url("http://api.daoway.cn/daoway/rest/service/2d546e36b4eb401294c55c39924d64a8?lot=121.593478&lat=38.94871")
+        SharedPreferences sharedPreferences = getSharedPreferences("location", Context.MODE_PRIVATE);
+        String lot = sharedPreferences.getString("lot", "0");
+        String lat = sharedPreferences.getString("lat", "0");
+        OkHttpUtils.get().url(Url.getMerchantUrl(id,lot,lat))
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -156,7 +157,6 @@ public class HomePageFragment extends Fragment {
                 .setPageIndicator(new int[]{R.drawable.page, R.drawable.page_now})
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
 
-        banner.setBackgroundResource(R.drawable.img_banner_default_bg);
     }
 
 

@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.dao.DaoMaster;
