@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -13,6 +14,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.adapter.HomeFootGridViewAdapter;
 import com.qianfeng.android.myapp.bean.FootInfo;
+import com.qianfeng.android.myapp.bean.MerchantDetails;
 import com.qianfeng.android.myapp.common.UrlConfig;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -31,6 +33,7 @@ public class RecommendActivity extends AppCompatActivity {
     private String lat;
     private String city;
     private String lot;
+    private FootInfo footListInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,16 @@ public class RecommendActivity extends AppCompatActivity {
     }
 
     private void initListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String url = footListInfo.getData().get(position).getServiceId();
+                Intent intent = new Intent(RecommendActivity.this, MerchantActivity.class);
+                intent.putExtra("id", url);
+                startActivity(intent);
+            }
+        });
+
         refreshGridView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<GridView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
@@ -89,7 +102,7 @@ public class RecommendActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
-                        FootInfo footListInfo = gson.fromJson(response, FootInfo.class);
+                        footListInfo = gson.fromJson(response, FootInfo.class);
                         List<FootInfo.DataBean> list = footListInfo.getData();
 
                         if (list != null) {
@@ -118,10 +131,6 @@ public class RecommendActivity extends AppCompatActivity {
         refreshGridView.setMode(PullToRefreshBase.Mode.BOTH);
         gridView = refreshGridView.getRefreshableView();
     }
-
-
-
-
 
 
 }

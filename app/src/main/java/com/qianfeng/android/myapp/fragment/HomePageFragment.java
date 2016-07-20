@@ -18,11 +18,13 @@ import android.widget.ImageView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.activity.MerchantActivity;
 import com.qianfeng.android.myapp.activity.ProjectListActivity;
 import com.qianfeng.android.myapp.activity.RecommendActivity;
 import com.qianfeng.android.myapp.adapter.HomeFootGridViewAdapter;
@@ -69,6 +71,8 @@ public class HomePageFragment extends Fragment {
     private String id;
     private Button service;
     private HomeServiceInfo homeServiceInfo;
+    private HomeRecommendInfo homeRecommendInfo;
+    private FootInfo footListInfo;
 
 
     public HomePageFragment() {
@@ -182,6 +186,44 @@ public class HomePageFragment extends Fragment {
 
     private void initListener() {
 
+        //今日推荐跳转
+        headerGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               String url= homeRecommendInfo.getData().get(position).getUrl();
+                int length=url.length();
+                url=url.substring(length-32);
+                Intent intent = new Intent(mContext, MerchantActivity.class);
+                intent.putExtra("id", url);
+                startActivity(intent);
+            }
+        });
+
+        //推荐服务商
+        footGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String url=footListInfo.getData().get(position).getServiceId();
+                Intent intent = new Intent(mContext, MerchantActivity.class);
+                intent.putExtra("id", url);
+                startActivity(intent);
+            }
+        });
+
+
+
+        //banner跳转
+
+        banner.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String id = bannerList.get(position).getServiceId();
+                Intent intent = new Intent(mContext, MerchantActivity.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+        });
+
         expandListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
@@ -249,7 +291,7 @@ public class HomePageFragment extends Fragment {
                     @Override
                     public void onResponse(String response, int id) {
 
-                        FootInfo footListInfo = gson.fromJson(response, FootInfo.class);
+                      footListInfo = gson.fromJson(response, FootInfo.class);
                         List<FootInfo.DataBean> list = footListInfo.getData();
 
                         if (list != null) {
@@ -290,7 +332,7 @@ public class HomePageFragment extends Fragment {
                     @Override
                     public void onResponse(String response, int id) {
 
-                        HomeRecommendInfo homeRecommendInfo = gson.fromJson(response, HomeRecommendInfo.class);
+                        homeRecommendInfo = gson.fromJson(response, HomeRecommendInfo.class);
                         recommendAdapter.setData(homeRecommendInfo);
                         recommendAdapter.notifyDataSetChanged();
 
@@ -347,7 +389,6 @@ public class HomePageFragment extends Fragment {
                     public void onError(Call call, Exception e, int id) {
 
                     }
-
                     @Override
                     public void onResponse(String response, int id) {
 

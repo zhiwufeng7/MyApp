@@ -209,7 +209,6 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
             }
         }
 
-
         View view = convertView;
         ViewHolder viewHolder;
 
