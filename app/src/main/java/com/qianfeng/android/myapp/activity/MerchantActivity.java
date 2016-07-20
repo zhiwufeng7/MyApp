@@ -13,12 +13,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -35,6 +37,7 @@ import com.qianfeng.android.myapp.dao.DaoSession;
 import com.qianfeng.android.myapp.dao.ShoppingCart;
 import com.qianfeng.android.myapp.dao.ShoppingCartDao;
 import com.qianfeng.android.myapp.data.Url;
+import com.qianfeng.android.myapp.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -45,6 +48,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import okhttp3.Call;
 
 public class MerchantActivity extends AppCompatActivity {
@@ -90,6 +95,8 @@ public class MerchantActivity extends AppCompatActivity {
     private TextView tv_cat_num;
     private TextView tv_cat_sum;
     private DaoMaster daoMaster;
+    private ImageButton ib_car;
+    private SharePopupWindow popWnd;
 
 
     @Override
@@ -340,6 +347,10 @@ public class MerchantActivity extends AppCompatActivity {
         }
     }
 
+    public View getCarView(){
+        return ib_car;
+    }
+
     private void setToolBar() {
         ScrollView pullRootView = scrollView.getPullRootView();
         internalScrollView = (PullToZoomScrollViewEx.InternalScrollView) pullRootView;
@@ -397,6 +408,7 @@ public class MerchantActivity extends AppCompatActivity {
 
         tv_cat_num = (TextView) findViewById(R.id.merchant_tv_cat_num);
         tv_cat_sum = (TextView) findViewById(R.id.merchant_tv_sum);
+        ib_car = (ImageButton) findViewById(R.id.merchant_ib_car);
     }
 
     public void onBack(View view) {
@@ -419,4 +431,68 @@ public class MerchantActivity extends AppCompatActivity {
         adapter = new MerchantRecyclerAdapter(MerchantActivity.this,rv_data,id,title);
         rv.setAdapter(adapter);
     }
+
+    public void onMenu(View view) {
+        OnClickLintener paramOnClickListener = new OnClickLintener();
+        popWnd = new SharePopupWindow(this, paramOnClickListener, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popWnd.getContentView().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    popWnd.dismiss();
+                }
+            }
+        });
+
+        //设置默认获取焦点
+        popWnd.setFocusable(true);
+        //以某个控件的x和y的偏移量位置开始显示窗口
+        popWnd.showAsDropDown(ib_menu);
+        //如果窗口存在，则更新
+        popWnd.update();
+    }
+
+    class OnClickLintener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.connection_seller_layout:
+                    Toast.makeText(MerchantActivity.this, "联系商家", Toast.LENGTH_SHORT).show();
+                    popWnd.dismiss();
+                    break;
+                case R.id.share_layout:
+                    share();
+                    popWnd.dismiss();
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+    }
+
+    //分享
+    private void share() {
+        ShareSDK.initSDK(this);
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+        oks.setTitle("分享");
+
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl("http://sharesdk.cn");
+
+        // 启动分享GUI
+        oks.show(this);
+
+    }
+
 }
