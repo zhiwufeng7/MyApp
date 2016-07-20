@@ -185,7 +185,7 @@ public class HomePageFragment extends Fragment {
 
     }
 
-    private void initListener() {
+    private void initListener(){
 
         //今日推荐跳转
         headerGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -200,8 +200,10 @@ public class HomePageFragment extends Fragment {
             }
         });
 
+
         //推荐服务商
         footGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String url=footListInfo.getData().get(position).getServiceId();
