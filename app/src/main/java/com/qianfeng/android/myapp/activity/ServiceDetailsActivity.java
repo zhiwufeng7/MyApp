@@ -129,6 +129,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
     private int minBuyNum;
     private int id1;
     private Button goBuy;
+    private ImageButton shoppingCar;
 
 
     @Override
@@ -256,7 +257,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         });
 
         //调转致购物车页面
-        goBuy.setOnClickListener(new View.OnClickListener() {
+        shoppingCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -382,7 +383,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         catNum = (TextView) findViewById(R.id.service_details_tv_cat_num);
         sum = (TextView) findViewById(R.id.service_details_tv_sum);
         goBuy = (Button) findViewById(R.id.service_details_btn_gobuy);
-
+        shoppingCar = (ImageButton)findViewById(R.id.service_details_ib_cat);
 
         //初始化头部视图
         View zoomView = LayoutInflater.from(this).inflate(R.layout.service_details_banner, null, false);
@@ -509,7 +510,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
                         MaybeYouLikeInfo maybeYuoLikeInfo = gson.fromJson(response, MaybeYouLikeInfo.class);
-                        data.addAll(maybeYuoLikeInfo.getData());
+                        data=maybeYuoLikeInfo.getData();
 
                         MaybeYuoLikeAdapter maybeYuoLikeAdapter = new MaybeYuoLikeAdapter(data, ServiceDetailsActivity.this, catNum,mShopName);
                         recyclerview.setAdapter(maybeYuoLikeAdapter);
