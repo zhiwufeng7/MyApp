@@ -58,9 +58,11 @@ import java.util.TimeZone;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
 
-public class ServiceDetailsActivity extends AppCompatActivity {
+public class ServiceDetailsActivity extends SwipeBackActivity {
 
     private PullToZoomScrollViewEx scrollView;
     private TransparentToolBar toolBar;
@@ -143,6 +145,9 @@ public class ServiceDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_details);
+
+        SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 
         //获取当前地址信息
         getAddress();

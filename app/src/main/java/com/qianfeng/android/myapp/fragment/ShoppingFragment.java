@@ -57,10 +57,12 @@ public class ShoppingFragment extends Fragment {
         return view;
     }
 
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         initAdapter();
+
     }
 
     private void initAdapter() {
