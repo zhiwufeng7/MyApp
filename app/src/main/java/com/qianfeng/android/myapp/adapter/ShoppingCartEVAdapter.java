@@ -209,16 +209,16 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         groupViewHolder.title.setText(" " + groupList.get(groupPosition));
 
 
-//        groupViewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //点击group的checkbox的时候让checked改变
-//                CheckBox checkBox = (CheckBox) v;
-//                isChange = groupPosition;
-//                groupFlag.add(groupPosition, checkBox.isChecked());
-//                notifyDataSetChanged();
-//            }
-//        });
+        groupViewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //点击group的checkbox的时候让checked改变
+                CheckBox checkBox = (CheckBox) v;
+                isChange = groupPosition;
+                groupFlag.add(groupPosition, checkBox.isChecked());
+                notifyDataSetChanged();
+            }
+        });
 
         return view;
     }
@@ -235,11 +235,12 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
             sum = 0;
             if (isChange == groupPosition) {
                 boolean flag = groupFlag.get(groupPosition);
-                List<Boolean> child = new ArrayList<>();
-                for (int i = 0; i < child.size(); i++) {
-                    child.add(i, flag);
+                List<Boolean> child = childFlag.get(groupPosition);
+                 int length=    child.size();
+                child.clear();
+                for (int i = 0; i < length; i++) {
+                  child.add(i,flag);
                 }
-                childFlag.put(groupPosition,child);
                 isChange = -1;
             }
         }
@@ -338,31 +339,31 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        //左边的选中按钮的监听
-//        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CheckBox checkBox = (CheckBox) v;
-//                boolean isCheck = checkBox.isChecked();
-//                List<Boolean> child = childFlag.get(groupPosition);
-//                if (isCheck) {
-//                    groupFlag.add(groupPosition, true);
-//                    child.add(childPosition, true);
-//                } else {
-//                    child.add(childPosition, false);
-//                    for (boolean boo : child) {
-//                        if (boo) {
-//                            isCheck = true;
-//                            break;
-//                        }
-//                    }
-//                    if (!isCheck) {
-//                        groupFlag.add(groupPosition, false);
-//                    }
-//                }
-//                notifyDataSetChanged();
-//            }
-//        });
+//        左边的选中按钮的监听
+        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox checkBox = (CheckBox) v;
+                boolean isCheck = checkBox.isChecked();
+                List<Boolean> child = childFlag.get(groupPosition);
+                if (isCheck) {
+                    groupFlag.add(groupPosition, true);
+                    child.add(childPosition, true);
+                } else {
+                    child.add(childPosition, false);
+                    for (boolean boo : child) {
+                        if (boo) {
+                            isCheck = true;
+                            break;
+                        }
+                    }
+                    if (!isCheck) {
+                        groupFlag.add(groupPosition, false);
+                    }
+                }
+                notifyDataSetChanged();
+            }
+        });
         return view;
     }
 
