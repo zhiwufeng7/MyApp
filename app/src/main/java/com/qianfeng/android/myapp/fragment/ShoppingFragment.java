@@ -8,17 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.RadioButton;
-
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.activity.MainActivity;
 import com.qianfeng.android.myapp.adapter.ShoppingCartEVAdapter;
-import com.qianfeng.android.myapp.dao.DaoMaster;
-import com.qianfeng.android.myapp.dao.DaoSession;
-import com.qianfeng.android.myapp.dao.ShoppingCart;
-import com.qianfeng.android.myapp.dao.ShoppingCartDao;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class ShoppingFragment extends Fragment {
