@@ -183,15 +183,15 @@ public class HomePageFragment extends Fragment {
 
     }
 
-    private void initListener(){
+    private void initListener() {
 
         //今日推荐跳转
         headerGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               String url= homeRecommendInfo.getData().get(position).getUrl();
-                int length=url.length();
-                url=url.substring(length-32);
+                String url = homeRecommendInfo.getData().get(position).getUrl();
+                int length = url.length();
+                url = url.substring(length - 32);
                 Intent intent = new Intent(mContext, MerchantActivity.class);
                 intent.putExtra("id", url);
                 startActivity(intent);
@@ -201,16 +201,15 @@ public class HomePageFragment extends Fragment {
 
         //推荐服务商
         footGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String url=footList.get(position).getServiceId();
+                String url = footList.get(position).getServiceId();
                 Intent intent = new Intent(mContext, MerchantActivity.class);
                 intent.putExtra("id", url);
                 startActivity(intent);
             }
         });
-
 
 
         //banner跳转
@@ -292,9 +291,12 @@ public class HomePageFragment extends Fragment {
                     @Override
                     public void onResponse(String response, int id) {
 
-                     FootInfo footListInfo = gson.fromJson(response, FootInfo.class);
-                    footList = footListInfo.getData();
-
+                        FootInfo footListInfo = gson.fromJson(response, FootInfo.class);
+                        if (footList == null) {
+                            footList = footListInfo.getData();
+                        } else {
+                            footList.addAll(footListInfo.getData());
+                        }
                         if (footList != null) {
                             footGridViewAdapter.setData(footList);
                             footGridViewAdapter.notifyDataSetChanged();
@@ -390,6 +392,7 @@ public class HomePageFragment extends Fragment {
                     public void onError(Call call, Exception e, int id) {
 
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
 

@@ -9,7 +9,6 @@ public class AssortmentURL {
     public static final String PROJECT_SERVICES ="http://api.daoway.cn/daoway/rest/services/filter";
     public static final String PROJECT_SERVICEPRICE="http://api.daoway.cn/daoway/rest/servicePrice/";
     public static final String PROJECT_SERVICEPRICEA="/related";
-
     public static final String SHOP_SERVICES="http://api.daoway.cn/daoway/rest/service/";
 
 

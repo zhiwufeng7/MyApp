@@ -231,17 +231,18 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-//        if (childPosition == 0) {
-//            sum = 0;
-//            if (isChange == groupPosition) {
-//                boolean flag = groupFlag.get(groupPosition);
-//                List<Boolean> child = childFlag.get(groupPosition);
-//                for (int i = 0; i < child.size(); i++) {
-//                    child.add(i, flag);
-//                }
-//                isChange = -1;
-//            }
-//        }
+        if (childPosition == 0) {
+            sum = 0;
+            if (isChange == groupPosition) {
+                boolean flag = groupFlag.get(groupPosition);
+                List<Boolean> child = new ArrayList<>();
+                for (int i = 0; i < child.size(); i++) {
+                    child.add(i, flag);
+                }
+                childFlag.put(groupPosition,child);
+                isChange = -1;
+            }
+        }
 
 
         View view =null;
