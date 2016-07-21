@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
@@ -41,15 +38,12 @@ import com.qianfeng.android.myapp.data.Url;
 import com.qianfeng.android.myapp.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-import java.io.Closeable;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -190,15 +184,6 @@ public class MerchantActivity extends SwipeBackActivity {
         });
     }
 
-    public static void closeStream(Closeable stream) {
-        if (stream != null) {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     private void classifyData() {
         prices = data.getPrices();

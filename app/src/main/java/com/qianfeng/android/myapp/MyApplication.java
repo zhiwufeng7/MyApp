@@ -1,8 +1,8 @@
 package com.qianfeng.android.myapp;
 
 import android.app.Application;
-import com.baidu.mapapi.SDKInitializer;
 
+import com.baidu.mapapi.SDKInitializer;
 
 
 /**
@@ -14,6 +14,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initLocation();
+
     }
 
     private void initLocation() {
