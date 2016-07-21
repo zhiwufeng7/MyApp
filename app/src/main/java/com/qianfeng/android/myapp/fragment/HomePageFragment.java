@@ -26,6 +26,7 @@ import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.activity.MerchantActivity;
 import com.qianfeng.android.myapp.activity.ProjectListActivity;
 import com.qianfeng.android.myapp.activity.RecommendActivity;
+import com.qianfeng.android.myapp.activity.WebActivity;
 import com.qianfeng.android.myapp.adapter.HomeFootGridViewAdapter;
 import com.qianfeng.android.myapp.adapter.HomeHeaderServiceAdapter;
 import com.qianfeng.android.myapp.adapter.HomePullToRefreshExpandListViewAdapter;
@@ -215,11 +216,20 @@ public class HomePageFragment extends Fragment {
         //banner跳转
 
         banner.setOnItemClickListener(new OnItemClickListener() {
+
+            Intent intent = new Intent();
+
             @Override
             public void onItemClick(int position) {
-                String id = bannerList.get(position).getServiceId();
-                Intent intent = new Intent(mContext, MerchantActivity.class);
-                intent.putExtra("id", id);
+                if ("webpage".equals(bannerList.get(position).getType())) {
+
+                    String id = bannerList.get(position).getServiceId();
+                    intent.setClass(mContext, MerchantActivity.class);
+                    intent.putExtra("id", id);
+                } else {
+                    intent.setClass(mContext, WebActivity.class);
+                    intent.putExtra("web",bannerList.get(position).getTarget());
+                }
                 startActivity(intent);
             }
         });

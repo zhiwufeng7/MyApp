@@ -64,9 +64,9 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="yH3AI0G9S3ZY7sNjcXYiL585hcjYHWPx" />
 
-        <activity android:name=".activity.ServiceDetailsActivity"
-            android:theme="@style/AppBaseTheme"
-            />
+        <activity
+            android:name=".activity.ServiceDetailsActivity"
+            android:theme="@style/AppBaseTheme" />
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -97,10 +97,26 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activity.MerchantActivity"
-            android:theme="@style/AppBaseTheme"
-            />
-        <activity android:name=".activity.MerchantCommentActivity"></activity>
+
+        <activity
+            android:name=".activity.MerchantActivity"
+            android:theme="@style/AppBaseTheme" />
+        <activity android:name=".activity.MerchantCommentActivity">
+
+        </activity>
+        <activity android:name=".activity.WebActivity" />
+        <activity android:name=".activity.Wallet_Activity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="me"
+                    android:path="openWallet"
+                    android:scheme="app" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>
