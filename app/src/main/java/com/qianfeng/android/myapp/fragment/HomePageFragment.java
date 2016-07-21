@@ -223,12 +223,13 @@ public class HomePageFragment extends Fragment {
             public void onItemClick(int position) {
                 if ("webpage".equals(bannerList.get(position).getType())) {
 
+                    intent.setClass(mContext, WebActivity.class);
+                    intent.putExtra("web",bannerList.get(position).getTarget());
+
+                } else {
                     String id = bannerList.get(position).getServiceId();
                     intent.setClass(mContext, MerchantActivity.class);
                     intent.putExtra("id", id);
-                } else {
-                    intent.setClass(mContext, WebActivity.class);
-                    intent.putExtra("web",bannerList.get(position).getTarget());
                 }
                 startActivity(intent);
             }
