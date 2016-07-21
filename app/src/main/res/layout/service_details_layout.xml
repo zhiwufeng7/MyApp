@@ -49,12 +49,36 @@
         </FrameLayout>
 
         <ImageView
+            android:id="@+id/service_details_up_add_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:src="@drawable/takeout_bg_btn_increase_focus" />
+        <TextView
+            android:id="@+id/service_details_buy_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/service_details_up_add_tv"
+            android:text="0"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:layout_marginRight="3dp"
+            android:layout_marginLeft="3dp"
+            android:visibility="gone"
+            />
+        <ImageView
+            android:id="@+id/service_details_reduce_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/service_details_buy_tv"
+            android:src="@drawable/takeout_bg_btn_reduce"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+
+            />
+
     </RelativeLayout>
 
     <TextView
@@ -303,11 +327,4 @@
         >
     </android.support.v7.widget.RecyclerView>
 
-    <!--<com.qianfeng.android.myapp.widget.MyGridView
-        android:id="@+id/service_details_mygridview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/service_details_maybe_tv"
-        android:numColumns="2">
-    </com.qianfeng.android.myapp.widget.MyGridView>-->
 </RelativeLayout>
