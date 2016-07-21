@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,7 +41,8 @@ import com.qianfeng.android.myapp.data.Url;
 import com.qianfeng.android.myapp.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
+import java.io.Closeable;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,6 +55,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
+
 
 public class MerchantActivity extends SwipeBackActivity {
     private SwipeBackLayout mSwipeBackLayout;
@@ -119,20 +122,19 @@ public class MerchantActivity extends SwipeBackActivity {
     }
 
 
-
     private void setListener() {
         tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                if (position>0){
-                    adapter = new MerchantRecyclerAdapter(MerchantActivity.this,classifyPrices.get(position-1),id,title);
+                if (position > 0) {
+                    adapter = new MerchantRecyclerAdapter(MerchantActivity.this, classifyPrices.get(position - 1), id, title);
                     rv.setAdapter(adapter);
                     add_rl.setVisibility(View.GONE);
-                }else {
+                } else {
                     rv_data.clear();
                     add_rl.setVisibility(View.VISIBLE);
-                    num=10;
+                    num = 10;
                     setAdapter();
                 }
             }
@@ -151,7 +153,7 @@ public class MerchantActivity extends SwipeBackActivity {
         ib_car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MerchantActivity.this,MainActivity.class);
+                Intent intent = new Intent(MerchantActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -159,7 +161,7 @@ public class MerchantActivity extends SwipeBackActivity {
 
     private void initData() {
         //创建一个开发环境的Helper类，如果是正式环境调用DaoMaster.OpenHelper
-        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this,"liuxiao",null);
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this, "liuxiao", null);
         //通过Handler类获得数据库对象
         SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
         //通过数据库对象生成DaoMaster对象
@@ -178,7 +180,6 @@ public class MerchantActivity extends SwipeBackActivity {
             public void onResponse(String response, int id) {
                 Gson gson = new Gson();
                 merchantDetails = gson.fromJson(response, MerchantDetails.class);
-                Log.e("hehe", merchantDetails.getData().getPrices().size()+"");
                 cbItems = merchantDetails.getData().getImgs();
                 setView();
                 classifyData();
@@ -187,7 +188,16 @@ public class MerchantActivity extends SwipeBackActivity {
                 setAdapter();
             }
         });
-        Log.e("hehe", Url.getMerchantUrl(id,lot,lat));
+    }
+
+    public static void closeStream(Closeable stream) {
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void classifyData() {
@@ -222,7 +232,7 @@ public class MerchantActivity extends SwipeBackActivity {
             tab.addTab(tab.newTab().setText(subCategories.get(i).getName()));
         }
         MerchantDetails.DataBean.LastCommentBean lastComment = data.getLastComment();
-        if(lastComment!=null){
+        if (lastComment != null) {
             for (int i = 0; i < lastComment.getStar(); i++) {
                 stars.get(i).setImageDrawable(getResources().getDrawable(R.drawable.img_star_3));
             }
@@ -230,7 +240,7 @@ public class MerchantActivity extends SwipeBackActivity {
             tv_comment.setText(lastComment.getComment());
             tv_createtime.setText(getDay(lastComment.getCreatetime()));
             tv_nick.setText(lastComment.getNick());
-        }else {
+        } else {
             ll_comment.setVisibility(View.GONE);
         }
         tv_description.setText(data.getDescription());
@@ -319,13 +329,13 @@ public class MerchantActivity extends SwipeBackActivity {
             }
             num += 10;
 
-        }else {
+        } else {
             for (int i = num - 10; i < prices.size(); i++) {
                 rv_data.add(prices.get(i));
             }
             add_rl.setVisibility(View.GONE);
         }
-        adapter = new MerchantRecyclerAdapter(MerchantActivity.this,rv_data,id,title);
+        adapter = new MerchantRecyclerAdapter(MerchantActivity.this, rv_data, id, title);
         rv.setAdapter(adapter);
 
     }
@@ -351,19 +361,19 @@ public class MerchantActivity extends SwipeBackActivity {
         List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
         int shoppingNum = 0;
         Double shoppingPrice = 0.00;
-        for (int i=0; i<shoppingCarts.size();i++){
+        for (int i = 0; i < shoppingCarts.size(); i++) {
             ShoppingCart shoppingCart = shoppingCarts.get(i);
             int buyNum = shoppingCart.getBuyNum();
-            shoppingNum+=buyNum;
-            shoppingPrice+=(Double.valueOf(shoppingCart.getOriginalPrice())*buyNum);
+            shoppingNum += buyNum;
+            shoppingPrice += (Double.valueOf(shoppingCart.getOriginalPrice()) * buyNum);
         }
-        if (shoppingNum==0){
+        if (shoppingNum == 0) {
             tv_cat_num.setVisibility(View.GONE);
-        }else {
+        } else {
             tv_cat_num.setVisibility(View.VISIBLE);
-            tv_cat_num.setText(shoppingNum+"");
+            tv_cat_num.setText(shoppingNum + "");
         }
-        tv_cat_sum.setText(shoppingPrice+"");
+        tv_cat_sum.setText(shoppingPrice + "");
     }
 
 
@@ -385,7 +395,7 @@ public class MerchantActivity extends SwipeBackActivity {
         }
     }
 
-    public View getCarView(){
+    public View getCarView() {
         return ib_car;
     }
 
@@ -462,13 +472,13 @@ public class MerchantActivity extends SwipeBackActivity {
             }
             num += 10;
 
-        }else {
+        } else {
             for (int i = num - 10; i < prices.size(); i++) {
                 rv_data.add(prices.get(i));
             }
             add_rl.setVisibility(View.GONE);
         }
-        adapter = new MerchantRecyclerAdapter(MerchantActivity.this,rv_data,id,title);
+        adapter = new MerchantRecyclerAdapter(MerchantActivity.this, rv_data, id, title);
         rv.setAdapter(adapter);
     }
 

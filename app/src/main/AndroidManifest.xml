@@ -114,7 +114,7 @@
 
                 <data
                     android:host="me"
-                    android:path="openWallet"
+                    android:path="/openWallet"
                     android:scheme="app" />
             </intent-filter>
 
