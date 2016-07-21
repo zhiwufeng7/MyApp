@@ -353,7 +353,7 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
                     groupFlag.add(groupPosition, true);
                     child.set(childPosition, true);
                 } else {
-                    child.add(childPosition, false);
+                    child.set(childPosition, false);
                     for (boolean boo : child) {
                         if (boo) {
                             isCheck = true;
