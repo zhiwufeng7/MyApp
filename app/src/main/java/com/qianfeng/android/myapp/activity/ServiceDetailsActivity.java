@@ -3,6 +3,7 @@ package com.qianfeng.android.myapp.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +32,10 @@ import com.qianfeng.android.myapp.adapter.MaybeYuoLikeAdapter;
 import com.qianfeng.android.myapp.bean.MaybeYouLikeInfo;
 import com.qianfeng.android.myapp.bean.ServiceDetailsHeaderInfo;
 import com.qianfeng.android.myapp.bean.ShopInfo;
+import com.qianfeng.android.myapp.dao.DaoMaster;
+import com.qianfeng.android.myapp.dao.DaoSession;
+import com.qianfeng.android.myapp.dao.ShoppingCart;
+import com.qianfeng.android.myapp.dao.ShoppingCartDao;
 import com.qianfeng.android.myapp.data.AssortmentURL;
 import com.qianfeng.android.myapp.widget.MyGridView;
 import com.qianfeng.android.myapp.widget.SharePopupWindow;
@@ -104,36 +110,47 @@ public class ServiceDetailsActivity extends AppCompatActivity {
     private ImageView jumpToShop;
     private TextView introduce;
     private TextView bespeaktime;
-    private PopupWindow popWnd = new PopupWindow();
 
     private static final int VIDEO_CONTENT_DESC_MAX_LINE = 5;// 默认展示最大行数3行
     private static final int SHRINK_UP_STATE = 1;// 收起状态
     private static final int SPREAD_STATE = 2;// 展开状态
     private static int mState = SHRINK_UP_STATE;//默认收起状态
+
     private String guaranteeURL;
     private String shopId;
     private RecyclerView recyclerview;
+    private SharePopupWindow popWnd;
+    private TextView catNum;
+    private DaoMaster daoMaster;
+    private TextView sum;
+    private ImageView up_add;
+    private ImageView reduce;
+    private TextView buyNum;
+    private int minBuyNum;
+    private int id1;
+    private Button goBuy;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_details);
+
+        //获取当前地址信息
         getAddress();
+        //获取店铺信息
         getServiceId();
+        //初始化视图
         initView();
-
-
         //加载顶部商品详情数据
         initHeanderdata();
-        //加载中间店铺简介数据
+        //加载中间店铺简介数据及加载底部recyclerview数据
         initShopSummary();
-        //加载底部recyclerview数据
-        initdata();
+
         //设置监听
         initListener();
-
-
+        //刷新购物车
+        refresh();
     }
 
     private void initListener() {
@@ -158,12 +175,13 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         jumpToShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ServiceDetailsActivity.this,MerchantActivity.class);
-                intent.putExtra("id",shopId);
+                Intent intent = new Intent(ServiceDetailsActivity.this, MerchantActivity.class);
+                intent.putExtra("id", shopId);
                 startActivity(intent);
 
             }
         });
+        //返回
         ib_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +189,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
             }
         });
 
+        //分享及联系商家
         ib_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,6 +197,71 @@ public class ServiceDetailsActivity extends AppCompatActivity {
             }
         });
 
+        //购买数量递增
+        up_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //获取DaoSession对象
+                DaoSession daoSession = daoMaster.newSession();
+                //通过DaoSeesion对象获得CustomerDao对象
+                ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
+                List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
+                buyNum.setVisibility(View.VISIBLE);
+                reduce.setVisibility(View.VISIBLE);
+                String text = buyNum.getText().toString().trim();
+                int itemNum = Integer.parseInt(text);
+                if (itemNum==0){
+                    itemNum=minBuyNum;
+                }else {
+                    itemNum+=1;
+                }
+                String mItemNum = itemNum +"";
+                buyNum.setText(mItemNum);
+                shoppingCartDao.insertOrReplace(new ShoppingCart(Long.valueOf(id1),
+                        mShopName,mName,mPrice+"",mPrice_unit,
+                        itemNum,minBuyNum
+                ));
+                refresh();
+
+
+            }
+        });
+
+        //购买数量递减
+        reduce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //获取DaoSession对象
+                DaoSession daoSession = daoMaster.newSession();
+                //通过DaoSeesion对象获得CustomerDao对象
+                ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
+                List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
+                String text = buyNum.getText().toString().trim();
+                int itemNum = Integer.parseInt(text);
+                if (itemNum>minBuyNum){
+                    itemNum-=1;
+                    shoppingCartDao.insertOrReplace(new ShoppingCart(Long.valueOf(id1),
+                            mShopName,mName,mPrice+"",mPrice_unit,
+                            itemNum,minBuyNum
+                    ));
+                }else {
+                    buyNum.setVisibility(View.GONE);
+                    reduce.setVisibility(View.GONE);
+                    itemNum=0;
+                    shoppingCartDao.deleteByKey(Long.valueOf(id1));
+                }
+                buyNum.setText(itemNum+"");
+                refresh();
+            }
+        });
+
+        //调转致购物车页面
+        goBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
@@ -265,6 +349,8 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                         shopName.setText(mShopName);
                         positiveCommentRate.setText(mPositiveCommentRate);
                         shopDescription.setText(mShopDescription);
+                        //加载底部recyclerview数据
+                        initdata();
 
                     }
                 });
@@ -272,6 +358,13 @@ public class ServiceDetailsActivity extends AppCompatActivity {
 
     //获取跳转时得到的ServiceId
     private void getServiceId() {
+        //创建一个开发环境的Helper类，如果是正式环境调用DaoMaster.OpenHelper
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this, "liuxiao", null);
+        //通过Handler类获得数据库对象
+        SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
+        //通过数据库对象生成DaoMaster对象
+        daoMaster = new DaoMaster(readableDatabase);
+
         Intent intent = getIntent();
         mId = intent.getStringExtra("id");
         serviceId = intent.getStringExtra("serviceId");
@@ -286,6 +379,9 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         tv_name = (TextView) findViewById(R.id.service_details_tv_name);
         ib_back = (ImageButton) findViewById(R.id.service_details_ib_back);
         ib_menu = (ImageButton) findViewById(R.id.service_details_ib_menu);
+        catNum = (TextView) findViewById(R.id.service_details_tv_cat_num);
+        sum = (TextView) findViewById(R.id.service_details_tv_sum);
+        goBuy = (Button) findViewById(R.id.service_details_btn_gobuy);
 
 
         //初始化头部视图
@@ -305,7 +401,6 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         price = (TextView) contentView.findViewById(R.id.service_details_price_tv);
         originalprice = (TextView) contentView.findViewById(R.id.service_details_originalprice_tv);
         description = (TextView) contentView.findViewById(R.id.service_details_tv);
-       // myGridView = (MyGridView) contentView.findViewById(R.id.service_details_mygridview);
 
         time = (TextView) contentView.findViewById(R.id.service_time_tv);
         shopName = (TextView) contentView.findViewById(R.id.service_details_shopname_tv);
@@ -322,9 +417,12 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         jumpToShop = (ImageView) contentView.findViewById(R.id.service_details_iv);
         introduce = (TextView) contentView.findViewById(R.id.service_details_shop_introduce_tv);
         bespeaktime = (TextView) contentView.findViewById(R.id.service_bespeaktime_tv);
+        up_add = (ImageView) contentView.findViewById(R.id.service_details_up_add_tv);
+        reduce = (ImageView) contentView.findViewById(R.id.service_details_reduce_iv);
+        buyNum = (TextView) contentView.findViewById(R.id.service_details_buy_tv);
 
         recyclerview = (RecyclerView) contentView.findViewById(R.id.service_details_recyclerview);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerview.setLayoutManager(gridLayoutManager);
 
         //获取屏幕尺寸
@@ -375,9 +473,12 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                         mName = serviceDetailsHeaderInfo.getData().getName();
                         pic_url = serviceDetailsHeaderInfo.getData().getPicUrl();
                         mDescription = serviceDetailsHeaderInfo.getData().getDescription();
+                        minBuyNum = serviceDetailsHeaderInfo.getData().getMinBuyNum();
+                        id1 = serviceDetailsHeaderInfo.getData().getId();
 
 
-                        name.setText(mName);
+
+                        ServiceDetailsActivity.this.name.setText(mName);
                         salesNum.setText(mSalesNum);
                         price.setText(mPrice + " " + mPrice_unit);
                         description.setText(mDescription);
@@ -410,13 +511,13 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                         MaybeYouLikeInfo maybeYuoLikeInfo = gson.fromJson(response, MaybeYouLikeInfo.class);
                         data.addAll(maybeYuoLikeInfo.getData());
 
-                        MaybeYuoLikeAdapter maybeYuoLikeAdapter = new MaybeYuoLikeAdapter(data,ServiceDetailsActivity.this);
+                        MaybeYuoLikeAdapter maybeYuoLikeAdapter = new MaybeYuoLikeAdapter(data, ServiceDetailsActivity.this, catNum,mShopName);
                         recyclerview.setAdapter(maybeYuoLikeAdapter);
                         maybeYuoLikeAdapter.setOnItemClickListener(new MaybeYuoLikeAdapter.OnRecyclerViewItemClickListener() {
 
                             @Override
                             public void onItemClick(View view, MaybeYouLikeInfo.DataBean dataBean) {
-                                mId = dataBean.getId()+"";
+                                mId = dataBean.getId() + "";
                                 serviceId = dataBean.getServiceId();
                                 data.clear();
                                 //加载顶部商品详情数据
@@ -544,6 +645,29 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         // 启动分享GUI
         oks.show(ServiceDetailsActivity.this);
 
+    }
+
+    public void refresh() {
+        //获取DaoSession对象
+        DaoSession daoSession = daoMaster.newSession();
+        //通过DaoSeesion对象获得CustomerDao对象
+        ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
+        List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
+        int shoppingNum = 0;
+        Double shoppingPrice = 0.00;
+        for (int i = 0; i < shoppingCarts.size(); i++) {
+            ShoppingCart shoppingCart = shoppingCarts.get(i);
+            int buyNum = shoppingCart.getBuyNum();
+            shoppingNum += buyNum;
+            shoppingPrice += (Double.valueOf(shoppingCart.getOriginalPrice()) * buyNum);
+        }
+        if (shoppingNum == 0) {
+            catNum.setVisibility(View.GONE);
+        } else {
+            catNum.setVisibility(View.VISIBLE);
+            catNum.setText(shoppingNum + "");
+        }
+        sum.setText(shoppingPrice + "");
     }
 
 }
