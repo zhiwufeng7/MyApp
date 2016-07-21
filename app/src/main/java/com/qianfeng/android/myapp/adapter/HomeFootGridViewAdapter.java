@@ -31,11 +31,11 @@ public class HomeFootGridViewAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
-    public void upData(List<FootInfo.DataBean> list) {
+    public void setData(List<FootInfo.DataBean> list) {
         if (data == null) {
             data = new ArrayList<>();
         }
-        data.addAll(list);
+        data=list;
     }
 
     @Override

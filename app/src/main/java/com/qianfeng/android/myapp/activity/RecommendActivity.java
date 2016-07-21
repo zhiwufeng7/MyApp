@@ -14,7 +14,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.adapter.HomeFootGridViewAdapter;
 import com.qianfeng.android.myapp.bean.FootInfo;
-import com.qianfeng.android.myapp.bean.MerchantDetails;
 import com.qianfeng.android.myapp.common.UrlConfig;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -110,7 +109,7 @@ public class RecommendActivity extends AppCompatActivity {
 
                                 initAdapter();
                             }
-                            adapter.upData(footListInfo.getData());
+                            adapter.setData(footListInfo.getData());
                             adapter.notifyDataSetChanged();
                             refreshGridView.onRefreshComplete();
                         }

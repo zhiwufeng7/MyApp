@@ -54,7 +54,6 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         //通过数据库对象生成DaoMaster对象
         daoMaster = new DaoMaster(readableDatabase);
         //获取DaoSession对象
-
         initData();
 
 
@@ -104,22 +103,24 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         if (childData == null) {
             childData = new HashMap<>();
         } else {
-            childData.clear();
-        }
-        for (String str : groupList) {
-            List<ShoppingCart> carts = new ArrayList<>();
+            for (int i=0;i<groupList.size();i++){
 
-            for (ShoppingCart shoppingCart : data) {
+                String title=groupList.get(i);
+               List<ShoppingCart> carts = childData.get(title);
 
-                String title = shoppingCart.getServiceTitle();
-
-                if (str.equals(title)) {
-
-                    carts.add(shoppingCart);
+                if(carts==null){
+                    carts=new ArrayList<>();
+                }else {
+                    carts.clear();
                 }
-            }
 
-            childData.put(str, carts);
+                for (ShoppingCart shoppingCart : data){
+                    if (shoppingCart.getServiceTitle().equals(title)){
+                        carts.add(shoppingCart);
+                    }
+                }
+                childData.put(title,carts);
+            }
         }
     }
 
@@ -208,16 +209,16 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         groupViewHolder.title.setText(" " + groupList.get(groupPosition));
 
 
-        groupViewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //点击group的checkbox的时候让checked改变
-                CheckBox checkBox = (CheckBox) v;
-                isChange = groupPosition;
-                groupFlag.add(groupPosition, checkBox.isChecked());
-                notifyDataSetChanged();
-            }
-        });
+//        groupViewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //点击group的checkbox的时候让checked改变
+//                CheckBox checkBox = (CheckBox) v;
+//                isChange = groupPosition;
+//                groupFlag.add(groupPosition, checkBox.isChecked());
+//                notifyDataSetChanged();
+//            }
+//        });
 
         return view;
     }
@@ -230,17 +231,17 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if (childPosition == 0) {
-            sum = 0;
-            if (isChange == groupPosition) {
-                boolean flag = groupFlag.get(groupPosition);
-                List<Boolean> child = childFlag.get(groupPosition);
-                for (int i = 0; i < child.size(); i++) {
-                    child.add(i, flag);
-                }
-                isChange = -1;
-            }
-        }
+//        if (childPosition == 0) {
+//            sum = 0;
+//            if (isChange == groupPosition) {
+//                boolean flag = groupFlag.get(groupPosition);
+//                List<Boolean> child = childFlag.get(groupPosition);
+//                for (int i = 0; i < child.size(); i++) {
+//                    child.add(i, flag);
+//                }
+//                isChange = -1;
+//            }
+//        }
 
 
         View view =null;
@@ -337,30 +338,30 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
         });
 
         //左边的选中按钮的监听
-        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CheckBox checkBox = (CheckBox) v;
-                boolean isCheck = checkBox.isChecked();
-                List<Boolean> child = childFlag.get(groupPosition);
-                if (isCheck) {
-                    groupFlag.add(groupPosition, true);
-                    child.add(childPosition, true);
-                } else {
-                    child.add(childPosition, false);
-                    for (boolean boo : child) {
-                        if (boo) {
-                            isCheck = true;
-                            break;
-                        }
-                    }
-                    if (!isCheck) {
-                        groupFlag.add(groupPosition, false);
-                    }
-                }
-                notifyDataSetChanged();
-            }
-        });
+//        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                CheckBox checkBox = (CheckBox) v;
+//                boolean isCheck = checkBox.isChecked();
+//                List<Boolean> child = childFlag.get(groupPosition);
+//                if (isCheck) {
+//                    groupFlag.add(groupPosition, true);
+//                    child.add(childPosition, true);
+//                } else {
+//                    child.add(childPosition, false);
+//                    for (boolean boo : child) {
+//                        if (boo) {
+//                            isCheck = true;
+//                            break;
+//                        }
+//                    }
+//                    if (!isCheck) {
+//                        groupFlag.add(groupPosition, false);
+//                    }
+//                }
+//                notifyDataSetChanged();
+//            }
+//        });
         return view;
     }
 

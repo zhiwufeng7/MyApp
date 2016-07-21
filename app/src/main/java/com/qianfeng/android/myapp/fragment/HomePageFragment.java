@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -73,7 +71,7 @@ public class HomePageFragment extends Fragment {
     private Button service;
     private HomeServiceInfo homeServiceInfo;
     private HomeRecommendInfo homeRecommendInfo;
-    private FootInfo footListInfo;
+    private List<FootInfo.DataBean> footList;
 
 
     public HomePageFragment() {
@@ -206,7 +204,7 @@ public class HomePageFragment extends Fragment {
             
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String url=footListInfo.getData().get(position).getServiceId();
+                String url=footList.get(position).getServiceId();
                 Intent intent = new Intent(mContext, MerchantActivity.class);
                 intent.putExtra("id", url);
                 startActivity(intent);
@@ -294,11 +292,11 @@ public class HomePageFragment extends Fragment {
                     @Override
                     public void onResponse(String response, int id) {
 
-                      footListInfo = gson.fromJson(response, FootInfo.class);
-                        List<FootInfo.DataBean> list = footListInfo.getData();
+                     FootInfo footListInfo = gson.fromJson(response, FootInfo.class);
+                    footList = footListInfo.getData();
 
-                        if (list != null) {
-                            footGridViewAdapter.upData(footListInfo.getData());
+                        if (footList != null) {
+                            footGridViewAdapter.setData(footList);
                             footGridViewAdapter.notifyDataSetChanged();
                         }
 
