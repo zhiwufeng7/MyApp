@@ -102,26 +102,29 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
     private void getChildList(List<ShoppingCart> data, List<String> groupList) {
         if (childData == null) {
             childData = new HashMap<>();
-        } else {
-            for (int i=0;i<groupList.size();i++){
-
-                String title=groupList.get(i);
-               List<ShoppingCart> carts = childData.get(title);
-
-                if(carts==null){
-                    carts=new ArrayList<>();
-                }else {
-                    carts.clear();
-                }
-
-                for (ShoppingCart shoppingCart : data){
-                    if (shoppingCart.getServiceTitle().equals(title)){
-                        carts.add(shoppingCart);
-                    }
-                }
-                childData.put(title,carts);
-            }
         }
+
+        for (int i=0;i<groupList.size();i++){
+
+            String title=groupList.get(i);
+            List<ShoppingCart> carts = childData.get(title);
+
+            if(carts==null){
+                carts=new ArrayList<>();
+            }else {
+                carts.clear();
+            }
+
+            for (ShoppingCart shoppingCart : data){
+                if (shoppingCart.getServiceTitle().equals(title)){
+                    carts.add(shoppingCart);
+                }
+            }
+            childData.put(title,carts);
+        }
+
+
+
     }
 
     private void getGroupList(List<ShoppingCart> data) {
