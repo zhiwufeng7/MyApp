@@ -227,7 +227,7 @@ public class HomePageFragment extends Fragment {
                     intent.putExtra("web",bannerList.get(position).getTarget());
 
                 } else {
-                    String id = bannerList.get(position).getServiceId();
+                    String id = bannerList.get(position).getTarget();
                     intent.setClass(mContext, MerchantActivity.class);
                     intent.putExtra("id", id);
                 }

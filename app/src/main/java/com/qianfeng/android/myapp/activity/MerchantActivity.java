@@ -147,6 +147,14 @@ public class MerchantActivity extends SwipeBackActivity {
 
             }
         });
+
+        ib_car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MerchantActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initData() {

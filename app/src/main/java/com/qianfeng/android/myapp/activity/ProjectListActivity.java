@@ -383,4 +383,10 @@ public class ProjectListActivity extends AppCompatActivity {
         manualCity = sharedPreferences.getString("cityName", "北京");
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        popWnd.dismiss();
+    }
 }

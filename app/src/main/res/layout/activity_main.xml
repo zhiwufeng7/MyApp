@@ -18,6 +18,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="@color/white"
+        android:paddingTop="5dp"
         >
 
         <RadioButton
@@ -37,7 +38,8 @@
             android:id="@+id/main_bottom_shopping_rb"
             style="@style/main_bottom_radio_button"
             android:drawableTop="@drawable/slt_main_bottom_shopping_cart"
-            android:text="@string/main_bottom_shopping_cart" />
+            android:text="@string/main_bottom_shopping_cart"
+            android:checked="false" />
 
         <RadioButton
             android:id="@+id/main_bottom_order_form_rb"

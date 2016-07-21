@@ -277,7 +277,8 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
         shoppingCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(ServiceDetailsActivity.this,MainActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,12 +48,20 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout viewGroup;
     private TextView title;
     private TextView shoppingCartNo;
+    private DaoMaster daoMaster;
+    private RadioButton shoppingBtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(MainActivity.this,"liuxiao",null);
+        //通过Handler类获得数据库对象
+        SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
+        //通过数据库对象生成DaoMaster对象
+        daoMaster = new DaoMaster(readableDatabase);
 
         initView();
 
@@ -152,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewGroup = (FrameLayout) findViewById(R.id.main_content_fl);
         radioGroup = (RadioGroup) findViewById(R.id.main_bottom_rg);
+        shoppingBtn = (RadioButton) findViewById(R.id.main_bottom_shopping_rb);
         search = (Button) findViewById(R.id.main_top_search_btn);
         message = (Button) findViewById(R.id.main_top_msg_btn);
         address = (Button) findViewById(R.id.main_top_address_btn);
@@ -213,24 +223,20 @@ public class MainActivity extends AppCompatActivity {
         } else {
             transaction.hide(fragmentList.get(curIndex)).show(fragment);
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
 
         curIndex = i;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        //super.onSaveInstanceState(outState);
+       //super.onSaveInstanceState(outState);
     }
 
 
 
     public void initShoppingCart() {
-        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(MainActivity.this,"liuxiao",null);
-        //通过Handler类获得数据库对象
-        SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
-        //通过数据库对象生成DaoMaster对象
-        DaoMaster daoMaster = new DaoMaster(readableDatabase);
+
         //获取DaoSession对象
         DaoSession daoSession = daoMaster.newSession();
         //通过DaoSeesion对象获得CustomerDao对象
@@ -257,5 +263,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         initShoppingCart();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        shoppingBtn.setChecked(true);
+        super.onNewIntent(intent);
     }
 }
