@@ -13,6 +13,12 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -130,6 +136,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
     private int id1;
     private Button goBuy;
     private ImageButton shoppingCar;
+    private ImageView ball;
 
 
     @Override
@@ -147,7 +154,6 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         initHeanderdata();
         //加载中间店铺简介数据及加载底部recyclerview数据
         initShopSummary();
-
         //设置监听
         initListener();
         //刷新购物车
@@ -207,23 +213,29 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                 //通过DaoSeesion对象获得CustomerDao对象
                 ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
                 List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
-                buyNum.setVisibility(View.VISIBLE);
-                reduce.setVisibility(View.VISIBLE);
+//                buyNum.setVisibility(View.VISIBLE);
+//                reduce.setVisibility(View.VISIBLE);
                 String text = buyNum.getText().toString().trim();
                 int itemNum = Integer.parseInt(text);
-                if (itemNum==0){
-                    itemNum=minBuyNum;
-                }else {
-                    itemNum+=1;
+                if (itemNum == 0) {
+                    itemNum = minBuyNum;
+                } else {
+                    itemNum += 1;
                 }
-                String mItemNum = itemNum +"";
+                String mItemNum = itemNum + "";
                 buyNum.setText(mItemNum);
                 shoppingCartDao.insertOrReplace(new ShoppingCart(Long.valueOf(id1),
-                        mShopName,mName,mPrice+"",mPrice_unit,
-                        itemNum,minBuyNum
+                        mShopName, mName, mPrice + "", pic_url,
+                        itemNum, minBuyNum
                 ));
-                refresh();
 
+
+                int[] startLocation = new int[2];// 一个整型数组，用来存储按钮的在屏幕的X、Y坐标
+                buyNum.getLocationInWindow(startLocation);// 这是获取购买按钮的在屏幕的X、Y坐标（这也是动画开始的坐标）
+                ball = new ImageView(ServiceDetailsActivity.this);// buyImg是动画的图片，我的是一个小球（R.drawable.sign）
+                ball.setImageResource(R.drawable.unread_count_bg);// 设置buyImg的图片
+                setAnim(ball, startLocation);// 开始执行动画
+                buyNum.startAnimation(AnimationUtils.loadAnimation(ServiceDetailsActivity.this, R.anim.text_plus));
 
             }
         });
@@ -239,19 +251,19 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                 List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
                 String text = buyNum.getText().toString().trim();
                 int itemNum = Integer.parseInt(text);
-                if (itemNum>minBuyNum){
-                    itemNum-=1;
+                if (itemNum > minBuyNum) {
+                    itemNum -= 1;
                     shoppingCartDao.insertOrReplace(new ShoppingCart(Long.valueOf(id1),
-                            mShopName,mName,mPrice+"",mPrice_unit,
-                            itemNum,minBuyNum
+                            mShopName, mName, mPrice + "", pic_url,
+                            itemNum, minBuyNum
                     ));
-                }else {
-                    buyNum.setVisibility(View.GONE);
-                    reduce.setVisibility(View.GONE);
-                    itemNum=0;
+                } else {
+//                    buyNum.setVisibility(View.GONE);
+//                    reduce.setVisibility(View.GONE);
+                    itemNum = 0;
                     shoppingCartDao.deleteByKey(Long.valueOf(id1));
                 }
-                buyNum.setText(itemNum+"");
+                buyNum.setText(itemNum + "");
                 refresh();
             }
         });
@@ -383,7 +395,7 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         catNum = (TextView) findViewById(R.id.service_details_tv_cat_num);
         sum = (TextView) findViewById(R.id.service_details_tv_sum);
         goBuy = (Button) findViewById(R.id.service_details_btn_gobuy);
-        shoppingCar = (ImageButton)findViewById(R.id.service_details_ib_cat);
+        shoppingCar = (ImageButton) findViewById(R.id.service_details_ib_cat);
 
         //初始化头部视图
         View zoomView = LayoutInflater.from(this).inflate(R.layout.service_details_banner, null, false);
@@ -448,6 +460,8 @@ public class ServiceDetailsActivity extends AppCompatActivity {
         mTransparentToolBar.setOffset(mScreenWidth - getResources().getDimension(R.dimen.title_height));
         internalScrollView.setTitleBar(mTransparentToolBar);
 
+
+
     }
 
 
@@ -477,8 +491,6 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                         minBuyNum = serviceDetailsHeaderInfo.getData().getMinBuyNum();
                         id1 = serviceDetailsHeaderInfo.getData().getId();
 
-
-
                         ServiceDetailsActivity.this.name.setText(mName);
                         salesNum.setText(mSalesNum);
                         price.setText(mPrice + " " + mPrice_unit);
@@ -489,6 +501,19 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                             originalprice.setText("");
                         }
                         Glide.with(ServiceDetailsActivity.this).load(pic_url).into(bannerIV);
+
+
+                        //获取DaoSession对象
+                        DaoSession daoSession = daoMaster.newSession();
+                        //通过DaoSeesion对象获得CustomerDao对象
+                        ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
+
+                        ShoppingCart shoppingCart = shoppingCartDao.loadByRowId(Long.valueOf(id1));
+                        if (shoppingCart!=null){
+                            buyNum.setText(shoppingCart.getBuyNum()+"");
+                        }else {
+                            buyNum.setText("0");
+                        }
                     }
                 });
 
@@ -510,9 +535,9 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
                         MaybeYouLikeInfo maybeYuoLikeInfo = gson.fromJson(response, MaybeYouLikeInfo.class);
-                        data=maybeYuoLikeInfo.getData();
+                        data = maybeYuoLikeInfo.getData();
 
-                        MaybeYuoLikeAdapter maybeYuoLikeAdapter = new MaybeYuoLikeAdapter(data, ServiceDetailsActivity.this, catNum,mShopName);
+                        MaybeYuoLikeAdapter maybeYuoLikeAdapter = new MaybeYuoLikeAdapter(data, ServiceDetailsActivity.this, catNum, mShopName);
                         recyclerview.setAdapter(maybeYuoLikeAdapter);
                         maybeYuoLikeAdapter.setOnItemClickListener(new MaybeYuoLikeAdapter.OnRecyclerViewItemClickListener() {
 
@@ -527,7 +552,6 @@ public class ServiceDetailsActivity extends AppCompatActivity {
                                 initShopSummary();
                                 //加载底部recyclerview数据
                                 initdata();
-
                             }
                         });
 
@@ -669,6 +693,95 @@ public class ServiceDetailsActivity extends AppCompatActivity {
             catNum.setText(shoppingNum + "");
         }
         sum.setText(shoppingPrice + "");
+    }
+
+    public View getCarView() {
+        return shoppingCar;
+    }
+
+    /**
+     * @param
+     * @return void
+     * @throws
+     * @Description: 创建动画层
+     */
+    private ViewGroup createAnimLayout() {
+        ViewGroup rootView = (ViewGroup) getWindow().getDecorView();
+        LinearLayout animLayout = new LinearLayout(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        animLayout.setLayoutParams(lp);
+        animLayout.setId(0);
+        animLayout.setBackgroundResource(android.R.color.transparent);
+        rootView.addView(animLayout);
+        return animLayout;
+    }
+
+    private View addViewToAnimLayout(final ViewGroup parent, final View view,
+                                     int[] location) {
+        int x = location[0];
+        int y = location[1];
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.leftMargin = x;
+        lp.topMargin = y;
+        view.setLayoutParams(lp);
+        return view;
+    }
+
+    private void setAnim(final View v, int[] startLocation) {
+        ViewGroup anim_mask_layout = null;
+        anim_mask_layout = createAnimLayout();
+        anim_mask_layout.addView(v);//把动画小球添加到动画层
+        final View view = addViewToAnimLayout(anim_mask_layout, v,
+                startLocation);
+        int[] endLocation = new int[2];// 存储动画结束位置的X、Y坐标
+        getCarView().getLocationInWindow(endLocation);// shopCart是那个购物车
+
+        // 计算位移
+        int endX = 0 - startLocation[0] + 40;// 动画位移的X坐标
+        int endY = endLocation[1] - startLocation[1];// 动画位移的y坐标
+        TranslateAnimation translateAnimationX = new TranslateAnimation(0,
+                endX, 0, 0);
+        translateAnimationX.setInterpolator(new LinearInterpolator());
+        translateAnimationX.setRepeatCount(0);// 动画重复执行的次数
+        translateAnimationX.setFillAfter(true);
+
+        TranslateAnimation translateAnimationY = new TranslateAnimation(0, 0,
+                0, endY);
+        translateAnimationY.setInterpolator(new AccelerateInterpolator());
+        translateAnimationY.setRepeatCount(0);// 动画重复执行的次数
+        translateAnimationX.setFillAfter(true);
+
+        AnimationSet set = new AnimationSet(false);
+        set.setFillAfter(false);
+        set.addAnimation(translateAnimationY);
+        set.addAnimation(translateAnimationX);
+        set.setDuration(800);// 动画的执行时间
+        view.startAnimation(set);
+        // 动画监听事件
+        set.setAnimationListener(new Animation.AnimationListener() {
+            // 动画的开始
+            @Override
+            public void onAnimationStart(Animation animation) {
+                v.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // TODO Auto-generated method stub
+            }
+
+            // 动画的结束
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setVisibility(View.GONE);
+                refresh();
+            }
+        });
+
     }
 
 }

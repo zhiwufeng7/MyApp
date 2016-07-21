@@ -59,11 +59,17 @@
             </FrameLayout>
         </RelativeLayout>
 
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right">
         <ImageView
             android:id="@+id/maybeyoulike_add_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginLeft="3dp"
             android:src="@drawable/takeout_bg_btn_increase_focus" />
         <TextView
             android:id="@+id/maybeyoulike_buy_tv"
@@ -75,14 +81,14 @@
             android:textColor="@color/red"
             android:layout_marginRight="3dp"
             android:layout_marginLeft="3dp"
-            android:visibility="gone"/>
+            />
         <ImageView
             android:id="@+id/maybeyoulike_reduce_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/maybeyoulike_buy_tv"
             android:src="@drawable/takeout_bg_btn_reduce"
-            android:visibility="gone"
+            android:layout_marginRight="3dp"
             />
     </RelativeLayout>
 
