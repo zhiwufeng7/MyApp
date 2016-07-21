@@ -6,11 +6,11 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,10 +50,12 @@ import java.util.TimeZone;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 import okhttp3.Call;
 
-public class MerchantActivity extends AppCompatActivity {
-
+public class MerchantActivity extends SwipeBackActivity {
+    private SwipeBackLayout mSwipeBackLayout;
     private TransparentToolBar mTransparentToolBar;
     private ConvenientBanner mConvenientBanner;
     private PullToZoomScrollViewEx scrollView;
@@ -97,6 +99,7 @@ public class MerchantActivity extends AppCompatActivity {
     private DaoMaster daoMaster;
     private ImageButton ib_car;
     private SharePopupWindow popWnd;
+    private LinearLayout ll_comment;
 
 
     @Override
@@ -109,7 +112,13 @@ public class MerchantActivity extends AppCompatActivity {
         setToolBar();
         initData();
         refresh();
+
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+
     }
+
+
 
     private void setListener() {
         tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -119,11 +128,12 @@ public class MerchantActivity extends AppCompatActivity {
                 if (position>0){
                     adapter = new MerchantRecyclerAdapter(MerchantActivity.this,classifyPrices.get(position-1),id,title);
                     rv.setAdapter(adapter);
+                    add_rl.setVisibility(View.GONE);
                 }else {
                     rv_data.clear();
                     add_rl.setVisibility(View.VISIBLE);
                     num=10;
-                    onAddList(null);
+                    setAdapter();
                 }
             }
 
@@ -160,6 +170,7 @@ public class MerchantActivity extends AppCompatActivity {
             public void onResponse(String response, int id) {
                 Gson gson = new Gson();
                 merchantDetails = gson.fromJson(response, MerchantDetails.class);
+                Log.e("hehe", merchantDetails.getData().getPrices().size()+"");
                 cbItems = merchantDetails.getData().getImgs();
                 setView();
                 classifyData();
@@ -168,6 +179,7 @@ public class MerchantActivity extends AppCompatActivity {
                 setAdapter();
             }
         });
+        Log.e("hehe", Url.getMerchantUrl(id,lot,lat));
     }
 
     private void classifyData() {
@@ -202,13 +214,17 @@ public class MerchantActivity extends AppCompatActivity {
             tab.addTab(tab.newTab().setText(subCategories.get(i).getName()));
         }
         MerchantDetails.DataBean.LastCommentBean lastComment = data.getLastComment();
-        for (int i = 0; i < lastComment.getStar(); i++) {
-            stars.get(i).setImageDrawable(getResources().getDrawable(R.drawable.img_star_3));
+        if(lastComment!=null){
+            for (int i = 0; i < lastComment.getStar(); i++) {
+                stars.get(i).setImageDrawable(getResources().getDrawable(R.drawable.img_star_3));
+            }
+            tv_commentCount.setText("(" + data.getCommentCount() + "条)");
+            tv_comment.setText(lastComment.getComment());
+            tv_createtime.setText(getDay(lastComment.getCreatetime()));
+            tv_nick.setText(lastComment.getNick());
+        }else {
+            ll_comment.setVisibility(View.GONE);
         }
-        tv_commentCount.setText("(" + data.getCommentCount() + "条)");
-        tv_comment.setText(lastComment.getComment());
-        tv_createtime.setText(getDay(lastComment.getCreatetime()));
-        tv_nick.setText(lastComment.getNick());
         tv_description.setText(data.getDescription());
         List<String> tagIcons = data.getTagIcons();
         if (tagIcons.size() == 2) {
@@ -289,7 +305,20 @@ public class MerchantActivity extends AppCompatActivity {
     private void setAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);
-        onAddList(null);
+        if (num < prices.size()) {
+            for (int i = num - 10; i < num; i++) {
+                rv_data.add(prices.get(i));
+            }
+            num += 10;
+
+        }else {
+            for (int i = num - 10; i < prices.size(); i++) {
+                rv_data.add(prices.get(i));
+            }
+            add_rl.setVisibility(View.GONE);
+        }
+        adapter = new MerchantRecyclerAdapter(MerchantActivity.this,rv_data,id,title);
+        rv.setAdapter(adapter);
 
     }
 
@@ -328,6 +357,7 @@ public class MerchantActivity extends AppCompatActivity {
         }
         tv_cat_sum.setText(shoppingPrice+"");
     }
+
 
     class LocalImageHolderView implements Holder<MerchantDetails.DataBean.ImgsBean> {
         ImageView imageView;
@@ -409,6 +439,8 @@ public class MerchantActivity extends AppCompatActivity {
         tv_cat_num = (TextView) findViewById(R.id.merchant_tv_cat_num);
         tv_cat_sum = (TextView) findViewById(R.id.merchant_tv_sum);
         ib_car = (ImageButton) findViewById(R.id.merchant_ib_car);
+
+        ll_comment = (LinearLayout) findViewById(R.id.merchant_ll_comment);
     }
 
     public void onBack(View view) {

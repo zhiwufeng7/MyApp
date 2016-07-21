@@ -45,4 +45,5 @@ dependencies {
     compile 'com.bigkoo:quicksidebar:1.0.2'
     compile files('libs/MobCommons-2016.0707.1708.jar')
     compile project(':PullToZoomView')
+    compile 'me.imid.swipebacklayout.lib:library:1.0.0'
 }

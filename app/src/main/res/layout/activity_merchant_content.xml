@@ -207,11 +207,11 @@
             />
     </RelativeLayout>
     <LinearLayout
+        android:id="@+id/merchant_ll_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@color/white"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
@@ -331,6 +331,7 @@
         </LinearLayout>
     </LinearLayout>
     <TextView
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

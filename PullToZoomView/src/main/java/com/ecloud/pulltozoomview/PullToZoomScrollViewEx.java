@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
@@ -308,16 +309,20 @@ public class PullToZoomScrollViewEx extends PullToZoomBase<ScrollView> {
             }
 
             //将滚动不断变化的top值传递给ToolBar用于计算透明度
-            mTransparentToolBar.setChangeTop(t);
+            if(mTransparentToolBar!=null){
+                mTransparentToolBar.setChangeTop(t);
+            }
         }
 
         /** 注入ToolBar */
         public void setTitleBar(TransparentToolBar titleBar) {
             mTransparentToolBar = titleBar;
         }
+
     }
 
     protected interface OnScrollViewChangedListener {
         public void onInternalScrollChanged(int left, int top, int oldLeft, int oldTop);
     }
+
 }

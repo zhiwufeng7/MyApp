@@ -95,7 +95,9 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activity.MerchantActivity" />
+        <activity android:name=".activity.MerchantActivity"
+            android:theme="@style/AppBaseTheme"
+            />
         <activity android:name=".activity.MerchantCommentActivity"></activity>
     </application>
 
