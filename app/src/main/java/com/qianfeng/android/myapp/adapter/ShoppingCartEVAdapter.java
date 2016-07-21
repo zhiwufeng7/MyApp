@@ -218,7 +218,7 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
                 //点击group的checkbox的时候让checked改变
                 CheckBox checkBox = (CheckBox) v;
                 isChange = groupPosition;
-                groupFlag.add(groupPosition, checkBox.isChecked());
+             groupFlag.set(groupPosition,checkBox.isChecked());
                 notifyDataSetChanged();
             }
         });
@@ -351,7 +351,7 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
                 List<Boolean> child = childFlag.get(groupPosition);
                 if (isCheck) {
                     groupFlag.add(groupPosition, true);
-                    child.add(childPosition, true);
+                    child.set(childPosition, true);
                 } else {
                     child.add(childPosition, false);
                     for (boolean boo : child) {
@@ -361,7 +361,7 @@ public class ShoppingCartEVAdapter extends BaseExpandableListAdapter {
                         }
                     }
                     if (!isCheck) {
-                        groupFlag.add(groupPosition, false);
+                        groupFlag.set(groupPosition, false);
                     }
                 }
                 notifyDataSetChanged();
