@@ -3,6 +3,7 @@ package com.qianfeng.android.myapp.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -121,7 +122,18 @@ public class HomePageFragment extends Fragment {
     private void initFootView(View footView) {
 
         footGrid = (MyGridView) footView.findViewById(R.id.home_page_foot_my_grid);
+        Configuration mConfiguration = this.getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation ; //获取屏幕方向
 
+        if(ori == mConfiguration.ORIENTATION_LANDSCAPE){
+
+//横屏
+            footGrid.setNumColumns(3);
+        }else if(ori == mConfiguration.ORIENTATION_PORTRAIT){
+
+//竖屏
+            footGrid.setNumColumns(2);
+        }
     }
 
     private void initAdapter() {

@@ -1,5 +1,6 @@
 package com.qianfeng.android.myapp.activity;
 
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -52,6 +53,18 @@ public class CollectionActivity extends AppCompatActivity {
     private void initView() {
         pull = (PullToRefreshGridView) findViewById(R.id.collection_gv);
         gv = pull.getRefreshableView();
+        Configuration mConfiguration = this.getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation ; //获取屏幕方向
+
+        if(ori == mConfiguration.ORIENTATION_LANDSCAPE){
+
+//横屏
+            gv.setNumColumns(3);
+        }else if(ori == mConfiguration.ORIENTATION_PORTRAIT){
+
+//竖屏
+            gv.setNumColumns(2);
+        }
         back = (ImageView) findViewById(R.id.collection_service_back_iv);
 
     }

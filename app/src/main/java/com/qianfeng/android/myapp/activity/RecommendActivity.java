@@ -1,6 +1,7 @@
 package com.qianfeng.android.myapp.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -133,6 +134,18 @@ public class RecommendActivity extends AppCompatActivity {
         refreshGridView = (PullToRefreshGridView) findViewById(R.id.recommend_service_gv);
         refreshGridView.setMode(PullToRefreshBase.Mode.BOTH);
         gridView = refreshGridView.getRefreshableView();
+        Configuration mConfiguration = this.getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation ; //获取屏幕方向
+
+        if(ori == mConfiguration.ORIENTATION_LANDSCAPE){
+
+//横屏
+            gridView.setNumColumns(3);
+        }else if(ori == mConfiguration.ORIENTATION_PORTRAIT){
+
+//竖屏
+            gridView.setNumColumns(2);
+        }
     }
 
 

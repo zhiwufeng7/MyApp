@@ -22,7 +22,6 @@
         android:textStyle="bold" />
     <com.handmark.pulltorefresh.library.PullToRefreshGridView
         android:id="@+id/collection_gv"
-        android:numColumns="2"
         android:gravity="center"
         android:horizontalSpacing="5dp"
         android:verticalSpacing="5dp"
