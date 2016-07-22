@@ -2,6 +2,7 @@ package com.qianfeng.android.myapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,7 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
         } else {
             groupViewHolder = (GroupViewHolder) view.getTag();
         }
-        groupViewHolder.mLeftTxt.setText("  "+data.getData().get(groupPosition).getCategoryName());
+        groupViewHolder.mLeftTxt.setText("  " + data.getData().get(groupPosition).getCategoryName());
         return view;
     }
 
@@ -93,35 +94,39 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
 
         View view = convertView;
         ChildViewHolder childViewHolder;
-        HomeGridViewAdapter adapter;
         if (view == null) {
             view = inflater.inflate(R.layout.home_page_child_view, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.gridView = (GridView) view.findViewById(R.id.home_page_child_gv);
             view.setTag(childViewHolder);
+            childViewHolder.adapter = new HomeGridViewAdapter(mContext);
+            childViewHolder.adapter.setData(data.getData().get(groupPosition));
+            childViewHolder.gridView.setAdapter(childViewHolder.adapter);
+            Log.e("hehe","1");
         } else {
+            Log.e("hehe","2");
             childViewHolder = (ChildViewHolder) view.getTag();
+            childViewHolder.adapter.setData(data.getData().get(groupPosition));
+            childViewHolder.adapter.notifyDataSetChanged();
+
         }
-        adapter = new HomeGridViewAdapter(mContext);
-        adapter.setData(data.getData().get(groupPosition));
-        childViewHolder.gridView.setAdapter(adapter);
         childViewHolder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(mContext, ServiceDetailsActivity.class);
                 String mId = data.getData().get(groupPosition).getItems().get(position).getId();
                 String serviceId = data.getData().get(groupPosition).getItems().get(position).getServiceId();
-                intent.putExtra("id",mId);
-                intent.putExtra("serviceId",serviceId);
+                intent.putExtra("id", mId);
+                intent.putExtra("serviceId", serviceId);
                 mContext.startActivity(intent);
             }
         });
-
         return view;
     }
 
     class ChildViewHolder {
         GridView gridView;
+        HomeGridViewAdapter adapter;
     }
 
     @Override
