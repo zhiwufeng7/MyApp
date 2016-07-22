@@ -73,7 +73,7 @@ public class MerchantRecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         MerchantDetails.DataBean.PricesBean data = datas.get(position);
         Glide.with(mContext).load(data.getPic_url()).into(holder.icon);
         holder.tv_name.setText(data.getName());
@@ -96,11 +96,11 @@ public class MerchantRecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>{
             holder.num.setText("0");
         }
         //图片点击跳转
-        holder.icon.setTag(position);
+
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int tag =(int) v.getTag();
+                int tag =position;
                 Intent intent = new Intent(mContext, ServiceDetailsActivity.class);
                 String mId = datas.get(tag).getId();
                 String serviceId = id;

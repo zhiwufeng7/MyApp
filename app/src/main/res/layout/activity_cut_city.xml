@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backColor"
+    >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
@@ -64,7 +66,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_marginTop="40dp"
-            app:sidebarItemHeight="15sp"
+            app:sidebarItemHeight="18sp"
             app:sidebarTextColor="@android:color/black"
             app:sidebarTextColorChoose="@color/colorPrimary"
             app:sidebarTextSize="@dimen/textSize_quicksidebar"

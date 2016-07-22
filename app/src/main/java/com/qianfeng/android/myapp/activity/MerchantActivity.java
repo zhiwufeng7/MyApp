@@ -3,18 +3,20 @@ package com.qianfeng.android.myapp.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -103,6 +105,9 @@ public class MerchantActivity extends SwipeBackActivity {
     private LinearLayout ll_comment;
     private CollectionInfoDao collectionInfoDao;
     private CheckBox collection_cb;
+    private int ori;
+    private View zoomView;
+    private Configuration mConfiguration;
 
 
     @Override
@@ -113,10 +118,14 @@ public class MerchantActivity extends SwipeBackActivity {
         id = intent.getStringExtra("id");
         mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+        mConfiguration = getResources().getConfiguration(); //获取设置的配置信息
+        ori = mConfiguration.orientation ; //获取屏幕方向
         initView();
         setToolBar();
         initData();
         refresh();
+
+
     }
 
     private void initDao() {
@@ -370,13 +379,19 @@ public class MerchantActivity extends SwipeBackActivity {
     }
 
     private void setAdapter() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv.setLayoutManager(linearLayoutManager);
+        if(ori == mConfiguration.ORIENTATION_PORTRAIT){
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            rv.setLayoutManager(linearLayoutManager);
+        }else if(ori == mConfiguration.ORIENTATION_LANDSCAPE){
+            GridLayoutManager linearLayoutManager = new GridLayoutManager(this,2);
+            rv.setLayoutManager(linearLayoutManager);
+            rv.setMinimumHeight((int)(getResources().getDimension(R.dimen.rc_height)*(num/2)));
+        }
+
         if (num < prices.size()) {
             for (int i = num - 10; i < num; i++) {
                 rv_data.add(prices.get(i));
             }
-            num += 10;
 
         } else {
             for (int i = num - 10; i < prices.size(); i++) {
@@ -390,16 +405,17 @@ public class MerchantActivity extends SwipeBackActivity {
     }
 
     private void setCBAdapter() {
-        cb.setPages(
-                new CBViewHolderCreator<LocalImageHolderView>() {
-                    @Override
-                    public LocalImageHolderView createHolder() {
-                        return new LocalImageHolderView();
-                    }
-                }, cbItems)
-                .setPageIndicator(new int[]{R.drawable.page, R.drawable.page_now})
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
-
+        if(ori == mConfiguration.ORIENTATION_PORTRAIT){
+            cb.setPages(
+                    new CBViewHolderCreator<LocalImageHolderView>() {
+                        @Override
+                        public LocalImageHolderView createHolder() {
+                            return new LocalImageHolderView();
+                        }
+                    }, cbItems)
+                    .setPageIndicator(new int[]{R.drawable.page, R.drawable.page_now})
+                    .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
+        }
     }
 
     public void refresh() {
@@ -459,27 +475,37 @@ public class MerchantActivity extends SwipeBackActivity {
         //必须设置ToolBar颜色值，也就是0~1透明度变化的颜色值
         mTransparentToolBar.setBgColor(Color.WHITE);
         //必须设置ToolBar最大偏移量，这会影响到0~1透明度变化的范围
-        mTransparentToolBar.setOffset(mScreenWidth - getResources().getDimension(R.dimen.title_height));
-        internalScrollView.setTitleBar(mTransparentToolBar);
+        if(ori == mConfiguration.ORIENTATION_PORTRAIT){
+            mTransparentToolBar.setOffset(mScreenWidth - getResources().getDimension(R.dimen.title_height));
+            internalScrollView.setTitleBar(mTransparentToolBar);
+        }else if(ori == mConfiguration.ORIENTATION_LANDSCAPE){
+            mTransparentToolBar.setChangeTop(1);
+        }
     }
 
     private void initView() {
+        DisplayMetrics localDisplayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
+        mScreenHeight = localDisplayMetrics.heightPixels;
+        mScreenWidth = localDisplayMetrics.widthPixels;
         scrollView = (PullToZoomScrollViewEx) findViewById(R.id.merchant_scroll_view);
-        View zoomView = LayoutInflater.from(this).inflate(R.layout.activity_merchant_zoom, null, false);
         View contentView = LayoutInflater.from(this).inflate(R.layout.activity_merchant_content, null, false);
-        scrollView.setZoomView(zoomView);
+        if(ori == mConfiguration.ORIENTATION_PORTRAIT){
+            zoomView = LayoutInflater.from(this).inflate(R.layout.activity_merchant_zoom, null, false);
+            scrollView.setZoomView(zoomView);
+            LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth, mScreenWidth);
+            scrollView.setHeaderLayoutParams(localObject);
+        }else if(ori == mConfiguration.ORIENTATION_LANDSCAPE){
+            LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth,
+                    (int)(getResources().getDimension(R.dimen.title_height)));
+            scrollView.setHeaderLayoutParams(localObject);
+            scrollView.setZoomEnabled(false);
+        }
         scrollView.setScrollContentView(contentView);
         cb = (ConvenientBanner) findViewById(R.id.merchant_cb);
         tv_tool_name = (TextView) findViewById(R.id.merchant_tv_tool_name);
         ib_back = (ImageButton) findViewById(R.id.merchant_ib_back);
         ib_menu = (ImageButton) findViewById(R.id.merchant_ib_menu);
-        DisplayMetrics localDisplayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
-        mScreenHeight = localDisplayMetrics.heightPixels;
-        mScreenWidth = localDisplayMetrics.widthPixels;
-        LinearLayout.LayoutParams localObject = new LinearLayout.LayoutParams(mScreenWidth, mScreenWidth);
-        scrollView.setHeaderLayoutParams(localObject);
-
         tv_name = (TextView) findViewById(R.id.merchant_tv_name);
         tv_service_time = (TextView) findViewById(R.id.merchant_tv_service_time);
         tv_time = (TextView) findViewById(R.id.merchant_tv_time);
@@ -499,6 +525,7 @@ public class MerchantActivity extends SwipeBackActivity {
         tv_nick = (TextView) findViewById(R.id.merchant_tv_nick);
         tv_description = (TextView) findViewById(R.id.merchant_tv_description);
         rv = (RecyclerView) findViewById(R.id.merchant_rv);
+        rv.setNestedScrollingEnabled(false);
         iv_tag1 = (ImageView) findViewById(R.id.merchant_iv_tag1);
         iv_tag2 = (ImageView) findViewById(R.id.merchant_iv_tag2);
         add_rl = (RelativeLayout) findViewById(R.id.merchant_rv_foot_rl);
@@ -528,6 +555,12 @@ public class MerchantActivity extends SwipeBackActivity {
                 rv_data.add(prices.get(i));
             }
             add_rl.setVisibility(View.GONE);
+        }
+       if(ori == mConfiguration.ORIENTATION_PORTRAIT){
+
+
+        }else if(ori == mConfiguration.ORIENTATION_LANDSCAPE){
+           rv.setMinimumHeight((int)(getResources().getDimension(R.dimen.rc_height)*(num/2)));
         }
         adapter = new MerchantRecyclerAdapter(MerchantActivity.this, rv_data, id, title);
         rv.setAdapter(adapter);

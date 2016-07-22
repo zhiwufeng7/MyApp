@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.qianfeng.android.myapp.activity.ProjectListActivity">
+    tools:context="com.qianfeng.android.myapp.activity.ProjectListActivity"
+    android:background="@color/backColor">
 
     <RelativeLayout
         android:id="@+id/project_rl"

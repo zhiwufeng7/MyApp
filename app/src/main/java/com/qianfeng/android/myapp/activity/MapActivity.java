@@ -242,5 +242,9 @@ public class MapActivity extends AppCompatActivity {
         map.onPause();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //super.onSaveInstanceState(outState);
+    }
 }
 

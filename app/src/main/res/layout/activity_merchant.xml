@@ -79,7 +79,8 @@
         android:id="@+id/merchant_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/merchant_bottom" />
+        android:layout_above="@id/merchant_bottom"
+        />
 
     <com.ecloud.pulltozoomview.TransparentToolBar
         android:id="@+id/merchant_bar"
