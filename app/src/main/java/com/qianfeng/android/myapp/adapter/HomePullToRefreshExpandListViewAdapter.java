@@ -98,8 +98,6 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
             @Override
             public void onClick(View v) {
 
-
-
            List< HomeServiceInfo.DataBean> dataBeans= info.getData();
                 for ( HomeServiceInfo.DataBean bean:dataBeans){
                     if (bean.getName().equals(name)){
