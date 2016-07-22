@@ -45,12 +45,12 @@
             android:layout_marginTop="5dp"
             android:layout_below="@id/merchant_tv_name"
             />
-        <ImageButton
-            android:id="@+id/merchant_ib_collection"
+        <CheckBox
+            android:id="@+id/merchant_cb_collection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:src="@drawable/btn_collection_1"
+            android:background="@drawable/btn_collection"
+            android:button="@null"
             android:layout_alignParentRight="true"
             />
         <TextView
@@ -63,7 +63,7 @@
             android:textColor="@color/red"
             android:text="预约时间"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/merchant_ib_collection"
+            android:layout_below="@id/merchant_cb_collection"
             />
         <TextView
             android:layout_width="wrap_content"

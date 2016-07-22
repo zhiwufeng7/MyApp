@@ -13,6 +13,8 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +32,8 @@ import com.google.gson.Gson;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.adapter.MerchantRecyclerAdapter;
 import com.qianfeng.android.myapp.bean.MerchantDetails;
+import com.qianfeng.android.myapp.dao.CollectionInfo;
+import com.qianfeng.android.myapp.dao.CollectionInfoDao;
 import com.qianfeng.android.myapp.dao.DaoMaster;
 import com.qianfeng.android.myapp.dao.DaoSession;
 import com.qianfeng.android.myapp.dao.ShoppingCart;
@@ -97,6 +101,8 @@ public class MerchantActivity extends SwipeBackActivity {
     private ImageButton ib_car;
     private SharePopupWindow popWnd;
     private LinearLayout ll_comment;
+    private CollectionInfoDao collectionInfoDao;
+    private CheckBox collection_cb;
 
 
     @Override
@@ -105,18 +111,64 @@ public class MerchantActivity extends SwipeBackActivity {
         setContentView(R.layout.activity_merchant);
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
+        mSwipeBackLayout = getSwipeBackLayout();
+        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
         initView();
         setToolBar();
         initData();
         refresh();
+    }
 
-        mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-
+    private void initDao() {
+        //创建一个开发环境的Helper类，如果是正式环境调用DaoMaster.OpenHelper
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this,"liuxiao",null);
+        //通过Handler类获得数据库对象
+        SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
+        //通过数据库对象生成DaoMaster对象
+        DaoMaster daoMaster = new DaoMaster(readableDatabase);
+        //获取DaoSession对象
+        DaoSession daoSession = daoMaster.newSession();
+        //通过DaoSeesion对象获得CustomerDao对象
+        collectionInfoDao = daoSession.getCollectionInfoDao();
+        CollectionInfo collectionInfo = collectionInfoDao.loadByRowId(Long.valueOf(data.getPhone()));
+        if (collectionInfo!=null){
+            collection_cb.setChecked(true);
+        }
     }
 
 
     private void setListener() {
+        collection_cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(collection_cb.isChecked()){
+                    CollectionInfo collectionInfo = new CollectionInfo(Long.valueOf(data.getPhone()));
+                    collectionInfo.setServiceTitle(data.getTitle());
+                    collectionInfo.setCount(data.getOrderTakingCount()+"");
+                    collectionInfo.setEvaluate(data.getPositiveCommentRate());
+                    collectionInfo.setImage(data.getImgs().get(0).getUrl());
+                    List<String> tagIcons = data.getTagIcons();
+                    switch (tagIcons.size()){
+                        case 0:
+                            collectionInfo.setTag1("");
+                            collectionInfo.setTag2("");
+                            break;
+                        case 1:
+                            collectionInfo.setTag1(tagIcons.get(0));
+                            collectionInfo.setTag2("");
+                            break;
+                        case 2:
+                            collectionInfo.setTag1(tagIcons.get(0));
+                            collectionInfo.setTag2(tagIcons.get(1));
+                            break;
+                    }
+                    collectionInfoDao.insert(collectionInfo);
+                }else {
+                    collectionInfoDao.deleteByKey(Long.valueOf(data.getPhone()));
+                }
+            }
+        });
+
         tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -151,6 +203,15 @@ public class MerchantActivity extends SwipeBackActivity {
                 startActivity(intent);
             }
         });
+
+        ll_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MerchantActivity.this,MerchantCommentActivity.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initData() {
@@ -180,6 +241,7 @@ public class MerchantActivity extends SwipeBackActivity {
                 setCBAdapter();
                 setListener();
                 setAdapter();
+                initDao();
             }
         });
     }
@@ -444,6 +506,8 @@ public class MerchantActivity extends SwipeBackActivity {
         ib_car = (ImageButton) findViewById(R.id.merchant_ib_car);
 
         ll_comment = (LinearLayout) findViewById(R.id.merchant_ll_comment);
+
+        collection_cb = (CheckBox) findViewById(R.id.merchant_cb_collection);
     }
 
     public void onBack(View view) {
