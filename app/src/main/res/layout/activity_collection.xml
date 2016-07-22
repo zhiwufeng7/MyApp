@@ -20,7 +20,7 @@
         android:text="@string/collection_top"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold" />
-    <GridView
+    <com.handmark.pulltorefresh.library.PullToRefreshGridView
         android:id="@+id/collection_gv"
         android:numColumns="2"
         android:gravity="center"

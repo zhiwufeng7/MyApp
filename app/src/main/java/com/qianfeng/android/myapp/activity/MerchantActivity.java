@@ -201,6 +201,7 @@ public class MerchantActivity extends SwipeBackActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MerchantActivity.this, MainActivity.class);
+                intent.putExtra("re","ok");
                 startActivity(intent);
             }
         });

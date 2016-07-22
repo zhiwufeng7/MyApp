@@ -278,6 +278,7 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ServiceDetailsActivity.this,MainActivity.class);
+                intent.putExtra("re","ok");
                 startActivity(intent);
             }
         });

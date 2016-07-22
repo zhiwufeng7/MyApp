@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -267,7 +268,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        shoppingBtn.setChecked(true);
+        if (!TextUtils.isEmpty(intent.getStringExtra("re"))){
+            shoppingBtn.setChecked(true);
+        }
         super.onNewIntent(intent);
     }
 }
