@@ -13,7 +13,7 @@ public class GreenDao {
          * 参数一：版本号
          * 参数二：包名，主要用于存放自动生成的DAO文件
          */
-        Schema schema = new Schema(4,"com.qianfeng.android.myapp.dao");
+        Schema schema = new Schema(5,"com.qianfeng.android.myapp.dao");
         //添加一个Entity对象。addEntity的参数将作为为Java类名和数据库的表名（关系名）
         Entity customer = schema.addEntity("SearchHistory");
         //添加ID，自动增长，主键
@@ -44,6 +44,7 @@ public class GreenDao {
         customer3.addStringProperty("image").notNull();
         customer3.addStringProperty("tag1").notNull();
         customer3.addStringProperty("tag2").notNull();
+        customer3.addStringProperty("sid").notNull();
 
         try {
             /**

@@ -30,6 +30,7 @@ public class CollectionInfoDao extends AbstractDao<CollectionInfo, Long> {
         public final static Property Image = new Property(4, String.class, "image", false, "IMAGE");
         public final static Property Tag1 = new Property(5, String.class, "tag1", false, "TAG1");
         public final static Property Tag2 = new Property(6, String.class, "tag2", false, "TAG2");
+        public final static Property Sid = new Property(7, String.class, "sid", false, "SID");
     };
 
 
@@ -51,7 +52,8 @@ public class CollectionInfoDao extends AbstractDao<CollectionInfo, Long> {
                 "\"EVALUATE\" TEXT NOT NULL ," + // 3: evaluate
                 "\"IMAGE\" TEXT NOT NULL ," + // 4: image
                 "\"TAG1\" TEXT NOT NULL ," + // 5: tag1
-                "\"TAG2\" TEXT NOT NULL );"); // 6: tag2
+                "\"TAG2\" TEXT NOT NULL ," + // 6: tag2
+                "\"SID\" TEXT NOT NULL );"); // 7: sid
     }
 
     /** Drops the underlying database table. */
@@ -75,6 +77,7 @@ public class CollectionInfoDao extends AbstractDao<CollectionInfo, Long> {
         stmt.bindString(5, entity.getImage());
         stmt.bindString(6, entity.getTag1());
         stmt.bindString(7, entity.getTag2());
+        stmt.bindString(8, entity.getSid());
     }
 
     /** @inheritdoc */
@@ -93,7 +96,8 @@ public class CollectionInfoDao extends AbstractDao<CollectionInfo, Long> {
             cursor.getString(offset + 3), // evaluate
             cursor.getString(offset + 4), // image
             cursor.getString(offset + 5), // tag1
-            cursor.getString(offset + 6) // tag2
+            cursor.getString(offset + 6), // tag2
+            cursor.getString(offset + 7) // sid
         );
         return entity;
     }
@@ -108,6 +112,7 @@ public class CollectionInfoDao extends AbstractDao<CollectionInfo, Long> {
         entity.setImage(cursor.getString(offset + 4));
         entity.setTag1(cursor.getString(offset + 5));
         entity.setTag2(cursor.getString(offset + 6));
+        entity.setSid(cursor.getString(offset + 7));
      }
     
     /** @inheritdoc */

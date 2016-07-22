@@ -2,6 +2,7 @@ package com.qianfeng.android.myapp.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -12,9 +13,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.activity.MerchantActivity;
 import com.qianfeng.android.myapp.dao.CollectionInfo;
 import com.qianfeng.android.myapp.dao.CollectionInfoDao;
 import com.qianfeng.android.myapp.dao.DaoMaster;
@@ -90,7 +93,7 @@ public class CollectionAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
         CollectionInfo item = data.get(position);
-        Glide.with(context).load(item.getImage()).into(viewHolder.imageView);
+
 
         viewHolder.title.setText(" " + item.getServiceTitle());
         viewHolder.count.setText("已接" + item.getCount() + "单");
@@ -126,9 +129,19 @@ public class CollectionAdapter extends BaseAdapter {
                                 notifyDataSetChanged();
                             }
                         });
+                builder.show();
             }
         });
-
+        Glide.with(context).load(item.getImage()).into(viewHolder.imageView);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(context, MerchantActivity.class);
+                intent.putExtra("id", data.get(position).getSid());
+                context.startActivity(intent);
+            }
+        });
         return view;
     }
 

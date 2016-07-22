@@ -19,6 +19,8 @@ public class CollectionInfo {
     private String tag1;
     /** Not-null value. */
     private String tag2;
+    /** Not-null value. */
+    private String sid;
 
     public CollectionInfo() {
     }
@@ -27,7 +29,7 @@ public class CollectionInfo {
         this.id = id;
     }
 
-    public CollectionInfo(Long id, String serviceTitle, String count, String evaluate, String image, String tag1, String tag2) {
+    public CollectionInfo(Long id, String serviceTitle, String count, String evaluate, String image, String tag1, String tag2, String sid) {
         this.id = id;
         this.serviceTitle = serviceTitle;
         this.count = count;
@@ -35,6 +37,7 @@ public class CollectionInfo {
         this.image = image;
         this.tag1 = tag1;
         this.tag2 = tag2;
+        this.sid = sid;
     }
 
     public Long getId() {
@@ -103,6 +106,16 @@ public class CollectionInfo {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setTag2(String tag2) {
         this.tag2 = tag2;
+    }
+
+    /** Not-null value. */
+    public String getSid() {
+        return sid;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setSid(String sid) {
+        this.sid = sid;
     }
 
 }

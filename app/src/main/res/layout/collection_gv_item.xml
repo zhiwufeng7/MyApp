@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    >
+    <RelativeLayout
+        android:id="@+id/collection_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
     <ImageView
         android:id="@+id/collection_top_iv"
         android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/collection_title"
@@ -22,26 +27,26 @@
 
     <ImageView
         android:id="@+id/collection_tagIcon1"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_alignBottom="@id/collection_title"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/collection_title" />
+        android:layout_toRightOf="@id/collection_title"
+        android:layout_alignBottom="@id/collection_title"/>
 
     <ImageView
         android:id="@+id/collection_tagIcon2"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_alignBottom="@id/collection_title"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/collection_tagIcon1" />
+        android:layout_toRightOf="@id/collection_tagIcon1"
+        android:layout_alignBottom="@id/collection_title"/>
 
 
     <TextView
         android:id="@+id/collection_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_below="@id/collection_title" />
 
     <TextView
         android:id="@+id/collection_evaluate"
@@ -49,16 +54,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:paddingRight="10dp"
+
 
         />
-
+</RelativeLayout>
     <ImageButton
         android:id="@+id/collection_ib"
-        android:layout_width="20dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_alignRight="@id/collection_top_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitXY"
+        android:layout_alignParentRight="true"
+        android:padding="3dp"
         android:background="@null"
         android:src="@drawable/btn_close" />
 

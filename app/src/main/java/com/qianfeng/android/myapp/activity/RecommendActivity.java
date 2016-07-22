@@ -103,12 +103,15 @@ public class RecommendActivity extends AppCompatActivity {
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
                         footListInfo = gson.fromJson(response, FootInfo.class);
-
+                        if (list == null) {
+                            list = footListInfo.getData();
+                        } else {
+                            list.addAll(footListInfo.getData());
+                        }
                         if (list != null) {
                             if (index == 10) {
-                                list = footListInfo.getData();
-                            }else {
-                                list.addAll(footListInfo.getData());
+
+                                initAdapter();
                             }
                             adapter.setData(list);
                             adapter.notifyDataSetChanged();

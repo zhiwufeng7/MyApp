@@ -147,6 +147,7 @@ public class MerchantActivity extends SwipeBackActivity {
                     collectionInfo.setCount(data.getOrderTakingCount()+"");
                     collectionInfo.setEvaluate(data.getPositiveCommentRate());
                     collectionInfo.setImage(data.getImgs().get(0).getUrl());
+                    collectionInfo.setSid(id);
                     List<String> tagIcons = data.getTagIcons();
                     switch (tagIcons.size()){
                         case 0:

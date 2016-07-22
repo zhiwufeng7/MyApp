@@ -9,12 +9,6 @@ import android.widget.ImageView;
 
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.adapter.CollectionAdapter;
-import com.qianfeng.android.myapp.dao.CollectionInfo;
-import com.qianfeng.android.myapp.dao.CollectionInfoDao;
-import com.qianfeng.android.myapp.dao.DaoMaster;
-import com.qianfeng.android.myapp.dao.DaoSession;
-
-import java.util.List;
 
 public class CollectionActivity extends AppCompatActivity {
 

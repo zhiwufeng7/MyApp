@@ -25,7 +25,10 @@
         android:numColumns="2"
         android:gravity="center"
         android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
+        android:padding="5dp"
         android:stretchMode="columnWidth"
+        android:background="@color/backColor"
         android:layout_below="@id/collection_service_back_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
