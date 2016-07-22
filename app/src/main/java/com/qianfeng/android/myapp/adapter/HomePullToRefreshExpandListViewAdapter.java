@@ -134,9 +134,7 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
             childViewHolder.adapter = new HomeGridViewAdapter(mContext);
             childViewHolder.adapter.setData(data.getData().get(groupPosition));
             childViewHolder.gridView.setAdapter(childViewHolder.adapter);
-            Log.e("hehe","1");
         } else {
-            Log.e("hehe","2");
             childViewHolder = (ChildViewHolder) view.getTag();
             childViewHolder.adapter.setData(data.getData().get(groupPosition));
             childViewHolder.adapter.notifyDataSetChanged();
