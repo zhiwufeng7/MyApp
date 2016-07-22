@@ -13,6 +13,10 @@ public class Url {
 
         return "http://api.daoway.cn/daoway/rest/service/"+id+"?lot="+lot+"&lat="+lat;
     }
+    public static String getCommentUrl(String id, int num  ,String type){
+
+        return "http://api.daoway.cn/daoway/rest/service/"+id+"/comments?start="+(num-20)+"&size="+num+"&filter="+type;
+    }
 
     /*
     * 商家详情页面
