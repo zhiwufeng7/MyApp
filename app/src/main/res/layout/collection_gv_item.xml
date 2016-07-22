@@ -54,9 +54,10 @@
 
     <ImageButton
         android:id="@+id/collection_ib"
-        android:layout_width="10dp"
+        android:layout_width="20dp"
         android:layout_height="10dp"
-        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_alignRight="@id/collection_top_iv"
         android:background="@null"
         android:src="@drawable/btn_close" />
 
