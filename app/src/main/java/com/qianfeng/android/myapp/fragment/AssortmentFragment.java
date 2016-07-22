@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.mob.tools.utils.UIHandler;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.activity.ProjectListActivity;
 import com.qianfeng.android.myapp.activity.ServiceDetailsActivity;
@@ -30,6 +33,7 @@ import com.qianfeng.android.myapp.adapter.AssortmentRightAdapter;
 import com.qianfeng.android.myapp.bean.AssortmentLeftLV;
 import com.qianfeng.android.myapp.bean.AssortmentRightLV;
 import com.qianfeng.android.myapp.data.AssortmentURL;
+import com.qianfeng.android.myapp.widget.MyProgressDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -39,8 +43,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.friends.Wechat;
 import okhttp3.Call;
 
 
@@ -68,6 +77,7 @@ public class AssortmentFragment extends Fragment {
     private String city;
     private String lot;
     private String lat;
+    private MyProgressDialog myProgressDialog;
 
 
     /**
@@ -86,8 +96,6 @@ public class AssortmentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //创建视图
-
 
     }
 
@@ -95,6 +103,10 @@ public class AssortmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_assortment, null);
+        //数据加载过程中出现progressDialog滚动动画，数据加载完成后消失
+        myProgressDialog = new MyProgressDialog(getActivity(), R.drawable.ani_progress);
+        myProgressDialog.show();
+
         //初始化左右两边ListView及中间标题数据源
         initData();
         //初始化控件
@@ -308,7 +320,13 @@ public class AssortmentFragment extends Fragment {
         rightRefreshListView = (PullToRefreshListView) view.findViewById(R.id.assortment_right_refreshlv);
         //右边标题
         linearLayoutTitle = (LinearLayout) view.findViewById(R.id.assortment_right_linearLayout);
-
+        TextView textView= (TextView) view.findViewById(R.id.assortment_left_header);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                authorize();
+            }
+        });
 
     }
 
@@ -461,6 +479,7 @@ public class AssortmentFragment extends Fragment {
                         rightRefreshListView.setAdapter(rightAdapter);
                         //rightAdapter.notifyDataSetChanged();
                         rightRefreshListView.onRefreshComplete();
+                        myProgressDialog.dismiss();
                     }
                 });
     }
@@ -500,6 +519,48 @@ public class AssortmentFragment extends Fragment {
                         rightRefreshListView.onRefreshComplete();
                     }
                 });
+    }
+
+    private void authorize() {
+        ShareSDK.initSDK(getActivity());
+      //  Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+      //  Platform weixin = ShareSDK.getPlatform(Wechat.NAME);
+        Platform qq = ShareSDK.getPlatform(QQ.NAME);
+
+        authorize(qq);
+    }
+
+    public void authorize(Platform platform) {
+        //判断用户是否已经授权
+        if (platform.isAuthValid()) {
+            //获取用户名
+            String userName = platform.getDb().getUserName();
+            Log.d("google_lenve_fb", "authorize: " + userName);
+        } else {
+            //引导用户进行登录
+            platform.authorize();
+            String userName = platform.getDb().getUserName();
+            Log.d("google_lenve_fb", "authorize: " + userName);
+        }
+        //监听三方登录状态
+        platform.setPlatformActionListener(new PlatformActionListener() {
+            //登录成功时回调该方法
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                Toast.makeText(getActivity(),"登录成功", Toast.LENGTH_SHORT).show();
+            }
+
+            //登录失败时回调该方法
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                Toast.makeText(getActivity(),"登录失败", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

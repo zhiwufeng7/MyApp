@@ -44,6 +44,7 @@ import com.qianfeng.android.myapp.dao.ShoppingCart;
 import com.qianfeng.android.myapp.dao.ShoppingCartDao;
 import com.qianfeng.android.myapp.data.AssortmentURL;
 import com.qianfeng.android.myapp.widget.MyGridView;
+import com.qianfeng.android.myapp.widget.MyProgressDialog;
 import com.qianfeng.android.myapp.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -119,7 +120,7 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
     private TextView introduce;
     private TextView bespeaktime;
 
-    private static final int VIDEO_CONTENT_DESC_MAX_LINE = 5;// 默认展示最大行数3行
+    private static final int VIDEO_CONTENT_DESC_MAX_LINE = 5;// 默认展示最大行数5行
     private static final int SHRINK_UP_STATE = 1;// 收起状态
     private static final int SPREAD_STATE = 2;// 展开状态
     private static int mState = SHRINK_UP_STATE;//默认收起状态
@@ -139,6 +140,7 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
     private Button goBuy;
     private ImageButton shoppingCar;
     private ImageView ball;
+    private MyProgressDialog myProgressDialog;
 
 
     @Override
@@ -148,6 +150,11 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
 
         SwipeBackLayout mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
+
+        //数据加载过程中出现progressDialog滚动动画，数据加载完成后消失
+        myProgressDialog = new MyProgressDialog(ServiceDetailsActivity.this, R.drawable.ani_progress);
+        myProgressDialog.show();
+
 
         //获取当前地址信息
         getAddress();
@@ -166,6 +173,8 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
     }
 
     private void initListener() {
+
+
         //店铺介绍点击展开和收缩
         introduce_more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,8 +227,6 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
                 //通过DaoSeesion对象获得CustomerDao对象
                 ShoppingCartDao shoppingCartDao = daoSession.getShoppingCartDao();
                 List<ShoppingCart> shoppingCarts = shoppingCartDao.loadAll();
-//                buyNum.setVisibility(View.VISIBLE);
-//                reduce.setVisibility(View.VISIBLE);
                 String text = buyNum.getText().toString().trim();
                 int itemNum = Integer.parseInt(text);
                 if (itemNum == 0) {
@@ -263,8 +270,7 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
                             itemNum, minBuyNum
                     ));
                 } else {
-//                    buyNum.setVisibility(View.GONE);
-//                    reduce.setVisibility(View.GONE);
+
                     itemNum = 0;
                     shoppingCartDao.deleteByKey(Long.valueOf(id1));
                 }
@@ -520,6 +526,8 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
                         }else {
                             buyNum.setText("0");
                         }
+
+                        myProgressDialog.dismiss();
                     }
                 });
 
@@ -558,6 +566,7 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
                                 initShopSummary();
                                 //加载底部recyclerview数据
                                 initdata();
+
                             }
                         });
 
@@ -790,4 +799,9 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ShareSDK.stopSDK(this);
+    }
 }

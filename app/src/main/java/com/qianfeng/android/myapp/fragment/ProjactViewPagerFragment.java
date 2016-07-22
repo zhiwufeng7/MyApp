@@ -23,6 +23,7 @@ import com.qianfeng.android.myapp.activity.ServiceDetailsActivity;
 import com.qianfeng.android.myapp.adapter.ProjectListAdapter;
 import com.qianfeng.android.myapp.bean.AssortmentRightLV;
 import com.qianfeng.android.myapp.data.AssortmentURL;
+import com.qianfeng.android.myapp.widget.MyProgressDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -49,6 +50,7 @@ public class ProjactViewPagerFragment extends Fragment {
     private ProjectListAdapter adapter;
     private PullToRefreshListView ptrListView;
     private SharedPreferences sharedPreferences;
+    private MyProgressDialog myProgressDialog;
 
     // TODO: Rename and change types and number of parameters
     public static ProjactViewPagerFragment newInstance(Bundle args) {
@@ -73,6 +75,10 @@ public class ProjactViewPagerFragment extends Fragment {
         Bundle arguments = getArguments();
         category = (String) arguments.get("category");
         tag = (String) arguments.get("tag");
+
+        //数据加载过程中出现progressDialog滚动动画，数据加载完成后消失
+        myProgressDialog = new MyProgressDialog(getActivity(), R.drawable.ani_progress);
+        myProgressDialog.show();
 
         //初始化视图控件
         initView();
@@ -152,6 +158,7 @@ public class ProjactViewPagerFragment extends Fragment {
                         mItems.addAll(assortmentRightLV.getData().getItems()) ;
                         adapter.notifyDataSetChanged();
                         ptrListView.onRefreshComplete();
+                        myProgressDialog.dismiss();
                     }
                 });
     }

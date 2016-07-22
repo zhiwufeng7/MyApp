@@ -33,6 +33,7 @@ import com.qianfeng.android.myapp.adapter.ProjectTabLayoutAdapter;
 import com.qianfeng.android.myapp.bean.FootInfo;
 import com.qianfeng.android.myapp.data.AssortmentURL;
 import com.qianfeng.android.myapp.fragment.ProjactViewPagerFragment;
+import com.qianfeng.android.myapp.widget.MyProgressDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -73,6 +74,7 @@ public class ProjectListActivity extends AppCompatActivity {
     private ImageView slideIV;
     private ImageView searchIV;
     private ProjectTabLayoutAdapter tabLayoutAdapter;
+    private MyProgressDialog myProgressDialog;
 
 
     @Override
@@ -83,6 +85,9 @@ public class ProjectListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         tags = intent.getStringArrayListExtra("tags");
         id = intent.getStringExtra("id");
+
+
+
         //获取地址
         getAddress();
 
@@ -253,7 +258,9 @@ public class ProjectListActivity extends AppCompatActivity {
 
     //初始化商家列表数据
     private void initMYGridViewData() {
-
+        //数据加载过程中出现progressDialog滚动动画，数据加载完成后消失
+        myProgressDialog = new MyProgressDialog(ProjectListActivity.this, R.drawable.ani_progress);
+        myProgressDialog.show();
         String size = sizeNum + "";
         String strat = stratNum + "";
         String url = AssortmentURL.PROJECT_SERVICES;
@@ -311,7 +318,7 @@ public class ProjectListActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         });
-
+                        myProgressDialog.dismiss();
                     }
 
                 });

@@ -39,9 +39,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity.MainActivity"
-            android:launchMode="singleTask"
-            >
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -99,13 +99,10 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
             android:name=".activity.MerchantActivity"
             android:theme="@style/AppBaseTheme" />
-        <activity android:name=".activity.MerchantCommentActivity">
-
-        </activity>
+        <activity android:name=".activity.MerchantCommentActivity"></activity>
         <activity android:name=".activity.WebActivity" />
         <activity android:name=".activity.Wallet_Activity">
             <intent-filter>
@@ -117,8 +114,8 @@
                     android:path="/openWallet"
                     android:scheme="app" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".activity.LoginActivity"></activity>
     </application>
 
 </manifest>
