@@ -116,7 +116,7 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
     private ImageView iconUrl3;
     private RelativeLayout guaranteeRL;
     private ImageView introduce_more;
-    private ImageView jumpToShop;
+    private RelativeLayout jumpToShop;
     private TextView introduce;
     private TextView bespeaktime;
 
@@ -284,6 +284,7 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ServiceDetailsActivity.this,MainActivity.class);
+                intent.putExtra("re","ok");
                 startActivity(intent);
             }
         });
@@ -439,7 +440,7 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
         iconUrl3 = (ImageView) contentView.findViewById(R.id.service_details_guarantee_iconUrl3);
         guaranteeRL = (RelativeLayout) contentView.findViewById(R.id.service_details_guarantee_rl);
         introduce_more = (ImageView) contentView.findViewById(R.id.service_details_shop_introduce_more_tv);
-        jumpToShop = (ImageView) contentView.findViewById(R.id.service_details_iv);
+        jumpToShop = (RelativeLayout) contentView.findViewById(R.id.service_details_rl1);
         introduce = (TextView) contentView.findViewById(R.id.service_details_shop_introduce_tv);
         bespeaktime = (TextView) contentView.findViewById(R.id.service_bespeaktime_tv);
         up_add = (ImageView) contentView.findViewById(R.id.service_details_up_add_tv);

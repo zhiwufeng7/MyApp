@@ -13,7 +13,7 @@ public class GreenDao {
          * 参数一：版本号
          * 参数二：包名，主要用于存放自动生成的DAO文件
          */
-        Schema schema = new Schema(2,"com.qianfeng.android.myapp.dao");
+        Schema schema = new Schema(5,"com.qianfeng.android.myapp.dao");
         //添加一个Entity对象。addEntity的参数将作为为Java类名和数据库的表名（关系名）
         Entity customer = schema.addEntity("SearchHistory");
         //添加ID，自动增长，主键
@@ -21,6 +21,8 @@ public class GreenDao {
         //添加属性customerName，字符串类型，不能为空
         customer.addStringProperty("content").notNull();
         Entity customer2 = schema.addEntity("ShoppingCart");
+
+
         //添加ID，自动增长，主键
         Property id2 = customer2.addIdProperty().getProperty();
         //添加属性customerName，字符串类型，不能为空
@@ -30,6 +32,20 @@ public class GreenDao {
         customer2.addStringProperty("imageUrl").notNull();
         customer2.addIntProperty("buyNum").notNull();
         customer2.addIntProperty("minBuyNum").notNull();
+
+
+        Entity customer3 = schema.addEntity("CollectionInfo");
+        //添加ID，自动增长，主键
+        Property id3 = customer3.addIdProperty().getProperty();
+        //添加属性customerName，字符串类型，不能为空
+        customer3.addStringProperty("serviceTitle").notNull();
+        customer3.addStringProperty("count").notNull();
+        customer3.addStringProperty("evaluate").notNull();
+        customer3.addStringProperty("image").notNull();
+        customer3.addStringProperty("tag1").notNull();
+        customer3.addStringProperty("tag2").notNull();
+        customer3.addStringProperty("sid").notNull();
+
         try {
             /**
              * NO.2

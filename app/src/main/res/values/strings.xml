@@ -34,4 +34,5 @@
     <string name="my_more">更多</string>
     <string name="home_empty">请检查网络连接</string>
     <string name="home_internet">重新连接</string>
+    <string name="collection_top">我的收藏</string>
 </resources>

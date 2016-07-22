@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,19 +14,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.qianfeng.android.myapp.R;
-import com.qianfeng.android.myapp.adapter.PlotSearchAdapter;
 import com.qianfeng.android.myapp.adapter.SearchListAdapter;
-import com.qianfeng.android.myapp.bean.PlotSearch;
 import com.qianfeng.android.myapp.bean.SearchList;
 import com.qianfeng.android.myapp.data.Url;
-import com.qianfeng.android.myapp.widget.MyGridView;
-import com.qianfeng.android.myapp.widget.MyListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -117,7 +111,7 @@ public class SearchContentActivity extends AppCompatActivity implements View.OnC
         price = (RadioButton) findViewById(R.id.search_content_rb_price);
         good = (RadioButton) findViewById(R.id.search_content_rb_good);
         pull = (PullToRefreshListView) findViewById(R.id.search_content_lv);
-        pull.setEmptyView(LayoutInflater.from(this).inflate(R.layout.empty_view, null));
+        pull.setEmptyView(LayoutInflater.from(this).inflate(R.layout.search_empty_view, null));
         pull.setMode(PullToRefreshBase.Mode.BOTH);
         lv = pull.getRefreshableView();
         radioButtons = new ArrayList<>();

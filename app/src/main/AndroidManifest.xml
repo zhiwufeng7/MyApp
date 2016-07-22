@@ -115,6 +115,7 @@
                     android:scheme="app" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.CollectionActivity"></activity>
         <activity android:name=".activity.LoginActivity"></activity>
     </application>
 

@@ -3,6 +3,7 @@ package com.qianfeng.android.myapp.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -291,7 +292,18 @@ public class ProjectListActivity extends AppCompatActivity {
 
                         //MyGridView上拉加载下拉刷新
                         InitMyGridViewListener();
+                        Configuration mConfiguration = ProjectListActivity.this.getResources().getConfiguration(); //获取设置的配置信息
+                        int ori = mConfiguration.orientation ; //获取屏幕方向
 
+                        if(ori == mConfiguration.ORIENTATION_LANDSCAPE){
+
+//横屏
+                            refreshableView.setNumColumns(3);
+                        }else if(ori == mConfiguration.ORIENTATION_PORTRAIT){
+
+//竖屏
+                            refreshableView.setNumColumns(2);
+                        }
                         popWnd.setContentView(myGridView);
                         if (datas.isEmpty()) {
                             popWnd.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
