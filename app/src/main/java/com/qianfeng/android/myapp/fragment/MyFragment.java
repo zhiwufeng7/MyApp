@@ -17,18 +17,11 @@ import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.activity.LoginActivity;
 import com.qianfeng.android.myapp.activity.CollectionActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyFragment extends Fragment {
 
 
     private LinearLayout myCollection;
+    private RelativeLayout login_rl;
 
     public MyFragment() {
         // Required empty public constructor
@@ -58,16 +51,8 @@ public class MyFragment extends Fragment {
 
 
         return view;
-        View view = inflater.inflate(R.layout.fragment_my, container, false);
-        RelativeLayout login_rl= (RelativeLayout) view.findViewById(R.id.login_rl);
-        login_rl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-        return view;
+
+
     }
 
     private void initListener() {
@@ -78,11 +63,21 @@ public class MyFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+
+       //登录
+        login_rl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView(View view) {
         myCollection = (LinearLayout) view.findViewById(R.id.my_collection_ll);
-
+        login_rl= (RelativeLayout) view.findViewById(R.id.login_rl);
     }
 
 
