@@ -31,7 +31,6 @@ public class CollectionActivity extends AppCompatActivity {
 
         initAdapter();
 
-        initData();
 
         initListener();
     }
@@ -58,17 +57,5 @@ public class CollectionActivity extends AppCompatActivity {
         gridView.setAdapter(adapter);
     }
 
-    private void initData() {
-        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this, "liuxiao", null);
-        //通过Handler类获得数据库对象
-        SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
-        //通过数据库对象生成DaoMaster对象
-        DaoMaster daoMaster = new DaoMaster(readableDatabase);
-        DaoSession daoSession = daoMaster.newSession();
-        //通过DaoSeesion对象获得CustomerDao对象
-        CollectionInfoDao collectionInfoDao = daoSession.getCollectionInfoDao();
 
-        List<CollectionInfo> collectionInfos = collectionInfoDao.loadAll();
-        adapter.setData(collectionInfos);
-    }
 }

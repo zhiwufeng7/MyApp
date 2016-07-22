@@ -1,6 +1,9 @@
 package com.qianfeng.android.myapp.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +12,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.dao.CollectionInfo;
+import com.qianfeng.android.myapp.dao.CollectionInfoDao;
+import com.qianfeng.android.myapp.dao.DaoMaster;
+import com.qianfeng.android.myapp.dao.DaoSession;
 
 import java.util.List;
 
@@ -21,13 +26,29 @@ import java.util.List;
  * Created by my on 2016/7/22.
  */
 public class CollectionAdapter extends BaseAdapter {
+    private final DaoSession daoSession;
     private List<CollectionInfo> data;
     private LayoutInflater inflater;
     private Context context;
+    private CollectionInfoDao collectionInfoDao;
 
     public CollectionAdapter(Context context) {
         inflater = LayoutInflater.from(context);
         this.context = context;
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(context, "liuxiao", null);
+        //通过Handler类获得数据库对象
+        SQLiteDatabase readableDatabase = mHelper.getReadableDatabase();
+        //通过数据库对象生成DaoMaster对象
+        DaoMaster daoMaster = new DaoMaster(readableDatabase);
+        daoSession = daoMaster.newSession();
+        //通过DaoSeesion对象获得CustomerDao对象
+        initData();
+    }
+
+    private void initData() {
+
+        collectionInfoDao = daoSession.getCollectionInfoDao();
+        data = collectionInfoDao.loadAll();
     }
 
     public void setData(List<CollectionInfo> data) {
@@ -50,7 +71,7 @@ public class CollectionAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         ViewHolder viewHolder = null;
         if (view == null) {
@@ -78,16 +99,33 @@ public class CollectionAdapter extends BaseAdapter {
         String url1 = item.getTag1();
         String url2 = item.getTag2();
 
-        if (TextUtils.isEmpty(url1)) {
+        if (!TextUtils.isEmpty(url1)) {
             Glide.with(context).load(url1).into(viewHolder.tag[0]);
         }
-        if (TextUtils.isEmpty(url2)) {
+        if (!TextUtils.isEmpty(url2)) {
             Glide.with(context).load(url2).into(viewHolder.tag[1]);
         }
         viewHolder.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "点什么点", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("是否删除该商品")
+                        .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setNegativeButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                collectionInfoDao.deleteByKey(data.get(position).getId());
+
+                                initData();
+                                notifyDataSetChanged();
+                            }
+                        });
             }
         });
 
