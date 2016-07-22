@@ -33,6 +33,7 @@ public class RecommendActivity extends AppCompatActivity {
     private String city;
     private String lot;
     private FootInfo footListInfo;
+    private List<FootInfo.DataBean> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,14 +103,14 @@ public class RecommendActivity extends AppCompatActivity {
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
                         footListInfo = gson.fromJson(response, FootInfo.class);
-                        List<FootInfo.DataBean> list = footListInfo.getData();
 
                         if (list != null) {
                             if (index == 10) {
-
-                                initAdapter();
+                                list = footListInfo.getData();
+                            }else {
+                                list.addAll(footListInfo.getData());
                             }
-                            adapter.setData(footListInfo.getData());
+                            adapter.setData(list);
                             adapter.notifyDataSetChanged();
                             refreshGridView.onRefreshComplete();
                         }
