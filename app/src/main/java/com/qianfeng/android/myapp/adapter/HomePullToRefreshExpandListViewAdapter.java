@@ -12,8 +12,13 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.qianfeng.android.myapp.R;
+import com.qianfeng.android.myapp.activity.ProjectListActivity;
 import com.qianfeng.android.myapp.activity.ServiceDetailsActivity;
 import com.qianfeng.android.myapp.bean.HomePageEVInfo;
+import com.qianfeng.android.myapp.bean.HomeServiceInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by my on 2016/7/13.
@@ -22,6 +27,7 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
     private HomePageEVInfo data;
     private Context mContext;
     private LayoutInflater inflater;
+    private HomeServiceInfo info;
 
     public HomePullToRefreshExpandListViewAdapter(Context context) {
         mContext = context;
@@ -31,6 +37,9 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
     public void setData(HomePageEVInfo data) {
         this.data = data;
 
+    }
+    public void setBeanInfo(HomeServiceInfo info){
+        this.info=info;
     }
 
 
@@ -77,16 +86,41 @@ public class HomePullToRefreshExpandListViewAdapter extends BaseExpandableListAd
             view = inflater.inflate(R.layout.home_page_group_view, parent, false);
             groupViewHolder = new GroupViewHolder();
             groupViewHolder.mLeftTxt = (TextView) view.findViewById(R.id.home_page_group_left);
+            groupViewHolder.rightText= (TextView) view.findViewById(R.id.home_page_group_right);
             view.setTag(groupViewHolder);
         } else {
             groupViewHolder = (GroupViewHolder) view.getTag();
         }
-        groupViewHolder.mLeftTxt.setText("  " + data.getData().get(groupPosition).getCategoryName());
+        final String name=data.getData().get(groupPosition).getCategoryName();
+
+        groupViewHolder.mLeftTxt.setText("  " + name);
+        groupViewHolder.rightText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+           List< HomeServiceInfo.DataBean> dataBeans= info.getData();
+                for ( HomeServiceInfo.DataBean bean:dataBeans){
+                    if (bean.getName().equals(name)){
+                        Intent intent=new Intent();
+                        intent.setClass(mContext, ProjectListActivity.class);
+                        intent.putStringArrayListExtra("tags",(ArrayList<String>)bean.getTags());
+                        intent.putExtra("id", bean.getId());
+                        mContext.startActivity(intent);
+                    }
+
+                }
+
+
+            }
+        });
         return view;
     }
 
     class GroupViewHolder {
         TextView mLeftTxt;
+        TextView rightText;
     }
 
     @Override

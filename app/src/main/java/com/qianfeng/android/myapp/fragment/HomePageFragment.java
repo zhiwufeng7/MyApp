@@ -367,6 +367,7 @@ public class HomePageFragment extends Fragment {
                     public void onResponse(String response, int id) {
                         homeServiceInfo = gson.fromJson(response, HomeServiceInfo.class);
                         serviceAdapter.setData(homeServiceInfo);
+                        expandAdapter.setBeanInfo(homeServiceInfo);
                         serviceAdapter.notifyDataSetChanged();
                         refreshExpandableListView.onRefreshComplete();
                     }
