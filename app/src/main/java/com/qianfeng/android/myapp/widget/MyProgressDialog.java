@@ -58,7 +58,7 @@ public class MyProgressDialog extends ProgressDialog {
 			@Override
 			public void run() {
 				mAnimation.start();
-				handler.sendEmptyMessageDelayed(0,2000);
+				handler.sendEmptyMessageDelayed(0,1500);
 			}
 		});
 	}

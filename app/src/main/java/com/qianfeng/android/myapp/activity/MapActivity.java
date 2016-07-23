@@ -29,6 +29,7 @@ import com.qianfeng.android.myapp.R;
 import com.qianfeng.android.myapp.adapter.MyViewPagerAdapter;
 import com.qianfeng.android.myapp.fragment.CommonLocationFragment;
 import com.qianfeng.android.myapp.fragment.NearbyPlotFragment;
+import com.qianfeng.android.myapp.widget.MyProgressDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,8 @@ public class MapActivity extends AppCompatActivity {
         setlistener();
         setLocationClient();
         mLocationClient.start();
+        MyProgressDialog myProgressDialog = new MyProgressDialog(this, R.drawable.ani_progress);
+        myProgressDialog.show();
     }
 
     private void setLocationClient() {

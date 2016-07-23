@@ -41,6 +41,7 @@ import com.qianfeng.android.myapp.dao.DaoSession;
 import com.qianfeng.android.myapp.dao.ShoppingCart;
 import com.qianfeng.android.myapp.dao.ShoppingCartDao;
 import com.qianfeng.android.myapp.data.Url;
+import com.qianfeng.android.myapp.widget.MyProgressDialog;
 import com.qianfeng.android.myapp.widget.SharePopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -125,7 +126,8 @@ public class MerchantActivity extends SwipeBackActivity {
         initData();
         refresh();
 
-
+        MyProgressDialog myProgressDialog = new MyProgressDialog(this, R.drawable.ani_progress);
+        myProgressDialog.show();
     }
 
     private void initDao() {

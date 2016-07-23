@@ -75,12 +75,12 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="45dp"
-            app:sidebarItemHeight="18sp"
+            android:layout_marginTop="20dp"
+            app:sidebarItemHeight="10dp"
             app:sidebarTextColor="@android:color/black"
             app:sidebarTextColorChoose="@color/colorPrimary"
-            app:sidebarTextSize="@dimen/textSize_quicksidebar"
-            app:sidebarTextSizeChoose="@dimen/textSize_quicksidebar_choose" />
+            app:sidebarTextSize="6sp"
+            app:sidebarTextSizeChoose="9dp" />
 
     </RelativeLayout>
 </LinearLayout>

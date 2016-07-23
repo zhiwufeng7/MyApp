@@ -112,7 +112,7 @@ public class CollectionAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("是否删除该商品")
+                builder.setMessage("是否删除该收藏")
                         .setPositiveButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
