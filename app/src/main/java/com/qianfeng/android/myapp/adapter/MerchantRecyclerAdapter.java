@@ -100,9 +100,9 @@ public class MerchantRecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>{
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int tag =position;
+
                 Intent intent = new Intent(mContext, ServiceDetailsActivity.class);
-                String mId = datas.get(tag).getId();
+                String mId = datas.get(position).getId();
                 String serviceId = id;
                 intent.putExtra("id",mId);
                 intent.putExtra("serviceId",serviceId);

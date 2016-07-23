@@ -39,6 +39,7 @@ import com.qianfeng.android.myapp.bean.HomeRecommendInfo;
 import com.qianfeng.android.myapp.bean.HomeServiceInfo;
 import com.qianfeng.android.myapp.common.UrlConfig;
 import com.qianfeng.android.myapp.widget.MyGridView;
+import com.qianfeng.android.myapp.widget.MyProgressDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -116,6 +117,9 @@ public class HomePageFragment extends Fragment {
 
         initListener();
 
+        MyProgressDialog myProgressDialog = new MyProgressDialog(getContext(), R.drawable.ani_progress);
+        myProgressDialog.show();
+        
         return view;
     }
 
