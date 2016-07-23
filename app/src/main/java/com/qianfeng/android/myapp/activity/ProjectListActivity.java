@@ -330,7 +330,6 @@ public class ProjectListActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         });
-                        myProgressDialog.dismiss();
                     }
 
                 });

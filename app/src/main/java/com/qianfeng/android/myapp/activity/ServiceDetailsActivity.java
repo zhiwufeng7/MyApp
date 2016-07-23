@@ -528,7 +528,6 @@ public class ServiceDetailsActivity extends SwipeBackActivity {
                             buyNum.setText("0");
                         }
 
-                        myProgressDialog.dismiss();
                     }
                 });
 

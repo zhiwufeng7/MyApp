@@ -479,7 +479,7 @@ public class AssortmentFragment extends Fragment {
                         rightRefreshListView.setAdapter(rightAdapter);
                         //rightAdapter.notifyDataSetChanged();
                         rightRefreshListView.onRefreshComplete();
-                        myProgressDialog.dismiss();
+
                     }
                 });
     }

@@ -158,7 +158,6 @@ public class ProjactViewPagerFragment extends Fragment {
                         mItems.addAll(assortmentRightLV.getData().getItems()) ;
                         adapter.notifyDataSetChanged();
                         ptrListView.onRefreshComplete();
-                        myProgressDialog.dismiss();
                     }
                 });
     }
